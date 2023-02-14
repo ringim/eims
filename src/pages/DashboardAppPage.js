@@ -1,8 +1,9 @@
+import React, { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { faker } from "@faker-js/faker";
 // @mui
 import { useTheme } from "@mui/material/styles";
-import { Grid, Container, Typography } from "@mui/material";
+import { Grid, Container, Typography, Box, Button } from "@mui/material";
 // components
 import Iconify from "../components/iconify";
 // sections
@@ -17,60 +18,72 @@ import {
   AppCurrentSubject,
   AppConversionRates,
 } from "../sections/@dashboard/app";
+import SelectSurvey from "src/components/modals/selectSurvey";
 
 // ----------------------------------------------------------------------
 
 export default function DashboardAppPage() {
   const theme = useTheme();
-
+  const [isModalOpen, setModalOpen] = useState(false);
+  const toggleModal = () => setModalOpen(!isModalOpen);
   return (
     <>
+      <SelectSurvey isOpen={isModalOpen} handleClose={toggleModal} />
       <Helmet>
         <title> Dashboard | Minimal UI </title>
       </Helmet>
-
       <Container maxWidth="xl">
-        <Typography variant="h4" sx={{ mb: 5 }}>
-          Hi, Welcome back
-        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            mb: 5,
+          }}
+        >
+          <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+            <img src={require("../assets/images/Hi.png")} alt="wave" />
+            <Typography variant="h4">Hello, Abubakar!</Typography>
+          </Box>
+          <Button
+            variant="contained"
+            disableElevation
+            sx={{ width: "300px", height: "60px" }}
+            onClick={toggleModal}
+          >
+            Start Survey
+          </Button>
+        </Box>
 
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} md={3}>
+        <Grid container spacing={5}>
+          <Grid item xs={12} sm={6} md={4}>
             <AppWidgetSummary
-              title="Weekly Sales"
-              total={714000}
+              title="Pending"
+              color="info"
+              total={23242}
               icon={"ant-design:android-filled"}
             />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={12} sm={6} md={4}>
             <AppWidgetSummary
-              title="New Users"
+              title="Preview"
               total={1352831}
-              color="info"
+              color="success"
               icon={"ant-design:apple-filled"}
             />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={12} sm={6} md={4}>
             <AppWidgetSummary
-              title="Item Orders"
+              title="Rejected"
               total={1723315}
-              color="warning"
+              color="error"
               icon={"ant-design:windows-filled"}
             />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary
-              title="Bug Reports"
-              total={234}
-              color="error"
-              icon={"ant-design:bug-filled"}
-            />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={8}>
+          <Grid item xs={12} md={8} lg={8}>
             <AppWebsiteVisits
               title="Website Visits"
               subheader="(+43%) than last year"
@@ -110,7 +123,7 @@ export default function DashboardAppPage() {
             />
           </Grid>
 
-          <Grid item xs={12} md={6} lg={4}>
+          <Grid item xs={12} md={4} lg={4}>
             <AppCurrentVisits
               title="Current Visits"
               chartData={[
@@ -128,7 +141,7 @@ export default function DashboardAppPage() {
             />
           </Grid>
 
-          {/* <Grid item xs={12} md={6} lg={8}>
+          {/*<Grid item xs={12} md={6} lg={8}>
             <AppConversionRates
               title="Conversion Rates"
               subheader="(+43%) than last year"
@@ -146,7 +159,7 @@ export default function DashboardAppPage() {
               ]}
             />
           </Grid>
-
+          { 
           <Grid item xs={12} md={6} lg={4}>
             <AppCurrentSubject
               title="Current Subject"

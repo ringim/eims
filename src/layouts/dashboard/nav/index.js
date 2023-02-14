@@ -120,7 +120,7 @@ export default function Nav({ openNav, onCloseNav }) {
           >
             <Box
               component="img"
-              src="/assets/illustrations/illustration_avatar.png"
+              src={require("../../../assets/images/user.png")}
               sx={{ width: 100, position: "absolute", top: -50 }}
             />
 
