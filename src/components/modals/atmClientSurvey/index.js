@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-
+import ATMClientSurvey from "src/surveys/atmClientSurvey";
 const style = {
   position: "absolute",
   top: "50%",
@@ -11,13 +11,13 @@ const style = {
   transform: "translate(-50%, -50%)",
   maxWidth: 1200,
   width: "100%",
-  // height: "900px",
+  height: "950px",
   overflow: "auto",
   bgcolor: "#E9E9E9",
   boxShadow: 24,
 };
 
-function ATMClientSurvey(props) {
+function ATMClientSurveyModal(props) {
   const { isOpen, handleClose } = props;
   return (
     <div>
@@ -61,9 +61,7 @@ function ATMClientSurvey(props) {
               p: 2,
             }}
           >
-            <Typography fontSize="26px" fontWeight={700} color="#4F4F4F">
-              Introduction
-            </Typography>
+            <ATMClientSurvey />
           </Box>
         </Box>
       </Modal>
@@ -71,4 +69,4 @@ function ATMClientSurvey(props) {
   );
 }
 
-export default ATMClientSurvey;
+export default ATMClientSurveyModal;

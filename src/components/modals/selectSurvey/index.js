@@ -3,14 +3,13 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import ATMClientSurvey from "../atmClientSurvey";
+import ATMClientSurveyModal from "../atmClientSurvey";
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
   maxWidth: 672,
-  width: "100%",
   bgcolor: "background.paper",
   borderRadius: 2,
   //   border: "2px solid #000",
@@ -25,7 +24,7 @@ function SelectSurvey(props) {
   const toggleModal = () => setOpen(!open);
   return (
     <div>
-      <ATMClientSurvey isOpen={open} handleClose={toggleModal} />
+      <ATMClientSurveyModal isOpen={open} handleClose={toggleModal} />
       <Modal
         open={isOpen}
         onClose={handleClose}
