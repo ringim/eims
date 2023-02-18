@@ -48,7 +48,12 @@ export default function DashboardAppPage() {
           <Button
             variant="contained"
             disableElevation
-            sx={{ width: "300px", height: "60px" }}
+            sx={{
+              width: "300px",
+              height: "60px",
+              fontSize: "18px",
+              fontWeight: "700",
+            }}
             onClick={toggleModal}
           >
             Start Survey
@@ -59,27 +64,24 @@ export default function DashboardAppPage() {
           <Grid item xs={12} sm={6} md={4}>
             <AppWidgetSummary
               title="Pending"
-              color="info"
-              total={23242}
-              icon={"ant-design:android-filled"}
+              total={23}
+              icon={require("../assets/icons/pending.png")}
             />
           </Grid>
 
           <Grid item xs={12} sm={6} md={4}>
             <AppWidgetSummary
               title="Preview"
-              total={1352831}
-              color="success"
-              icon={"ant-design:apple-filled"}
+              total={13}
+              icon={require("../assets/icons/preview.png")}
             />
           </Grid>
 
           <Grid item xs={12} sm={6} md={4}>
             <AppWidgetSummary
               title="Rejected"
-              total={1723315}
-              color="error"
-              icon={"ant-design:windows-filled"}
+              total={17}
+              icon={require("../assets/icons/rejected.png")}
             />
           </Grid>
 

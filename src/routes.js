@@ -9,20 +9,38 @@ import LoginPage from "./pages/LoginPage";
 import Page404 from "./pages/Page404";
 import ProductsPage from "./pages/ProductsPage";
 import DashboardAppPage from "./pages/DashboardAppPage";
-
+import ProtectedRoute from "./ProtectedRoute";
 // ----------------------------------------------------------------------
 
 export default function Router() {
   const routes = useRoutes([
     {
-      path: "/dashboard",
-      element: <DashboardLayout />,
+      path: "/",
+      element: (
+        <ProtectedRoute>
+          <DashboardLayout />
+        </ProtectedRoute>
+      ),
       children: [
-        { element: <Navigate to="/dashboard/app" />, index: true },
-        { path: "app", element: <DashboardAppPage /> },
-        { path: "user", element: <UserPage /> },
-        { path: "products", element: <ProductsPage /> },
-        { path: "blog", element: <BlogPage /> },
+        { element: <Navigate to="/dashboard" />, index: true },
+        {
+          path: "dashboard",
+          element: (
+            // <ProtectedRoute>
+            <DashboardAppPage />
+            // </ProtectedRoute>
+          ),
+        },
+        {
+          path: "survey",
+          element: (
+            // <ProtectedRoute>
+            <UserPage />
+            // </ProtectedRoute>
+          ),
+        },
+        // { path: "products", element: <ProductsPage /> },
+        // { path: "blog", element: <BlogPage /> },
       ],
     },
     {
@@ -32,7 +50,7 @@ export default function Router() {
     {
       element: <SimpleLayout />,
       children: [
-        { element: <Navigate to="/dashboard/app" />, index: true },
+        { element: <Navigate to="/" />, index: true },
         { path: "404", element: <Page404 /> },
         { path: "*", element: <Navigate to="/404" /> },
       ],

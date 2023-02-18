@@ -42,13 +42,13 @@ export default function AppWidgetSummary({
     <Card
       sx={{
         p: 2,
-        boxShadow: 0,
+        boxShadow: 2,
         // textAlign: "censter",
         display: "flex",
         flexDirection: "column",
         gap: 2,
-        color: (theme) => theme.palette[color].darker,
-        bgcolor: (theme) => theme.palette[color].lighter,
+        color: (theme) => theme.palette.grey[800],
+        bgcolor: (theme) => theme.palette.common.white,
         ...sx,
       }}
       {...other}
@@ -65,31 +65,32 @@ export default function AppWidgetSummary({
       > */}
       <Box
         sx={{
+          px: 4,
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
         }}
       >
-        <Typography variant="h4" sx={{ opacity: 0.72 }}>
+        <Typography variant="h4" sx={{ opacity: 0.52 }}>
           {title}
         </Typography>
-        <Iconify icon={icon} width={32} height={32} />
+        <img src={icon} alt="icon" />
       </Box>
       {/* </StyledIcon> */}
       <Box
         sx={{
           display: "flex",
-          alignItems: "center",
+          alignItems: "baseline",
           justifyContent: "flex-start",
-          gap: 5,
+          gap: 1,
+          px: 4,
         }}
       >
-        <Typography variant="h3">{fShortenNumber(total)}</Typography>
-        <Typography
-          variant="h6"
-          sx={{ border: "1px solid", px: 2, borderRadius: 5 }}
-        >
-          {"45.5%"}
+        <Typography variant="h4" sx={{ opacity: 0.82 }}>
+          {fShortenNumber(total)}
+        </Typography>
+        <Typography variant="h6" sx={{ opacity: 0.52, fontWeight: 400 }}>
+          {"Surveys"}
         </Typography>
       </Box>
     </Card>

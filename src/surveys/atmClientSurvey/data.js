@@ -7,118 +7,112 @@ export const surveyData = {
         "Enter the required information below to register, You can change it anytime you want.",
       elements: [
         {
-          type: "panel",
-          name: "introduction",
-          elements: [
+          type: "text",
+          name: "uniqueId",
+          title: "Unique ID",
+          placeholder: "Ex. ID Card/Driving License",
+          isRequired: true,
+        },
+        {
+          type: "text",
+          name: "nameOfRepondent",
+          startWithNewLine: false,
+          title: "Name of Respondent",
+          placeholder: "What is your name?",
+          isRequired: true,
+        },
+        {
+          type: "radiogroup",
+          name: "gender",
+          title: "Gender",
+          isRequired: true,
+          colCount: 2,
+          choices: [
             {
-              type: "text",
-              name: "uniqueId",
-              title: "Unique ID",
-              placeholder: "Ex. ID Card/Driving License",
-              isRequired: true,
+              value: "male",
+              text: "Male",
             },
             {
-              type: "text",
-              name: "nameOfRepondent",
-              startWithNewLine: false,
-              title: "Name of Respondent",
-              placeholder: "What is your name?",
-              isRequired: true,
+              value: "female",
+              text: "Female",
+            },
+          ],
+        },
+        {
+          type: "radiogroup",
+          name: "ageRange",
+          title: "Age Range",
+          isRequired: true,
+          startWithNewLine: false,
+          colCount: 3,
+          choices: [
+            {
+              value: 20,
+              text: "00-20th",
             },
             {
-              type: "radiogroup",
-              name: "gender",
-              title: "Gender",
-              isRequired: true,
-              colCount: 2,
-              choices: [
-                {
-                  value: "male",
-                  text: "Male",
-                },
-                {
-                  value: "female",
-                  text: "Female",
-                },
-              ],
+              value: 30,
+              text: "21-30th",
             },
             {
-              type: "radiogroup",
-              name: "ageRange",
-              title: "Age Range",
-              isRequired: true,
-              startWithNewLine: false,
-              colCount: 3,
-              choices: [
-                {
-                  value: 20,
-                  text: "00-20th",
-                },
-                {
-                  value: 30,
-                  text: "21-30th",
-                },
-                {
-                  value: 40,
-                  text: "31-40th",
-                },
-                {
-                  value: 50,
-                  text: "> 40th",
-                },
-              ],
+              value: 40,
+              text: "31-40th",
             },
             {
-              type: "text",
-              name: "respondentAddress",
-              title: "Respondent's Detailed Address",
-              placeholder: "Add your address",
-              isRequired: true,
+              value: 50,
+              text: "> 40th",
+            },
+          ],
+        },
+        {
+          type: "text",
+          name: "respondentAddress",
+          title: "Respondent's Detailed Address",
+          placeholder: "Add your address",
+          isRequired: true,
+        },
+        {
+          type: "text",
+          name: "contactNumber",
+          title: "Contact Number",
+          placeholder: "Add your active phone number",
+          startWithNewLine: false,
+          isRequired: true,
+        },
+        {
+          type: "radiogroup",
+          name: "q1",
+          title: "Educational Background",
+          isRequired: true,
+          colCount: 4,
+          choices: [
+            {
+              value: "No Formal Education",
+              text: "No Formal Education",
             },
             {
-              type: "text",
-              name: "contactNumber",
-              title: "Contact Number",
-              placeholder: "Add your active phone number",
-              startWithNewLine: false,
-              isRequired: true,
+              value: "Primary Education",
+              text: "Primary Education",
             },
             {
-              type: "radiogroup",
-              name: "q1",
-              title: "Educational Background",
-              isRequired: true,
-              colCount: 4,
-              choices: [
-                {
-                  value: "No Formal Education",
-                  text: "No Formal Education",
-                },
-                {
-                  value: "Primary Education",
-                  text: "Primary Education",
-                },
-                {
-                  value: "Secondary Education",
-                  text: "Secondary Education",
-                },
-                {
-                  value: "Vocational School",
-                  text: "Vocational School",
-                },
-                {
-                  value: "University/Polytechnic",
-                  text: "University/Polytechnic",
-                },
-                {
-                  value: "Post Graduate",
-                  text: "Post Graduate",
-                },
-                {
-                  value: "Others",
-                  text: "Others",
-                },
-              ],
+              value: "Secondary Education",
+              text: "Secondary Education",
+            },
+            {
+              value: "Vocational School",
+              text: "Vocational School",
+            },
+            {
+              value: "University/Polytechnic",
+              text: "University/Polytechnic",
+            },
+            {
+              value: "Post Graduate",
+              text: "Post Graduate",
+            },
+            {
+              value: "Others",
+              text: "Others",
             },
           ],
         },

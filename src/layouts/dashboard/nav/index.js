@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 // @mui
 import { styled, alpha } from "@mui/material/styles";
 import {
@@ -22,6 +22,7 @@ import Scrollbar from "../../../components/scrollbar";
 import NavSection from "../../../components/nav-section";
 //
 import navConfig from "./config";
+import { useUserAuth } from "src/context";
 
 // ----------------------------------------------------------------------
 
@@ -46,13 +47,23 @@ export default function Nav({ openNav, onCloseNav }) {
   const { pathname } = useLocation();
 
   const isDesktop = useResponsive("up", "lg");
-
+  const navigate = useNavigate();
+  const { logOut } = useUserAuth();
   useEffect(() => {
     if (openNav) {
       onCloseNav();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
+
+  const handleLogout = async () => {
+    try {
+      await logOut();
+      navigate("/login", { replace: true });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const renderContent = (
     <Scrollbar
@@ -112,7 +123,7 @@ export default function Nav({ openNav, onCloseNav }) {
 
         {/* <Box sx={{ flexGrow: 1 }} /> */}
 
-        <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
+        <Box sx={{ px: 2.5, pb: 0, mt: 10 }}>
           <Stack
             alignItems="center"
             spacing={3}
@@ -125,15 +136,40 @@ export default function Nav({ openNav, onCloseNav }) {
             />
 
             <Box sx={{ textAlign: "center" }}>
-              <Typography gutterBottom variant="h6">
-                Ismael Danesi
-              </Typography>
+              <Typography variant="h6">Ismael Danesi</Typography>
 
               <Typography variant="body2" sx={{ color: "text.secondary" }}>
                 danesi@nepwhan.org
               </Typography>
             </Box>
           </Stack>
+          <Box
+            sx={{
+              display: "flex",
+              gap: 3,
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: 3,
+            }}
+          >
+            <Box
+              sx={{ boxShadow: 16, p: 1, borderRadius: 1, cursor: "pointer" }}
+            >
+              <img
+                src={require("../../../assets/icons/settings.png")}
+                alt="settings"
+              />
+            </Box>
+            <Box
+              sx={{ boxShadow: 16, p: 1, borderRadius: 1, cursor: "pointer" }}
+              onClick={handleLogout}
+            >
+              <img
+                src={require("../../../assets/icons/logout.png")}
+                alt="logout"
+              />
+            </Box>
+          </Box>
         </Box>
       </Box>
     </Scrollbar>

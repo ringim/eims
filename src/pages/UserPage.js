@@ -9,6 +9,7 @@ import {
   Stack,
   Paper,
   Avatar,
+  Box,
   Button,
   Popover,
   Checkbox,
@@ -30,6 +31,7 @@ import Scrollbar from "../components/scrollbar";
 import { UserListHead, UserListToolbar } from "../sections/@dashboard/user";
 // mock
 import USERLIST from "../_mock/user";
+import SelectSurvey from "src/components/modals/selectSurvey";
 
 // ----------------------------------------------------------------------
 
@@ -90,6 +92,11 @@ export default function UserPage() {
   const [filterName, setFilterName] = useState("");
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const toggleModal = () => setOpen(!open);
+  const toggleSurveyModal = () => setModalOpen(!isModalOpen);
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -159,6 +166,7 @@ export default function UserPage() {
 
   return (
     <>
+      <SelectSurvey isOpen={isModalOpen} handleClose={toggleSurveyModal} />
       <Helmet>
         <title> User | Minimal UI </title>
       </Helmet>
@@ -171,14 +179,36 @@ export default function UserPage() {
           mb={5}
         >
           <Typography variant="h4" gutterBottom>
-            User
+            Survey
           </Typography>
-          <Button
-            variant="contained"
-            startIcon={<Iconify icon="eva:plus-fill" />}
-          >
-            New User
-          </Button>
+          <Stack direction="row" alignItems="center" gap={2}>
+            <Button
+              variant="contained"
+              disableElevation
+              sx={{
+                width: "300px",
+                height: "60px",
+                fontSize: "18px",
+                fontWeight: "700",
+              }}
+              onClick={toggleSurveyModal}
+            >
+              Start Survey
+            </Button>
+            <Button
+              variant="outlined"
+              disableElevation
+              sx={{
+                width: "300px",
+                height: "60px",
+                fontSize: "18px",
+                fontWeight: "700",
+              }}
+              // onClick={toggleModal}
+            >
+              Upload Pending Survey
+            </Button>
+          </Stack>
         </Stack>
 
         <Card>
