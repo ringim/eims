@@ -90,6 +90,7 @@ export default function Submission() {
     shallow
   );
 
+  console.log("-----------Surveys: ", surveys);
   const [open, setOpen] = useState(null);
 
   const [page, setPage] = useState(0);
@@ -190,7 +191,7 @@ export default function Submission() {
           mb={5}
         >
           <Typography variant="h4" gutterBottom>
-            Submissions
+            Submissions Section
           </Typography>
         </Stack>
 
