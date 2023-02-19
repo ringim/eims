@@ -25,6 +25,7 @@ export default function LoginForm() {
   const [password, setPassword] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const { setUserInfo } = useStore(
     (state) => ({
@@ -37,6 +38,7 @@ export default function LoginForm() {
     e.preventDefault();
     setError("");
     try {
+      setLoading(true);
       await logIn(email, password);
       if (email === "abubakarringim@gmail.com") {
         setUserInfo(true);
@@ -45,6 +47,7 @@ export default function LoginForm() {
       }
       navigate("/", { replace: true });
     } catch (err) {
+      setLoading(false);
       setError(err.message);
     }
   };
@@ -108,6 +111,7 @@ export default function LoginForm() {
         type="submit"
         variant="contained"
         onClick={handleSubmit}
+        loading={loading}
       >
         Login
       </LoadingButton>

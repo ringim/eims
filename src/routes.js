@@ -13,6 +13,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import Submission from "./pages/Submission";
 import { useStore } from "./store";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
+import UserPermissions from "./pages/UserPermissions";
 // ----------------------------------------------------------------------
 
 export default function Router() {
@@ -42,7 +43,7 @@ export default function Router() {
             // </ProtectedRoute>
           ),
         },
-        { path: "user-permissions", element: <UserPage /> },
+        { path: "user-permissions", element: <UserPermissions /> },
         { path: "submission", element: <Submission /> },
       ],
     },
