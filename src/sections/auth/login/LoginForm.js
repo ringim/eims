@@ -14,6 +14,8 @@ import { LoadingButton } from "@mui/lab";
 import Iconify from "../../../components/iconify";
 import { useUserAuth } from "src/context";
 import Alert from "@mui/material/Alert";
+import { useStore } from "src/store";
+import { shallow } from "zustand/shallow";
 // ----------------------------------------------------------------------
 
 export default function LoginForm() {
@@ -24,11 +26,23 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
 
+  const { setUserInfo } = useStore(
+    (state) => ({
+      setUserInfo: state?.setUserInfo,
+    }),
+    shallow
+  );
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     try {
       await logIn(email, password);
+      if (email === "abubakarringim@gmail.com") {
+        setUserInfo(true);
+      } else {
+        setUserInfo(false);
+      }
       navigate("/", { replace: true });
     } catch (err) {
       setError(err.message);

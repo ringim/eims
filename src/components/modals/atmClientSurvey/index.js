@@ -18,7 +18,7 @@ const style = {
 };
 
 function ATMClientSurveyModal(props) {
-  const { isOpen, handleClose } = props;
+  const { isOpen, handleClose, name } = props;
   return (
     <div>
       <Modal
@@ -33,22 +33,31 @@ function ATMClientSurveyModal(props) {
             sx={{
               display: "flex",
               alignItems: "center",
-              gap: 2,
+              justifyContent: "space-between",
               background: "white",
               p: "20px",
             }}
           >
-            <Box
-              sx={{ width: "60px", height: "60px", background: "black" }}
-            ></Box>
-            <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <Typography fontSize="16px" color="#4F4F4F">
-                Preview Survey:
-              </Typography>
-              <Typography fontSize="18px" fontWeight="700" color="#4F4F4F">
-                C19RM/RSSH COMMUNITY LED MONITORING IN ATM INTERVENTION
-              </Typography>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+              <Box
+                sx={{ width: "60px", height: "60px", background: "black" }}
+              ></Box>
+              <Box sx={{ display: "flex", flexDirection: "column" }}>
+                <Typography fontSize="16px" color="#4F4F4F">
+                  Preview Survey:
+                </Typography>
+                <Typography fontSize="18px" fontWeight="700" color="#4F4F4F">
+                  C19RM/RSSH COMMUNITY LED MONITORING IN ATM INTERVENTION
+                </Typography>
+              </Box>
             </Box>
+            <Button
+              color="error"
+              sx={{ fontSize: 24, borderRadius: "50%" }}
+              onClick={handleClose}
+            >
+              X
+            </Button>
           </Box>
           {/* survey content */}
           <Box
@@ -61,7 +70,7 @@ function ATMClientSurveyModal(props) {
               p: 2,
             }}
           >
-            <ATMClientSurvey />
+            <ATMClientSurvey name={name} />
           </Box>
         </Box>
       </Modal>

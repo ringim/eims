@@ -24,7 +24,11 @@ function SelectSurvey(props) {
   const toggleModal = () => setOpen(!open);
   return (
     <div>
-      <ATMClientSurveyModal isOpen={open} handleClose={toggleModal} />
+      <ATMClientSurveyModal
+        isOpen={open}
+        handleClose={toggleModal}
+        name="ATM Client Exist Interview Survey"
+      />
       <Modal
         open={isOpen}
         onClose={handleClose}
@@ -93,6 +97,13 @@ function SelectSurvey(props) {
               </Typography>
             </Box>
           </Box>
+          <Button
+            variant="outlined"
+            sx={{ width: "100%", marginTop: 2 }}
+            onClick={handleClose}
+          >
+            Cancel
+          </Button>
         </Box>
       </Modal>
     </div>

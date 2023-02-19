@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { faker } from "@faker-js/faker";
 // @mui
@@ -19,10 +19,17 @@ import {
   AppConversionRates,
 } from "../sections/@dashboard/app";
 import SelectSurvey from "src/components/modals/selectSurvey";
-
+import { useStore } from "src/store";
+import { shallow } from "zustand/shallow";
 // ----------------------------------------------------------------------
 
 export default function DashboardAppPage() {
+  const { surveys } = useStore(
+    (state) => ({
+      surveys: state?.surveys,
+    }),
+    shallow
+  );
   const theme = useTheme();
   const [isModalOpen, setModalOpen] = useState(false);
   const toggleModal = () => setModalOpen(!isModalOpen);
@@ -64,15 +71,21 @@ export default function DashboardAppPage() {
           <Grid item xs={12} sm={6} md={4}>
             <AppWidgetSummary
               title="Pending"
-              total={23}
+              total={
+                surveys?.filter((item) => item?.status === "pending")?.length ??
+                0
+              }
               icon={require("../assets/icons/pending.png")}
             />
           </Grid>
 
           <Grid item xs={12} sm={6} md={4}>
             <AppWidgetSummary
-              title="Preview"
-              total={13}
+              title="Approved"
+              total={
+                surveys?.filter((item) => item?.status === "approved")
+                  ?.length ?? 0
+              }
               icon={require("../assets/icons/preview.png")}
             />
           </Grid>
@@ -80,7 +93,10 @@ export default function DashboardAppPage() {
           <Grid item xs={12} sm={6} md={4}>
             <AppWidgetSummary
               title="Rejected"
-              total={17}
+              total={
+                surveys?.filter((item) => item?.status === "rejected")
+                  ?.length ?? 0
+              }
               icon={require("../assets/icons/rejected.png")}
             />
           </Grid>

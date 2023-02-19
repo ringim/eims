@@ -87,7 +87,7 @@ export default function AppWidgetSummary({
         }}
       >
         <Typography variant="h4" sx={{ opacity: 0.82 }}>
-          {fShortenNumber(total)}
+          {total}
         </Typography>
         <Typography variant="h6" sx={{ opacity: 0.52, fontWeight: 400 }}>
           {"Surveys"}

@@ -11,7 +11,7 @@ export const surveyData = {
           name: "uniqueId",
           title: "Unique ID",
           placeholder: "Ex. ID Card/Driving License",
-          isRequired: true,
+          isRequired: false,
         },
         {
           type: "text",
@@ -19,13 +19,13 @@ export const surveyData = {
           startWithNewLine: false,
           title: "Name of Respondent",
           placeholder: "What is your name?",
-          isRequired: true,
+          isRequired: false,
         },
         {
           type: "radiogroup",
           name: "gender",
           title: "Gender",
-          isRequired: true,
+          isRequired: false,
           colCount: 2,
           choices: [
             {
@@ -42,7 +42,7 @@ export const surveyData = {
           type: "radiogroup",
           name: "ageRange",
           title: "Age Range",
-          isRequired: true,
+          isRequired: false,
           startWithNewLine: false,
           colCount: 3,
           choices: [
@@ -69,7 +69,7 @@ export const surveyData = {
           name: "respondentAddress",
           title: "Respondent's Detailed Address",
           placeholder: "Add your address",
-          isRequired: true,
+          isRequired: false,
         },
         {
           type: "text",
@@ -77,13 +77,13 @@ export const surveyData = {
           title: "Contact Number",
           placeholder: "Add your active phone number",
           startWithNewLine: false,
-          isRequired: true,
+          isRequired: false,
         },
         {
           type: "radiogroup",
           name: "q1",
           title: "Educational Background",
-          isRequired: true,
+          isRequired: false,
           colCount: 4,
           choices: [
             {
@@ -117,11 +117,11 @@ export const surveyData = {
           ],
         },
         {
-          name: "q2",
+          name: "Please tell me why you came to the health facility today and what service(s) you received?",
           type: "matrixdropdown",
           alternateRows: false,
           isAllRowRequired: true,
-          isRequired: true,
+          isRequired: false,
           title:
             "Please tell me why you came to the health facility today and what service(s) you received?",
           description:
@@ -131,7 +131,7 @@ export const surveyData = {
               name: "col1",
               cellType: "checkbox",
               showInMultipleColumns: true,
-              // isRequired: true,
+              // isRequired: false,
               choices: ["Which one you came for", "which one you recieved"],
             },
           ],
@@ -151,7 +151,7 @@ export const surveyData = {
           description:
             "Probe to know how often the patient has been to the facility in the last 3 months. You can request to see the patient’s hospital card to confirm",
           colCount: 5,
-          isRequired: true,
+          isRequired: false,
           choices: [
             {
               value: "0 Times",
@@ -187,7 +187,7 @@ export const surveyData = {
           name: "q4",
           type: "checkbox",
           title: "How do you prevent the following diseases COVID-19?",
-          isRequired: true,
+          isRequired: false,
           choices: [
             "Wear face mask in public",
             "Keep a safe distance",
@@ -200,7 +200,7 @@ export const surveyData = {
           name: "q5",
           type: "checkbox",
           title: "How do you prevent the following diseases HIV/AIDS?",
-          isRequired: true,
+          isRequired: false,
           choices: [
             "Abstinence",
             "Rgiht use of condom",
@@ -214,7 +214,7 @@ export const surveyData = {
           name: "q6",
           type: "checkbox",
           title: "How do you prevent the following diseases COVID-19?",
-          isRequired: true,
+          isRequired: false,
           choices: [
             "Wear face mask in public",
             "Keep a safe distance",
@@ -227,7 +227,7 @@ export const surveyData = {
           name: "q7",
           type: "checkbox",
           title: "How do you prevent the following diseases Malaria?",
-          isRequired: true,
+          isRequired: false,
           choices: [
             "LLIN",
             "Use of antimalaria drugs",
@@ -239,13 +239,13 @@ export const surveyData = {
           type: "checkbox",
           title: "How do you prevent the following diseases Tuberculosis (TB)?",
           choices: ["TPT", "Wear face mask", "Others"],
-          isRequired: true,
+          isRequired: false,
         },
         {
           name: "q9",
           type: "radiogroup",
           title: "Have you received any information on prevention of COVID-19?",
-          isRequired: true,
+          isRequired: false,
           colCount: 2,
           choices: ["YES", "NO"],
         },
@@ -253,7 +253,7 @@ export const surveyData = {
           name: "q10",
           type: "radiogroup",
           title: "Have you received any information on prevention of HIV/AIDS?",
-          isRequired: true,
+          isRequired: false,
           colCount: 2,
           choices: ["YES", "NO"],
         },
@@ -261,7 +261,7 @@ export const surveyData = {
           name: "q11",
           type: "radiogroup",
           title: "Have you received any information on prevention of Malaria?",
-          isRequired: true,
+          isRequired: false,
           colCount: 2,
           choices: ["YES", "NO"],
         },
@@ -270,7 +270,7 @@ export const surveyData = {
           type: "radiogroup",
           title:
             "Have you received any information on prevention of Tuberculosis (TB)?",
-          isRequired: true,
+          isRequired: false,
           colCount: 2,
           choices: ["YES", "NO"],
         },
@@ -279,7 +279,7 @@ export const surveyData = {
           name: "q13",
           title: "If yes, what is the source?",
           colCount: 4,
-          isRequired: true,
+          isRequired: false,
           showOtherItem: true,
           choices: ["Health Facility", "Community", "Mass Media"],
         },
@@ -289,14 +289,14 @@ export const surveyData = {
           title: "Were you given any medication/refill?",
           colCount: 2,
           choices: ["YES", "NO(If No, Skip to Gender & Human Rights)"],
-          isRequired: true,
+          isRequired: false,
         },
         {
           name: "q15",
           type: "radiogroup",
           title:
             "If yes, have you experienced any side effect or drug reaction?",
-          isRequired: true,
+          isRequired: false,
           colCount: 2,
           choices: ["YES", "NO"],
         },
@@ -304,7 +304,7 @@ export const surveyData = {
           name: "q16",
           type: "text",
           title: "If yes, Please explain you experience",
-          isRequired: true,
+          isRequired: false,
           placeholder: "Please specify",
         },
       ],
@@ -323,7 +323,7 @@ export const surveyData = {
           description:
             "Probe to know if clients/patients were informed of the nature of their ill-health, accessed available services/treatment without discrimination, and felt good about the health providers attitudes",
           choices: ["YES", "NO"],
-          isRequired: true,
+          isRequired: false,
           colCount: 2,
         },
         {
@@ -332,14 +332,14 @@ export const surveyData = {
           title: "Have you experienced any form of stigma or discrimination?",
           choices: ["YES", "NO"],
           colCount: 2,
-          isRequired: true,
+          isRequired: false,
         },
         {
           name: "q19",
           type: "checkbox",
           title:
             "Please indicate where stigma and discrimination were experienced?",
-          isRequired: true,
+          isRequired: false,
           choices: [
             "Home",
             "Community",
@@ -356,7 +356,7 @@ export const surveyData = {
             "Has anyone including your parents or partner(s) ever prevented you from accessing health care services?",
           colCount: 2,
           choices: ["YES", "NO"],
-          isRequired: true,
+          isRequired: false,
         },
         {
           name: "q21",
@@ -364,7 +364,7 @@ export const surveyData = {
           title:
             "If Yes, Please state the reasons why you were prevented from accessing the health care services?",
           placeholder: "Please specify",
-          isRequired: true,
+          isRequired: false,
         },
       ],
     },
@@ -380,13 +380,13 @@ export const surveyData = {
           colCount: 2,
           name: "q22",
           title: "Can you easily get to the health facility?",
-          isRequired: true,
+          isRequired: false,
         },
         {
           type: "radiogroup",
           choices: ["Yes", "No"],
           colCount: 2,
-          isRequired: true,
+          isRequired: false,
           name: "q23",
           title: "Were you attended to by a health worker?",
         },
@@ -394,7 +394,7 @@ export const surveyData = {
           type: "radiogroup",
           choices: ["Yes", "No"],
           colCount: 2,
-          isRequired: true,
+          isRequired: false,
           name: "q24",
           title:
             "Does the facility offer MNCH services including ANC, family planning etc.?",
@@ -403,7 +403,7 @@ export const surveyData = {
           type: "radiogroup",
           choices: ["Yes", "No"],
           colCount: 2,
-          isRequired: true,
+          isRequired: false,
           name: "q25",
           title:
             "Are you aware of any free services at the health facility of COVID-19?",
@@ -412,7 +412,7 @@ export const surveyData = {
           type: "radiogroup",
           choices: ["Yes", "No"],
           colCount: 2,
-          isRequired: true,
+          isRequired: false,
           name: "q26",
           title:
             "Are you aware of any free services at the health facility of HIV/AIDS?",
@@ -421,7 +421,7 @@ export const surveyData = {
           type: "radiogroup",
           choices: ["Yes", "No"],
           colCount: 2,
-          isRequired: true,
+          isRequired: false,
           name: "q27",
           title:
             "Are you aware of any free services at the health facility of Malaria?",
@@ -430,7 +430,7 @@ export const surveyData = {
           type: "radiogroup",
           choices: ["Yes", "No"],
           colCount: 2,
-          isRequired: true,
+          isRequired: false,
           name: "q28",
           title:
             "Are you aware of any free services at the health facility of Tuberculosis (TB)?",
@@ -439,13 +439,13 @@ export const surveyData = {
           type: "radiogroup",
           choices: ["Yes", "No"],
           colCount: 2,
-          isRequired: true,
+          isRequired: false,
           name: "q29",
           title: "If Yes, Have you ever been denied access to these services?",
         },
         {
           type: "text",
-          isRequired: true,
+          isRequired: false,
           name: "q30",
           title: "If Yes, Please explain?",
           placeholder: "Please specify",
@@ -454,14 +454,14 @@ export const surveyData = {
           type: "radiogroup",
           choices: ["Yes", "No"],
           colCount: 2,
-          isRequired: true,
+          isRequired: false,
           name: "q31",
           title: "Are COVID-19 services offered in this health facility?",
         },
         {
           type: "radiogroup",
           colCount: 3,
-          isRequired: true,
+          isRequired: false,
           name: "q32",
           title:
             "If No, How close is the nearest health facility that offers COVID-19 Services?",
@@ -489,7 +489,7 @@ export const surveyData = {
             "More than 5 hours",
           ],
           colCount: 4,
-          isRequired: true,
+          isRequired: false,
         },
         {
           type: "radiogroup",
@@ -498,7 +498,7 @@ export const surveyData = {
             "How would you describe the attitude of the health workers? (Probe to know the health worker’s attitudes towards the client/patient especially the way health worker(s) behaved, spoke, and reacted towards the patients)",
           choices: ["Satisfactory", "Unsatisfactory", "Don't know"],
           colCount: 3,
-          isRequired: true,
+          isRequired: false,
         },
         {
           type: "radiogroup",
@@ -507,7 +507,7 @@ export const surveyData = {
             "Does the facility offer MNCH Services including ANC, family planning etc.?",
           choices: ["YES", "NO"],
           colCount: 2,
-          isRequired: true,
+          isRequired: false,
         },
         {
           type: "radiogroup",
@@ -516,7 +516,7 @@ export const surveyData = {
             "Did you pay to receive any of these services at the health facility COVID-19?",
           choices: ["YES", "NO"],
           colCount: 2,
-          isRequired: true,
+          isRequired: false,
         },
         {
           type: "radiogroup",
@@ -525,7 +525,7 @@ export const surveyData = {
             "Did you pay to receive any of these services at the health facility HIV/AIDS?",
           choices: ["YES", "NO"],
           colCount: 2,
-          isRequired: true,
+          isRequired: false,
         },
         {
           type: "radiogroup",
@@ -534,7 +534,7 @@ export const surveyData = {
             "Did you pay to receive any of these services at the health facility Malaria?",
           choices: ["YES", "NO"],
           colCount: 2,
-          isRequired: true,
+          isRequired: false,
         },
         {
           type: "radiogroup",
@@ -543,7 +543,7 @@ export const surveyData = {
             "Did you pay to receive any of these services at the health facility Tuberculosis (TB)?",
           choices: ["YES", "NO"],
           colCount: 2,
-          isRequired: true,
+          isRequired: false,
         },
         {
           type: "radiogroup",
@@ -552,7 +552,7 @@ export const surveyData = {
             "Did you experience any form of discomfort being attended to by a Male or Female health worker? (Probe to know if the client/patient felt uneasy being attended to by the opposite sex and why)?",
           choices: ["YES", "NO"],
           colCount: 2,
-          isRequired: true,
+          isRequired: false,
         },
         {
           type: "radiogroup",
@@ -561,7 +561,7 @@ export const surveyData = {
             "Do you experience any form of discrimination while accessing services (Probe to know if the client/patient was treated differently because of his/her health condition, age, sex, profession, religious belief etc. by the health worker)?",
           choices: ["YES", "NO"],
           colCount: 2,
-          isRequired: true,
+          isRequired: false,
         },
         {
           type: "radiogroup",
@@ -570,7 +570,7 @@ export const surveyData = {
             "How do you assess the quality of the service (s) received today in this health facility? (Explore to know if the client/patient’s health needs were met as expected by the health worker(s) at the health facility)?",
           choices: ["Dissatisfied", "Satisfied", "No Option"],
           colCount: 3,
-          isRequired: true,
+          isRequired: false,
         },
         {
           type: "text",
@@ -578,7 +578,7 @@ export const surveyData = {
           title:
             "If dissatisfied, Why? Please state the reason for the dissatisfaction",
           placeholder: "Please specify",
-          isRequired: true,
+          isRequired: false,
         },
         {
           type: "radiogroup",
@@ -587,7 +587,7 @@ export const surveyData = {
             "Do you think the facility has enough health workers to deliver timely and quality service to clients?",
           choices: ["YES", "NO"],
           colCount: 2,
-          isRequired: true,
+          isRequired: false,
         },
         {
           type: "radiogroup",
@@ -595,7 +595,7 @@ export const surveyData = {
           title: "What do you think about the time you spent in the facility?",
           choices: ["Too Long", "Indifferent", "Just right"],
           colCount: 3,
-          isRequired: true,
+          isRequired: false,
         },
       ],
     },

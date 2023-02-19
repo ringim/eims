@@ -23,7 +23,7 @@ import NavSection from "../../../components/nav-section";
 //
 import navConfig from "./config";
 import { useUserAuth } from "src/context";
-
+import { useStore } from "src/store";
 // ----------------------------------------------------------------------
 
 const NAV_WIDTH = 350;
@@ -45,10 +45,13 @@ Nav.propTypes = {
 
 export default function Nav({ openNav, onCloseNav }) {
   const { pathname } = useLocation();
-
   const isDesktop = useResponsive("up", "lg");
   const navigate = useNavigate();
   const { logOut } = useUserAuth();
+
+  const isAdmin = useStore((state) => state?.userInfo?.isAdmin);
+
+  console.log("----------------------------IS ADMIN: ", isAdmin);
   useEffect(() => {
     if (openNav) {
       onCloseNav();
@@ -119,7 +122,18 @@ export default function Nav({ openNav, onCloseNav }) {
         </Link>
       </Box> */}
 
-        <NavSection data={navConfig} sx={{ width: "100%", px: 2, flex: 3 }} />
+        <NavSection
+          data={
+            isAdmin
+              ? navConfig
+              : navConfig?.filter(
+                  (item) =>
+                    item?.path !== "submission" ||
+                    item?.path !== "user-permissions"
+                )
+          }
+          sx={{ width: "100%", px: 2, flex: 3 }}
+        />
 
         {/* <Box sx={{ flexGrow: 1 }} /> */}
 
