@@ -125,11 +125,11 @@ export default function Nav({ openNav, onCloseNav }) {
         <NavSection
           data={
             isAdmin
-              ? navConfig
+              ? navConfig?.filter((item) => item?.path !== "/survey")
               : navConfig?.filter(
                   (item) =>
-                    item?.path !== "submission" ||
-                    item?.path !== "user-permissions"
+                    item?.path !== "/submission" &&
+                    item?.path !== "/user-permissions"
                 )
           }
           sx={{ width: "100%", px: 2, flex: 3 }}

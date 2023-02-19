@@ -6,5 +6,5 @@ export const useStore = create((set, get) => ({
   userInfo: {},
   setLoading: (props) => set(() => ({ loading: props })),
   getSurveys: (data) => set(() => ({ surveys: data })),
-  setUserInfo: (data) => set(() => ({ useInfo: { isAdmin: data } })),
+  setUserInfo: (data) => set(() => ({ userInfo: { isAdmin: data } })),
 }));

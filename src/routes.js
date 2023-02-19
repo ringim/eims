@@ -10,9 +10,12 @@ import Page404 from "./pages/Page404";
 import ProductsPage from "./pages/ProductsPage";
 import DashboardAppPage from "./pages/DashboardAppPage";
 import ProtectedRoute from "./ProtectedRoute";
+import Submission from "./pages/Submission";
+import { useStore } from "./store";
 // ----------------------------------------------------------------------
 
 export default function Router() {
+  const isAdmin = useStore((state) => state?.userInfo?.isAdmin);
   const routes = useRoutes([
     {
       path: "/",
@@ -39,8 +42,8 @@ export default function Router() {
             // </ProtectedRoute>
           ),
         },
-        // { path: "products", element: <ProductsPage /> },
-        // { path: "blog", element: <BlogPage /> },
+        { path: "user-permissions", element: <UserPage /> },
+        { path: "submission", element: <Submission /> },
       ],
     },
     {
