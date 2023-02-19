@@ -23,7 +23,7 @@ import { useStore } from "src/store";
 import { shallow } from "zustand/shallow";
 // ----------------------------------------------------------------------
 
-export default function DashboardAppPage() {
+export default function UserDashboardPage() {
   const { surveys, isAdmin } = useStore(
     (state) => ({
       surveys: state?.surveys,
@@ -51,9 +51,7 @@ export default function DashboardAppPage() {
         >
           <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
             <img src={require("../assets/images/Hi.png")} alt="wave" />
-            <Typography variant="h4">
-              {isAdmin ? "Hello, Super Admin!" : "Hello, Abubakar!"}
-            </Typography>
+            <Typography variant="h4">Hello, Abubakar!</Typography>
           </Box>
           <Button
             variant="contained"

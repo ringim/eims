@@ -8,10 +8,11 @@ import UserPage from "./pages/UserPage";
 import LoginPage from "./pages/LoginPage";
 import Page404 from "./pages/Page404";
 import ProductsPage from "./pages/ProductsPage";
-import DashboardAppPage from "./pages/DashboardAppPage";
+import UserDashboardPage from "./pages/UserDashboardPage";
 import ProtectedRoute from "./ProtectedRoute";
 import Submission from "./pages/Submission";
 import { useStore } from "./store";
+import AdminDashboardPage from "./pages/AdminDashboardPage";
 // ----------------------------------------------------------------------
 
 export default function Router() {
@@ -28,11 +29,10 @@ export default function Router() {
         { element: <Navigate to="/dashboard" />, index: true },
         {
           path: "dashboard",
-          element: (
+          element:
             // <ProtectedRoute>
-            <DashboardAppPage />
-            // </ProtectedRoute>
-          ),
+            isAdmin ? <AdminDashboardPage /> : <UserDashboardPage />,
+          // </ProtectedRoute>
         },
         {
           path: "survey",
