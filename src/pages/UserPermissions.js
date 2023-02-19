@@ -206,7 +206,7 @@ export default function UserPermissions() {
                 fontSize: "18px",
                 fontWeight: "700",
               }}
-              onClick={toggleSurveyModal}
+              //   onClick={toggleSurveyModal}
             >
               + New User
             </Button>
