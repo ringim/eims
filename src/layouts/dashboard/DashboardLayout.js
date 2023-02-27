@@ -37,10 +37,12 @@ const Main = styled("div")(({ theme }) => ({
 
 export default function DashboardLayout() {
   const [open, setOpen] = useState(false);
-  const { getSurveys, setLoading } = useStore(
+  const { getSurveys, setLoading, userInfo, loadSurveys } = useStore(
     (state) => ({
       getSurveys: state?.getSurveys,
       setLoading: state?.setLoading,
+      userInfo: state?.userInfo,
+      loadSurveys: state?.loadSurveys,
     }),
     shallow
   );
@@ -49,7 +51,7 @@ export default function DashboardLayout() {
 
   const fetchSurveys = async (db) => {
     setLoading(true);
-    const data = await getDocs(collection(db, "survey"));
+    const data = await getDocs(collection(db, userInfo?.name));
     return data;
   };
   useEffect(() => {
@@ -74,7 +76,7 @@ export default function DashboardLayout() {
         console.log("error: ", error);
         setLoading(false);
       });
-  }, []);
+  }, [loadSurveys]);
   return (
     <StyledRoot>
       <Header onOpenNav={() => setOpen(true)} />

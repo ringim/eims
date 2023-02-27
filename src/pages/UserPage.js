@@ -32,7 +32,7 @@ import Scrollbar from "../components/scrollbar";
 import { UserListHead, UserListToolbar } from "../sections/@dashboard/user";
 // mock
 // import surveys from "../_mock/user";
-import SelectSurvey from "src/components/modals/selectSurvey";
+import ViewSurveyModal from "src/components/modals/viewModal";
 import moment from "moment";
 import { useStore } from "src/store";
 import { shallow } from "zustand/shallow";
@@ -105,6 +105,8 @@ export default function UserPage() {
   const [rowsPerPage, setRowsPerPage] = useState(8);
 
   const [isModalOpen, setModalOpen] = useState(false);
+
+  const [surveyId, setSurveyId] = useState(null);
 
   // const [surveys, setSurveyList] = useState([]);
   // const [loading, setLoading] = useState(false);
@@ -179,9 +181,19 @@ export default function UserPage() {
 
   const isNotFound = !filteredUsers?.length && !!filterName;
 
+  const handleViewSurvey = (id) => {
+    setSurveyId(id);
+    setModalOpen(true);
+  };
+
   return (
     <>
-      <SelectSurvey isOpen={isModalOpen} handleClose={toggleSurveyModal} />
+      <ViewSurveyModal
+        isOpen={isModalOpen}
+        handleClose={toggleSurveyModal}
+        surveyId={surveyId}
+        name="ATM Client Exist Interview Survey"
+      />
       <Helmet>
         <title> User | Minimal UI </title>
       </Helmet>
@@ -349,11 +361,11 @@ export default function UserPage() {
                             <TableCell align="left">
                               <Label
                                 color={
-                                  status === "approved"
-                                    ? "success"
-                                    : status === "pending"
+                                  status === "pending"
+                                    ? "default"
+                                    : status === "Preview"
                                     ? "info"
-                                    : "error"
+                                    : "success"
                                 }
                               >
                                 {status}
@@ -373,11 +385,13 @@ export default function UserPage() {
                                   alt="edit survey"
                                   style={{ cursor: "pointer" }}
                                 />
-                                <img
-                                  src={require("../assets/icons/view.png")}
-                                  alt="view survey"
-                                  style={{ cursor: "pointer" }}
-                                />
+                                <Box onClick={() => handleViewSurvey(id)}>
+                                  <img
+                                    src={require("../assets/icons/view.png")}
+                                    alt="view survey"
+                                    style={{ cursor: "pointer" }}
+                                  />
+                                </Box>
                               </Stack>
                               <IconButton
                                 size="large"
@@ -398,25 +412,20 @@ export default function UserPage() {
                   )}
                 </TableBody>
 
-                {isNotFound && (
+                {(isNotFound || filteredUsers?.length < 1) && (
                   <TableBody>
                     <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                      <TableCell align="center" colSpan={6} sx={{ py: 20 }}>
                         <Paper
                           sx={{
                             textAlign: "center",
                           }}
                         >
-                          <Typography variant="h6" paragraph>
-                            Not found
+                          <Typography variant="h4" paragraph>
+                            Not Surveys Found
                           </Typography>
 
-                          <Typography variant="body2">
-                            No results found for &nbsp;
-                            <strong>&quot;{filterName}&quot;</strong>.
-                            <br /> Try checking for typos or using complete
-                            words.
-                          </Typography>
+                          <Typography variant="h6">Create a survey.</Typography>
                         </Paper>
                       </TableCell>
                     </TableRow>

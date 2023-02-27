@@ -49,9 +49,8 @@ export default function Nav({ openNav, onCloseNav }) {
   const navigate = useNavigate();
   const { logOut } = useUserAuth();
 
-  const isAdmin = useStore((state) => state?.userInfo?.isAdmin);
-
-  console.log("----------------------------IS ADMIN: ", isAdmin);
+  const userInfo = useStore((state) => state?.userInfo);
+  const isAdmin = userInfo?.isAdmin;
   useEffect(() => {
     if (openNav) {
       onCloseNav();
@@ -96,11 +95,14 @@ export default function Nav({ openNav, onCloseNav }) {
             mb: 10,
             display: "flex",
             alignItems: "center",
+            // justifyContent: "flex-start",
             gap: 2,
           }}
         >
           <Logo />
-          <Typography variant="h4">NEPWHAN LOGO</Typography>
+          <Typography variant="h4">
+            {userInfo?.name?.toUpperCase()} NETWORK
+          </Typography>
         </Box>
         {/* </Box> */}
 

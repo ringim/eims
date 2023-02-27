@@ -17,8 +17,8 @@ const style = {
   boxShadow: 24,
 };
 
-function ATMClientSurveyModal(props) {
-  const { isOpen, handleClose, name } = props;
+function ViewSurveyModal(props) {
+  const { isOpen, handleClose, name, surveyId } = props;
   return (
     <div>
       <Modal
@@ -70,7 +70,11 @@ function ATMClientSurveyModal(props) {
               p: 2,
             }}
           >
-            <ATMClientSurvey name={name} startedAt={new Date().toISOString()} />
+            <ATMClientSurvey
+              name={name}
+              startedAt={new Date().toISOString()}
+              surveyId={surveyId}
+            />
           </Box>
         </Box>
       </Modal>
@@ -78,4 +82,4 @@ function ATMClientSurveyModal(props) {
   );
 }
 
-export default ATMClientSurveyModal;
+export default ViewSurveyModal;

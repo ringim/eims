@@ -24,13 +24,15 @@ import { shallow } from "zustand/shallow";
 // ----------------------------------------------------------------------
 
 export default function UserDashboardPage() {
-  const { surveys, isAdmin } = useStore(
+  const { surveys, isAdmin, userInfo } = useStore(
     (state) => ({
       surveys: state?.surveys,
       isAdmin: state?.userInfo?.isAdmin,
+      userInfo: state?.userInfo,
     }),
     shallow
   );
+  console.log("--------------USER: ", userInfo);
   const theme = useTheme();
   const [isModalOpen, setModalOpen] = useState(false);
   const toggleModal = () => setModalOpen(!isModalOpen);
@@ -51,7 +53,7 @@ export default function UserDashboardPage() {
         >
           <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
             <img src={require("../assets/images/Hi.png")} alt="wave" />
-            <Typography variant="h4">Hello, Abubakar!</Typography>
+            <Typography variant="h4">Hello</Typography>
           </Box>
           <Button
             variant="contained"
@@ -82,10 +84,10 @@ export default function UserDashboardPage() {
 
           <Grid item xs={12} sm={6} md={4}>
             <AppWidgetSummary
-              title="Approved"
+              title="Preview"
               total={
-                surveys?.filter((item) => item?.status === "approved")
-                  ?.length ?? 0
+                surveys?.filter((item) => item?.status === "Preview")?.length ??
+                0
               }
               icon={require("../assets/icons/preview.png")}
             />
@@ -93,9 +95,9 @@ export default function UserDashboardPage() {
 
           <Grid item xs={12} sm={6} md={4}>
             <AppWidgetSummary
-              title="Rejected"
+              title="Completed"
               total={
-                surveys?.filter((item) => item?.status === "rejected")
+                surveys?.filter((item) => item?.status === "Completed")
                   ?.length ?? 0
               }
               icon={require("../assets/icons/rejected.png")}

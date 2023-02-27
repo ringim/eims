@@ -1,7 +1,14 @@
 import PropTypes from "prop-types";
 // @mui
 import { styled } from "@mui/material/styles";
-import { Box, Stack, AppBar, Toolbar, IconButton } from "@mui/material";
+import {
+  Box,
+  Stack,
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+} from "@mui/material";
 // utils
 import { bgBlur } from "../../../utils/cssStyles";
 // components
@@ -11,6 +18,7 @@ import Searchbar from "./Searchbar";
 import AccountPopover from "./AccountPopover";
 import LanguagePopover from "./LanguagePopover";
 import NotificationsPopover from "./NotificationsPopover";
+import { useEffect, useState } from "react";
 
 // ----------------------------------------------------------------------
 
@@ -43,6 +51,39 @@ Header.propTypes = {
 };
 
 export default function Header({ onOpenNav }) {
+  const [display, setDisplay] = useState("block");
+
+  // Online state
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+
+  useEffect(() => {
+    // Update network status
+    const handleStatusChange = () => {
+      setIsOnline(navigator.onLine);
+    };
+
+    // Listen to the online status
+    window.addEventListener("online", handleStatusChange);
+
+    // Listen to the offline status
+    window.addEventListener("offline", handleStatusChange);
+
+    if (isOnline) {
+      const id = setTimeout(() => {
+        setDisplay("none");
+        clearTimeout(id);
+      }, 2000);
+    } else {
+      setDisplay("block");
+    }
+
+    // Specify how to clean up after this effect for performance improvment
+    return () => {
+      window.removeEventListener("online", handleStatusChange);
+      window.removeEventListener("offline", handleStatusChange);
+    };
+  }, [isOnline]);
+
   return (
     <StyledRoot>
       <StyledToolbar>
@@ -56,6 +97,22 @@ export default function Header({ onOpenNav }) {
         >
           <Iconify icon="eva:menu-2-fill" />
         </IconButton>
+
+        <Box
+          sx={{
+            display: display,
+            background: isOnline ? "green" : "#6e0000",
+            width: "100%",
+            height: 40,
+            marginTop: "-20px",
+          }}
+        >
+          <Typography
+            sx={{ color: "white", textAlign: "center", fontSize: "25px" }}
+          >
+            {isOnline ? "Connected!" : "⚠️ No Internet!"}
+          </Typography>
+        </Box>
 
         {/* <Searchbar /> */}
         <Box sx={{ flexGrow: 1 }} />

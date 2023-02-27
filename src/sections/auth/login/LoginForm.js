@@ -18,6 +18,7 @@ import { useStore } from "src/store";
 import { shallow } from "zustand/shallow";
 // ----------------------------------------------------------------------
 
+const getUserName = (email) => email?.split("@")[0];
 export default function LoginForm() {
   const navigate = useNavigate();
   const { logIn } = useUserAuth();
@@ -41,9 +42,10 @@ export default function LoginForm() {
       setLoading(true);
       await logIn(email, password);
       if (email === "abubakarringim@gmail.com") {
-        setUserInfo(true);
+        // is user admin
+        setUserInfo({ isAdmin: true, email, name: getUserName(email) });
       } else {
-        setUserInfo(false);
+        setUserInfo({ isAdmin: false, email, name: getUserName(email) });
       }
       navigate("/", { replace: true });
     } catch (err) {
