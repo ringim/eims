@@ -10,7 +10,7 @@ import { shallow } from "zustand/shallow";
 StylesManager.applyTheme("modern");
 
 function ATMClientSurvey(props) {
-  const { name, startedAt, surveyId, isEditing = false, handleClose } = props;
+  const { name, startedAt, surveyId, isEditing = false } = props;
   // check if there's internet
   const isOnline = navigator.onLine;
   const { db } = useUserAuth();
@@ -64,7 +64,6 @@ function ATMClientSurvey(props) {
   const alertResults = useCallback((sender) => {
     const survey = JSON.stringify(sender.data);
     createSurvey({ survey }).then(() => {
-      handleClose();
       setLoadSurveys();
     });
   }, []);
