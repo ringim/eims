@@ -34,14 +34,9 @@ function ATMClientSurvey(props) {
 
   const createSurvey = async (data) => {
     const { survey } = data;
-    console.log("survey details_________________: ", surveyDetails);
     try {
       if (isOnline) {
         if (isEditing) {
-          console.log(
-            "updating....................., ",
-            surveyDetails?.startedAt
-          );
           const docRef = doc(db, userInfo?.name, surveyId);
           await updateDoc(docRef, {
             name,
@@ -51,7 +46,6 @@ function ATMClientSurvey(props) {
             data: survey,
           });
         } else {
-          console.log("creating........................");
           await addDoc(collection(db, userInfo?.name), {
             name,
             startedAt,
