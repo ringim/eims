@@ -36,6 +36,8 @@ import ViewSurveyModal from "src/components/modals/viewModal";
 import moment from "moment";
 import { useStore } from "src/store";
 import { shallow } from "zustand/shallow";
+import { doc, deleteDoc } from "firebase/firestore";
+import { useUserAuth } from "src/context";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -82,14 +84,16 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function UserPage() {
-  const { surveys, loading } = useStore(
+  const { surveys, loading, userInfo, setLoadSurveys } = useStore(
     (state) => ({
       surveys: state?.surveys,
       loading: state?.loading,
+      userInfo: state?.userInfo,
+      setLoadSurveys: state?.setLoadSurveys,
     }),
     shallow
   );
-
+  const { db } = useUserAuth();
   const [open, setOpen] = useState(null);
 
   const [page, setPage] = useState(0);
@@ -184,6 +188,10 @@ export default function UserPage() {
   const handleViewSurvey = (id) => {
     setSurveyId(id);
     setModalOpen(true);
+  };
+
+  const handleDeleteSurvey = async (document) => {
+    await deleteDoc(doc(db, userInfo?.name, document));
   };
 
   return (
@@ -380,26 +388,39 @@ export default function UserPage() {
                               }}
                             >
                               <Stack direction="row" gap={2}>
-                                <img
+                                {/* <img
                                   src={require("../assets/icons/edit.png")}
                                   alt="edit survey"
                                   style={{ cursor: "pointer" }}
-                                />
+                                /> */}
                                 <Box onClick={() => handleViewSurvey(id)}>
                                   <img
-                                    src={require("../assets/icons/view.png")}
+                                    src={require("../assets/icons/edit.png")}
+                                    alt="view survey"
+                                    style={{ cursor: "pointer" }}
+                                  />
+                                </Box>
+                                <Box
+                                  onClick={() => {
+                                    handleDeleteSurvey(id).then(() =>
+                                      setLoadSurveys()
+                                    );
+                                  }}
+                                >
+                                  <img
+                                    src={require("../assets/icons/delete.png")}
                                     alt="view survey"
                                     style={{ cursor: "pointer" }}
                                   />
                                 </Box>
                               </Stack>
-                              <IconButton
+                              {/* <IconButton
                                 size="large"
                                 color="inherit"
                                 onClick={handleOpenMenu}
                               >
                                 <Iconify icon={"eva:more-vertical-fill"} />
-                              </IconButton>
+                              </IconButton> */}
                             </TableCell>
                           </TableRow>
                         );
