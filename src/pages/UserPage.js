@@ -38,6 +38,7 @@ import { useStore } from "src/store";
 import { shallow } from "zustand/shallow";
 import { doc, deleteDoc } from "firebase/firestore";
 import { useUserAuth } from "src/context";
+import ATMClientSurveyModal from "src/components/modals/atmClientSurvey";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -109,6 +110,7 @@ export default function UserPage() {
   const [rowsPerPage, setRowsPerPage] = useState(8);
 
   const [isModalOpen, setModalOpen] = useState(false);
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
 
   const [surveyId, setSurveyId] = useState(null);
 
@@ -118,6 +120,10 @@ export default function UserPage() {
   console.log("+++++++++++++++++++Surveys from store: ", surveys);
   const toggleModal = () => setOpen(!open);
   const toggleSurveyModal = () => setModalOpen(!isModalOpen);
+  const toggleEditSurveyModal = (id) => {
+    setSurveyId(id);
+    setEditModalOpen(!isEditModalOpen);
+  };
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -185,23 +191,27 @@ export default function UserPage() {
 
   const isNotFound = !filteredUsers?.length && !!filterName;
 
-  const handleViewSurvey = (id) => {
-    setSurveyId(id);
-    setModalOpen(true);
-  };
-
   const handleDeleteSurvey = async (document) => {
     await deleteDoc(doc(db, userInfo?.name, document));
   };
 
   return (
     <>
-      <ViewSurveyModal
-        isOpen={isModalOpen}
-        handleClose={toggleSurveyModal}
-        surveyId={surveyId}
-        name="ATM Client Exist Interview Survey"
-      />
+      {isModalOpen && (
+        <ATMClientSurveyModal
+          isOpen={isModalOpen}
+          handleClose={toggleSurveyModal}
+          name="ATM Client Exist Interview Survey"
+        />
+      )}
+      {isEditModalOpen && (
+        <ViewSurveyModal
+          isOpen={isEditModalOpen}
+          handleClose={toggleEditSurveyModal}
+          surveyId={surveyId}
+          name="ATM Client Exist Interview Survey"
+        />
+      )}
       <Helmet>
         <title> User | Minimal UI </title>
       </Helmet>
@@ -393,7 +403,7 @@ export default function UserPage() {
                                   alt="edit survey"
                                   style={{ cursor: "pointer" }}
                                 /> */}
-                                <Box onClick={() => handleViewSurvey(id)}>
+                                <Box onClick={() => toggleEditSurveyModal(id)}>
                                   <img
                                     src={require("../assets/icons/edit.png")}
                                     alt="view survey"

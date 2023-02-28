@@ -4,13 +4,13 @@ import { StylesManager, Model } from "survey-core";
 import { Survey } from "survey-react-ui";
 import { surveyData } from "./data";
 import { useUserAuth } from "src/context";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, updateDoc, doc } from "firebase/firestore";
 import { useStore } from "src/store";
 import { shallow } from "zustand/shallow";
 StylesManager.applyTheme("modern");
 
 function ATMClientSurvey(props) {
-  const { name, startedAt, surveyId } = props;
+  const { name, startedAt, surveyId, isEditing = false } = props;
   // check if there's internet
   const isOnline = navigator.onLine;
   const { db } = useUserAuth();
@@ -26,35 +26,34 @@ function ATMClientSurvey(props) {
     shallow
   );
 
-  if (surveyId) {
-    survey.mode = "display";
-  }
-  function loadState(survey) {
-    //Here should be the code to load the data from your database
-    const surveyData = surveys?.find((survey) => survey?.id === surveyId);
-
-    let res = {};
-    if (surveyData) res = surveyData;
-    //Create the survey state for the demo. This line should be deleted in the real app.
-    // else res = { currentPageNo: 1, data: { "satisfaction":"4","Quality":{"does what it claims":"1"},"recommend friends":"3","price to competitors":"More expensive","price":"correct","pricelimit":{"mostamount":""}} };
-
-    //Set the loaded data into the survey.
-    if (res.currentPageNo) survey.currentPageNo = res.currentPageNo;
-    if (res.data) survey.data = res.data;
+  if (isEditing) {
+    const surveyData = surveys?.find((item) => item?.id === surveyId);
+    survey.data = JSON.parse(surveyData?.data);
   }
 
-  loadState(survey);
   const createSurvey = async (data) => {
     const { survey } = data;
     try {
       if (isOnline) {
-        await addDoc(collection(db, userInfo?.name), {
-          name,
-          startedAt,
-          submittedAt: new Date().toISOString(),
-          status: "Preview",
-          data: survey,
-        });
+        if (isEditing) {
+          const docRef = doc(db, userInfo?.name, surveyId);
+          await updateDoc(docRef, {
+            name,
+            startedAt: surveys?.find((item) => item?.id === surveyId)
+              ?.startedAt,
+            submittedAt: new Date().toISOString(),
+            status: "Preview",
+            data: survey,
+          });
+        } else {
+          await addDoc(collection(db, userInfo?.name), {
+            name,
+            startedAt,
+            submittedAt: new Date().toISOString(),
+            status: "Preview",
+            data: survey,
+          });
+        }
       } else {
         // save into localDB
       }
@@ -64,9 +63,7 @@ function ATMClientSurvey(props) {
   };
   const alertResults = useCallback((sender) => {
     const survey = JSON.stringify(sender.data);
-    const startedAt = new Date().toISOString();
-    createSurvey({ startedAt, survey }).then(() => setLoadSurveys());
-    console.log("++++++++++++++++Result: ", survey);
+    createSurvey({ survey }).then(() => setLoadSurveys());
   }, []);
 
   survey.onComplete.add(alertResults);

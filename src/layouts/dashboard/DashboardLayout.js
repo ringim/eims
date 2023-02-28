@@ -67,6 +67,7 @@ export default function DashboardLayout() {
             started: fields?.startedAt?.stringValue,
             submitted: fields?.submittedAt?.stringValue,
             status: fields?.status?.stringValue,
+            data: fields?.data?.stringValue,
             option: null,
           });
         });

@@ -74,6 +74,7 @@ function ViewSurveyModal(props) {
               name={name}
               startedAt={new Date().toISOString()}
               surveyId={surveyId}
+              isEditing={true}
             />
           </Box>
         </Box>
