@@ -64,8 +64,8 @@ export default function DashboardLayout() {
           surveys.push({
             id: doc?.id,
             name: fields?.name?.stringValue,
-            started: fields?.startedAt?.stringValue,
-            submitted: fields?.submittedAt?.stringValue,
+            startedAt: fields?.startedAt?.stringValue,
+            submittedAt: fields?.submittedAt?.stringValue,
             status: fields?.status?.stringValue,
             data: fields?.data?.stringValue,
             option: null,

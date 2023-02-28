@@ -330,9 +330,9 @@ export default function UserPage() {
                         const {
                           id,
                           name,
-                          started,
+                          startedAt,
                           status,
-                          submitted,
+                          submittedAt,
                           avatarUrl,
                         } = row;
                         const selectedUser = selected.indexOf(name) !== -1;
@@ -365,11 +365,11 @@ export default function UserPage() {
                             </TableCell>
 
                             <TableCell align="left">
-                              {started && moment(started).format("lll")}
+                              {startedAt && moment(startedAt).format("lll")}
                             </TableCell>
 
                             <TableCell align="left">
-                              {submitted && moment(submitted).format("lll")}
+                              {submittedAt && moment(submittedAt).format("lll")}
                             </TableCell>
 
                             {/* <TableCell align="left">

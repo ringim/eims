@@ -26,21 +26,26 @@ function ATMClientSurvey(props) {
     shallow
   );
 
+  let surveyDetails = {};
   if (isEditing) {
-    const surveyData = surveys?.find((item) => item?.id === surveyId);
-    survey.data = JSON.parse(surveyData?.data);
+    surveyDetails = surveys?.find((item) => item?.id === surveyId);
+    survey.data = JSON.parse(surveyDetails?.data);
   }
 
   const createSurvey = async (data) => {
     const { survey } = data;
+    console.log("survey details_________________: ", surveyDetails);
     try {
       if (isOnline) {
         if (isEditing) {
-          console.log("updating.....................");
+          console.log(
+            "updating....................., ",
+            surveyDetails?.startedAt
+          );
           const docRef = doc(db, userInfo?.name, surveyId);
           await updateDoc(docRef, {
             name,
-            startedAt,
+            startedAt: surveyDetails?.startedAt,
             submittedAt: new Date().toISOString(),
             status: "Preview",
             data: survey,
