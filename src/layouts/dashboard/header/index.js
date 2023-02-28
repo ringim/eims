@@ -69,10 +69,7 @@ export default function Header({ onOpenNav }) {
     window.addEventListener("offline", handleStatusChange);
 
     if (isOnline) {
-      const id = setTimeout(() => {
-        setDisplay("none");
-        clearTimeout(id);
-      }, 2000);
+      setDisplay("none");
     } else {
       setDisplay("block");
     }
