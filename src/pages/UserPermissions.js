@@ -36,12 +36,15 @@ import SelectSurvey from "src/components/modals/selectSurvey";
 import moment from "moment";
 import { useStore } from "src/store";
 import { shallow } from "zustand/shallow";
+import CreateUser from "src/components/modals/userCreation";
+import { useUserAuth } from "src/context";
+import { collection, getDocs } from "firebase/firestore";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
   { id: "name", label: "Name", alignRight: false },
-  { id: "started", label: "Started", alignRight: false },
-  { id: "submitted", label: "Submission", alignRight: false },
+  { id: "role", label: "Role", alignRight: false },
+  { id: "organizaion", label: "Organization", alignRight: false },
   { id: "status", label: "Status", alignRight: false },
   { id: "option", label: "Option", alignRight: false },
   // { id: "" },
@@ -82,13 +85,19 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function UserPermissions() {
-  const { surveys, loading } = useStore(
+  const { surveys, loading, getUsers, setLoading, users, deleteUser } = useStore(
     (state) => ({
       surveys: state?.surveys,
       loading: state?.loading,
+      getUsers: state?.getUsers,
+      setLoading: state?.setLoading,
+      users: state?.users,
+      deleteUser: state?.deleteUser,
     }),
     shallow
   );
+
+  const { db } = useUserAuth();
 
   const [open, setOpen] = useState(null);
 
@@ -108,10 +117,22 @@ export default function UserPermissions() {
 
   // const [surveys, setSurveyList] = useState([]);
   // const [loading, setLoading] = useState(false);
+  const fetchUsers = async () => {
+    const data = await getDocs(collection(db, 'users'));
+    return data
+  }
 
-  console.log("+++++++++++++++++++Surveys from store: ", surveys);
-  const toggleModal = () => setOpen(!open);
-  const toggleSurveyModal = () => setModalOpen(!isModalOpen);
+  const handleGetUsers = () => {
+    getUsers(db).then(data => {
+      setLoading(false)
+      console.log('------------we get users: ', data?.docs)})
+  }
+  useEffect(() => {
+    handleGetUsers()
+  }, [])
+
+  console.log('---------users: ', users)
+  const toggleModal = () => setModalOpen(!isModalOpen)
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -172,16 +193,22 @@ export default function UserPermissions() {
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - surveys?.length) : 0;
 
   const filteredUsers = applySortFilter(
-    surveys,
+    users,
     getComparator(order, orderBy),
     filterName
   );
 
   const isNotFound = !filteredUsers?.length && !!filterName;
 
+  const handleDeleteUser = documentId => {
+    deleteUser(db, documentId).then(() => {
+      handleGetUsers()
+    })
+  }
+
   return (
     <>
-      <SelectSurvey isOpen={isModalOpen} handleClose={toggleSurveyModal} />
+      {isModalOpen && <CreateUser open={isModalOpen} handleClose={toggleModal}/>}
       <Helmet>
         <title> User | Minimal UI </title>
       </Helmet>
@@ -194,7 +221,7 @@ export default function UserPermissions() {
           mb={5}
         >
           <Typography variant="h4" gutterBottom>
-            Survey
+            User Permissions
           </Typography>
           <Stack direction="row" alignItems="center" gap={2}>
             <Button
@@ -206,7 +233,7 @@ export default function UserPermissions() {
                 fontSize: "18px",
                 fontWeight: "700",
               }}
-              //   onClick={toggleSurveyModal}
+                onClick={toggleModal}
             >
               + New User
             </Button>
@@ -285,18 +312,18 @@ export default function UserPermissions() {
                       )
                       ?.map((row) => {
                         const {
-                          id,
-                          name,
-                          started,
+                          _id,
+                          firstName,
+                          lastName,
+                          role,
+                          organization,
                           status,
-                          submitted,
-                          avatarUrl,
                         } = row;
-                        const selectedUser = selected.indexOf(name) !== -1;
+                        const selectedUser = selected.indexOf(_id) !== -1;
                         return (
                           <TableRow
                             hover
-                            key={id}
+                            key={_id}
                             tabIndex={-1}
                             role="checkbox"
                             selected={selectedUser}
@@ -316,17 +343,17 @@ export default function UserPermissions() {
                               >
                                 {/* <Avatar alt={name} src={avatarUrl} /> */}
                                 <Typography variant="subtitle2" noWrap>
-                                  {name}
+                                  {`${firstName} ${lastName}`}
                                 </Typography>
                               </Stack>
                             </TableCell>
 
                             <TableCell align="left">
-                              {started && moment(started).format("lll")}
+                              {role}
                             </TableCell>
 
                             <TableCell align="left">
-                              {submitted && moment(submitted).format("lll")}
+                              {organization}
                             </TableCell>
 
                             {/* <TableCell align="left">
@@ -336,10 +363,8 @@ export default function UserPermissions() {
                             <TableCell align="left">
                               <Label
                                 color={
-                                  status === "approved"
+                                  status === "active"
                                     ? "success"
-                                    : status === "pending"
-                                    ? "info"
                                     : "error"
                                 }
                               >
@@ -357,22 +382,23 @@ export default function UserPermissions() {
                               <Stack direction="row" gap={2}>
                                 <img
                                   src={require("../assets/icons/edit.png")}
-                                  alt="edit survey"
+                                  alt="edit user"
                                   style={{ cursor: "pointer" }}
                                 />
                                 <img
-                                  src={require("../assets/icons/view.png")}
-                                  alt="view survey"
+                                  src={require("../assets/icons/delete.png")}
+                                  alt="delete user"
                                   style={{ cursor: "pointer" }}
+                                  onClick={() => handleDeleteUser(_id)}
                                 />
                               </Stack>
-                              <IconButton
+                              {/* <IconButton
                                 size="large"
                                 color="inherit"
                                 onClick={handleOpenMenu}
                               >
                                 <Iconify icon={"eva:more-vertical-fill"} />
-                              </IconButton>
+                              </IconButton> */}
                             </TableCell>
                           </TableRow>
                         );
@@ -385,25 +411,20 @@ export default function UserPermissions() {
                   )}
                 </TableBody>
 
-                {isNotFound && (
+                {!loading && (isNotFound || filteredUsers?.length < 1) && (
                   <TableBody>
                     <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                      <TableCell align="center" colSpan={6} sx={{ py: 20 }}>
                         <Paper
                           sx={{
                             textAlign: "center",
                           }}
                         >
-                          <Typography variant="h6" paragraph>
-                            Not found
+                          <Typography variant="h4" paragraph>
+                            No Users Found
                           </Typography>
 
-                          <Typography variant="body2">
-                            No results found for &nbsp;
-                            <strong>&quot;{filterName}&quot;</strong>.
-                            <br /> Try checking for typos or using complete
-                            words.
-                          </Typography>
+                          <Typography variant="h6">Create a User.</Typography>
                         </Paper>
                       </TableCell>
                     </TableRow>
@@ -425,7 +446,7 @@ export default function UserPermissions() {
         </Card>
       </Container>
 
-      <Popover
+      {/* <Popover
         open={Boolean(open)}
         anchorEl={open}
         onClose={handleCloseMenu}
@@ -452,7 +473,7 @@ export default function UserPermissions() {
           <Iconify icon={"eva:trash-2-outline"} sx={{ mr: 2 }} />
           Delete
         </MenuItem>
-      </Popover>
+      </Popover> */}
     </>
   );
 }

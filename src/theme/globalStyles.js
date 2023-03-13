@@ -27,6 +27,23 @@ export default function GlobalStyles() {
           width: '100%',
           height: '100%',
         },
+        '.label':{
+          margin: 0,
+          marginBottom: '4px',
+          color: 'black',
+        },
+        '.styled-input': {
+          width: '100%',
+          fontSize: '18px',
+          padding: '8px',
+          border: '1.5px solid #e2e2e2',
+          borderRadius: '8px',
+          boxSizing: 'border-box',
+          '&:focus':{
+            border: '2px solid #2684FF',
+            outline: 'none',
+          }
+        },
         input: {
           '&[type=number]': {
             MozAppearance: 'textfield',
