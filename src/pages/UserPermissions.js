@@ -206,9 +206,13 @@ export default function UserPermissions() {
     })
   }
 
+  const isUserCreated = () => {
+    handleGetUsers()
+  }
+
   return (
     <>
-      {isModalOpen && <CreateUser open={isModalOpen} handleClose={toggleModal}/>}
+      {isModalOpen && <CreateUser open={isModalOpen} handleClose={toggleModal} isUserCreated={isUserCreated}/>}
       <Helmet>
         <title> User | Minimal UI </title>
       </Helmet>

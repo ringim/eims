@@ -34,7 +34,7 @@ const style = {
   //   pb: 3,
 };
 const CreateUser = (props) => {
-  const { open, handleClose, isEditing=false } = props;
+  const { open, handleClose, isEditing=false, isUserCreated } = props;
   const {user, signUp, db, createUser} = useUserAuth();
   const { setLoading, loading } = useStore(
     (state) => ({
@@ -95,6 +95,7 @@ const CreateUser = (props) => {
               }
               createUser(payload).then(response => {
                 setLoading(false)
+                isUserCreated()
                 handleClose()
                 // console.log('------------------user response: ', response)
               })
