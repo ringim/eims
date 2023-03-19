@@ -44,11 +44,12 @@ let useStore = (set, get) => ({
     return data;
     // set(() => {})
   },
-  deleteUser: async (db, document) => {
+  deleteUser: async (db, document, uid) => {
     set(() => ({loading: true}))
-    const data = await deleteDoc(doc(db, 'users', document));
-    return data
-  }
+    await deleteDoc(doc(db, 'users', document));
+    await get().deleteUserByUid(uid)
+    return;
+  },
 });
 
 useStore = persist(useStore, {

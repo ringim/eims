@@ -38,7 +38,7 @@ import { useStore } from "src/store";
 import { shallow } from "zustand/shallow";
 import CreateUser from "src/components/modals/userCreation";
 import { useUserAuth } from "src/context";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, documentId, getDocs } from "firebase/firestore";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -114,6 +114,8 @@ export default function UserPermissions() {
   const [rowsPerPage, setRowsPerPage] = useState(8);
 
   const [isModalOpen, setModalOpen] = useState(false);
+
+  const [isEditing, setIsEditing] = useState(false)
 
   // const [surveys, setSurveyList] = useState([]);
   // const [loading, setLoading] = useState(false);
@@ -200,10 +202,15 @@ export default function UserPermissions() {
 
   const isNotFound = !filteredUsers?.length && !!filterName;
 
-  const handleDeleteUser = documentId => {
-    deleteUser(db, documentId).then(() => {
+  const handleDeleteUser = (documentId, uid) => {
+    console.log('-----------------UID: ', uid)
+    deleteUser(db, documentId, uid).then(() => {
       handleGetUsers()
     })
+  }
+
+  const handleEditUser = documentId => {
+
   }
 
   const isUserCreated = () => {
@@ -212,7 +219,7 @@ export default function UserPermissions() {
 
   return (
     <>
-      {isModalOpen && <CreateUser open={isModalOpen} handleClose={toggleModal} isUserCreated={isUserCreated}/>}
+      {isModalOpen && <CreateUser open={isModalOpen} handleClose={toggleModal} isUserCreated={isUserCreated} isEditing={isEditing}/>}
       <Helmet>
         <title> User | Minimal UI </title>
       </Helmet>
@@ -322,6 +329,7 @@ export default function UserPermissions() {
                           role,
                           organization,
                           status,
+                          uid,
                         } = row;
                         const selectedUser = selected.indexOf(_id) !== -1;
                         return (
@@ -388,12 +396,17 @@ export default function UserPermissions() {
                                   src={require("../assets/icons/edit.png")}
                                   alt="edit user"
                                   style={{ cursor: "pointer" }}
+                                  onClick={() => {
+                                    toggleModal()
+                                    handleEditUser(_id)
+                                    setIsEditing(true)
+                                  }}
                                 />
                                 <img
                                   src={require("../assets/icons/delete.png")}
                                   alt="delete user"
                                   style={{ cursor: "pointer" }}
-                                  onClick={() => handleDeleteUser(_id)}
+                                  onClick={() => handleDeleteUser(_id, uid)}
                                 />
                               </Stack>
                               {/* <IconButton
