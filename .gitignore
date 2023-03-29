@@ -16,5 +16,7 @@ jspm_packages/
 # Distribution directories
 dist/
 
+build/
+
 # env
 .env

@@ -46,10 +46,14 @@ let useStore = (set, get) => ({
   },
   deleteUser: async (db, document, uid) => {
     set(() => ({loading: true}))
+    set(() => ({users: get()?.users?.filter(user => user?.uid !== uid)}))
     await deleteDoc(doc(db, 'users', document));
-    await get().deleteUserByUid(uid)
     return;
   },
+  deleteUserByUid: async (uid) => {
+    set(() => ({loading: true}))
+    await fetch('https://us-central1-eims-3d73a.cloudfunctions.net/deleteUser', {method: 'DELETE', body: JSON.stringify({uid: uid})})
+  }
 });
 
 useStore = persist(useStore, {

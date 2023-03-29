@@ -39,6 +39,8 @@ import { shallow } from "zustand/shallow";
 import CreateUser from "src/components/modals/userCreation";
 import { useUserAuth } from "src/context";
 import { collection, documentId, getDocs } from "firebase/firestore";
+import { auth } from "../firebase";
+import { getFunctions, httpsCallable } from "firebase/functions";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -85,6 +87,8 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function UserPermissions() {
+  const functions = getFunctions()
+  const deleteUserByUid = httpsCallable(functions, 'deleteUser')
   const { surveys, loading, getUsers, setLoading, users, deleteUser } = useStore(
     (state) => ({
       surveys: state?.surveys,
@@ -93,6 +97,7 @@ export default function UserPermissions() {
       setLoading: state?.setLoading,
       users: state?.users,
       deleteUser: state?.deleteUser,
+      // deleteUserByUid: state?.deleteUserByUid,
     }),
     shallow
   );
@@ -205,7 +210,13 @@ export default function UserPermissions() {
   const handleDeleteUser = (documentId, uid) => {
     console.log('-----------------UID: ', uid)
     deleteUser(db, documentId, uid).then(() => {
-      handleGetUsers()
+      deleteUserByUid({uid}).then(data => {
+        console.log('-----------------------------deleted the user throught functions: ', data)
+        setLoading(false)
+      }).catch(error => {
+        console.log('-------------------erorr in function: ', error)
+        setLoading(false)
+      })
     })
   }
 
