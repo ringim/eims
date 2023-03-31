@@ -38,7 +38,7 @@ export default function AdminDashboardPage() {
     <>
       <SelectSurvey isOpen={isModalOpen} handleClose={toggleModal} />
       <Helmet>
-        <title> Dashboard | Minimal UI </title>
+        <title> Dashboard | ATM Networks </title>
       </Helmet>
       <Container maxWidth="xl">
         <Box
@@ -124,19 +124,31 @@ export default function AdminDashboardPage() {
               ]}
               chartData={[
                 {
+<<<<<<< Updated upstream
                   name: "ATM Client Exist",
+=======
+                  name: "Nepwhan",
+>>>>>>> Stashed changes
                   type: "column",
                   fill: "solid",
                   data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30],
                 },
                 {
+<<<<<<< Updated upstream
                   name: "KII at LGA",
+=======
+                  name: "Acomin",
+>>>>>>> Stashed changes
                   type: "area",
                   fill: "gradient",
                   data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43],
                 },
                 {
+<<<<<<< Updated upstream
                   name: "KII at Health Facility",
+=======
+                  name: "TB Network",
+>>>>>>> Stashed changes
                   type: "line",
                   fill: "solid",
                   data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39],
