@@ -35,6 +35,7 @@ export default function UserDashboardPage() {
   console.log("--------------USER: ", userInfo);
   const theme = useTheme();
   const [isModalOpen, setModalOpen] = useState(false);
+  const userSurveys = surveys?.filter(survey => survey?.createdBy === userInfo?.email)
   const toggleModal = () => setModalOpen(!isModalOpen);
   return (
     <>
@@ -75,7 +76,7 @@ export default function UserDashboardPage() {
             <AppWidgetSummary
               title="Pending"
               total={
-                surveys?.filter((item) => item?.status === "pending")?.length ??
+                userSurveys?.filter((item) => item?.status === "pending")?.length ??
                 0
               }
               icon={require("../assets/icons/pending.png")}
@@ -86,7 +87,7 @@ export default function UserDashboardPage() {
             <AppWidgetSummary
               title="Preview"
               total={
-                surveys?.filter((item) => item?.status === "Preview")?.length ??
+                userSurveys?.filter((item) => item?.status === "Preview")?.length ??
                 0
               }
               icon={require("../assets/icons/preview.png")}
@@ -97,7 +98,7 @@ export default function UserDashboardPage() {
             <AppWidgetSummary
               title="Completed"
               total={
-                surveys?.filter((item) => item?.status === "Completed")
+                userSurveys?.filter((item) => item?.status === "Approved")
                   ?.length ?? 0
               }
               icon={require("../assets/icons/rejected.png")}
@@ -106,7 +107,7 @@ export default function UserDashboardPage() {
 
           <Grid item xs={12} md={8} lg={8}>
             <AppWebsiteVisits
-              title="Website Visits"
+              title="Surveys created"
               subheader="(+43%) than last year"
               chartLabels={[
                 "01/01/2003",
@@ -123,19 +124,19 @@ export default function UserDashboardPage() {
               ]}
               chartData={[
                 {
-                  name: "Team A",
+                  name: "ATM Client Exist",
                   type: "column",
                   fill: "solid",
                   data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30],
                 },
                 {
-                  name: "Team B",
+                  name: "KII at LGA",
                   type: "area",
                   fill: "gradient",
                   data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43],
                 },
                 {
-                  name: "Team C",
+                  name: "KII at Health Facility",
                   type: "line",
                   fill: "solid",
                   data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39],
@@ -146,12 +147,11 @@ export default function UserDashboardPage() {
 
           <Grid item xs={12} md={4} lg={4}>
             <AppCurrentVisits
-              title="Current Visits"
+              title="Templates"
               chartData={[
-                { label: "America", value: 4344 },
-                { label: "Asia", value: 5435 },
-                { label: "Europe", value: 1443 },
-                { label: "Africa", value: 4443 },
+                { label: "KII at LGA", value: 1344 },
+                { label: "KII at Health Facility", value: 5435 },
+                { label: "ATM Client Exist", value: 4344 },
               ]}
               chartColors={[
                 theme.palette.primary.main,

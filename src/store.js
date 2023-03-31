@@ -44,10 +44,20 @@ let useStore = (set, get) => ({
     return data;
     // set(() => {})
   },
-  deleteUser: async (db, document) => {
+  fetchSurveys: async (db) => {
+    get().setLoading(true)
+    const data = await getDocs(collection(db, 'surveys'));
+    return data;
+  },
+  deleteUser: async (db, document, uid) => {
     set(() => ({loading: true}))
-    const data = await deleteDoc(doc(db, 'users', document));
-    return data
+    set(() => ({users: get()?.users?.filter(user => user?.uid !== uid)}))
+    await deleteDoc(doc(db, 'users', document));
+    return;
+  },
+  deleteUserByUid: async (uid) => {
+    set(() => ({loading: true}))
+    await fetch('https://us-central1-eims-3d73a.cloudfunctions.net/deleteUser', {method: 'DELETE', body: JSON.stringify({uid: uid})})
   }
 });
 

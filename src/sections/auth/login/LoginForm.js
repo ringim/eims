@@ -28,9 +28,10 @@ export default function LoginForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const { setUserInfo } = useStore(
+  const { setUserInfo, users } = useStore(
     (state) => ({
       setUserInfo: state?.setUserInfo,
+      users: state?.users,
     }),
     shallow
   );
@@ -41,13 +42,19 @@ export default function LoginForm() {
     try {
       setLoading(true);
       await logIn(email, password);
-      if (email === "abubakarringim@gmail.com") {
+      const user = users?.find(item => item?.email === email)
+      if (user?.role === 'super-admin') {
         // is user admin
-        setUserInfo({ isAdmin: true, email, name: getUserName(email) });
+        setUserInfo({ isAdmin: true, email, name: user?.firstName+" "+user?.lastName, organization: user?.organization });
       } else {
-        setUserInfo({ isAdmin: false, email, name: getUserName(email) });
+        setUserInfo({ isAdmin: false, email, name: user?.firstName+" "+user?.lastName, organization: user?.organization });
       }
-      navigate("/", { replace: true });
+      if(email !== 'abubakarringim@gmail.com' && user?.status !== 'active'){
+        setError('Your account is suspended!')
+        setLoading(false);
+      }else{
+        navigate("/", { replace: true });
+      }
     } catch (err) {
       setLoading(false);
       setError(err.message);

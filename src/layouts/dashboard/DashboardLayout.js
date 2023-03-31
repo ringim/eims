@@ -37,23 +37,24 @@ const Main = styled("div")(({ theme }) => ({
 
 export default function DashboardLayout() {
   const [open, setOpen] = useState(false);
-  const { getSurveys, setLoading, userInfo, loadSurveys } = useStore(
+  const { getSurveys, setLoading, userInfo, loadSurveys, fetchSurveys } = useStore(
     (state) => ({
       getSurveys: state?.getSurveys,
       setLoading: state?.setLoading,
       userInfo: state?.userInfo,
       loadSurveys: state?.loadSurveys,
+      fetchSurveys: state?.fetchSurveys,
     }),
     shallow
   );
 
   const { db } = useUserAuth();
 
-  const fetchSurveys = async (db) => {
-    setLoading(true);
-    const data = await getDocs(collection(db, userInfo?.name));
-    return data;
-  };
+  // const fetchSurveys = async (db) => {
+  //   setLoading(true);
+  //   const data = await getDocs(collection(db, 'surveys'));
+  //   return data;
+  // };
   useEffect(() => {
     fetchSurveys(db)
       .then((data) => {
@@ -67,6 +68,8 @@ export default function DashboardLayout() {
             startedAt: fields?.startedAt?.stringValue,
             submittedAt: fields?.submittedAt?.stringValue,
             status: fields?.status?.stringValue,
+            organization: fields?.organization?.stringValue,
+            createdBy: fields?.createdBy?.stringValue,
             data: fields?.data?.stringValue,
             option: null,
           });

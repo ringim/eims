@@ -101,7 +101,7 @@ export default function Nav({ openNav, onCloseNav }) {
         >
           <Logo />
           <Typography variant="h4">
-            {userInfo?.name?.toUpperCase()} NETWORK
+            {userInfo?.organization?.toUpperCase()} NETWORK
           </Typography>
         </Box>
         {/* </Box> */}
@@ -147,15 +147,15 @@ export default function Nav({ openNav, onCloseNav }) {
           >
             <Box
               component="img"
-              src={require("../../../assets/images/user.png")}
+              src={require("../../../assets/images/profile.png")}
               sx={{ width: 100, position: "absolute", top: -50 }}
             />
 
             <Box sx={{ textAlign: "center" }}>
-              <Typography variant="h6">Ismael Danesi</Typography>
+              <Typography variant="h6">{userInfo?.name}</Typography>
 
               <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                danesi@nepwhan.org
+                {userInfo?.email}
               </Typography>
             </Box>
           </Stack>

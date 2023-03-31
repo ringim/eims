@@ -17,11 +17,12 @@ function ATMClientSurvey(props) {
   const survey = new Model(surveyData);
   survey.focusFirstQuestionAutomatic = false;
 
-  const { userInfo, setLoadSurveys, surveys } = useStore(
+  const { userInfo, setLoadSurveys, surveys, users } = useStore(
     (state) => ({
       userInfo: state?.userInfo,
       setLoadSurveys: state?.setLoadSurveys,
       surveys: state?.surveys,
+      users: state?.users,
     }),
     shallow
   );
@@ -34,23 +35,28 @@ function ATMClientSurvey(props) {
 
   const createSurvey = async (data) => {
     const { survey } = data;
+    const user = users?.find(user => user?.email === userInfo?.email)
     try {
       if (isOnline) {
         if (isEditing) {
-          const docRef = doc(db, userInfo?.name, surveyId);
+          const docRef = doc(db, 'surveys', surveyId);
           await updateDoc(docRef, {
             name,
             startedAt: surveyDetails?.startedAt,
             submittedAt: new Date().toISOString(),
             status: "Preview",
+            organization: user?.organization,
+            createdBy: user?.email,
             data: survey,
           });
         } else {
-          await addDoc(collection(db, userInfo?.name), {
+          await addDoc(collection(db, 'surveys'), {
             name,
             startedAt,
             submittedAt: new Date().toISOString(),
             status: "Preview",
+            organization: user?.organization,
+            createdBy: user?.email,
             data: survey,
           });
         }

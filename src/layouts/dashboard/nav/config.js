@@ -35,11 +35,11 @@ const navConfig = [
   //   path: "/blog",
   //   icon: icon("ic_blog"),
   // },
-  {
-    title: "Notification",
-    path: "/notification",
-    icon: icon("ic_lock"),
-  },
+  // {
+  //   title: "Notification",
+  //   path: "/notification",
+  //   icon: icon("ic_lock"),
+  // },
   // {
   //   title: 'Not found',
   //   path: '/404',

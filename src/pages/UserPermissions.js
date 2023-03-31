@@ -38,7 +38,9 @@ import { useStore } from "src/store";
 import { shallow } from "zustand/shallow";
 import CreateUser from "src/components/modals/userCreation";
 import { useUserAuth } from "src/context";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, documentId, getDocs } from "firebase/firestore";
+import { auth } from "../firebase";
+import { getFunctions, httpsCallable } from "firebase/functions";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -85,6 +87,8 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function UserPermissions() {
+  const functions = getFunctions()
+  const deleteUserByUid = httpsCallable(functions, 'deleteUser')
   const { surveys, loading, getUsers, setLoading, users, deleteUser } = useStore(
     (state) => ({
       surveys: state?.surveys,
@@ -93,6 +97,7 @@ export default function UserPermissions() {
       setLoading: state?.setLoading,
       users: state?.users,
       deleteUser: state?.deleteUser,
+      // deleteUserByUid: state?.deleteUserByUid,
     }),
     shallow
   );
@@ -114,6 +119,8 @@ export default function UserPermissions() {
   const [rowsPerPage, setRowsPerPage] = useState(8);
 
   const [isModalOpen, setModalOpen] = useState(false);
+
+  const [isEditing, setIsEditing] = useState(false)
 
   // const [surveys, setSurveyList] = useState([]);
   // const [loading, setLoading] = useState(false);
@@ -200,10 +207,21 @@ export default function UserPermissions() {
 
   const isNotFound = !filteredUsers?.length && !!filterName;
 
-  const handleDeleteUser = documentId => {
-    deleteUser(db, documentId).then(() => {
-      handleGetUsers()
+  const handleDeleteUser = (documentId, uid) => {
+    console.log('-----------------UID: ', uid)
+    deleteUser(db, documentId, uid).then(() => {
+      deleteUserByUid({uid}).then(data => {
+        console.log('-----------------------------deleted the user throught functions: ', data)
+        setLoading(false)
+      }).catch(error => {
+        console.log('-------------------erorr in function: ', error)
+        setLoading(false)
+      })
     })
+  }
+
+  const handleEditUser = documentId => {
+
   }
 
   const isUserCreated = () => {
@@ -212,7 +230,7 @@ export default function UserPermissions() {
 
   return (
     <>
-      {isModalOpen && <CreateUser open={isModalOpen} handleClose={toggleModal} isUserCreated={isUserCreated}/>}
+      {isModalOpen && <CreateUser open={isModalOpen} handleClose={toggleModal} isUserCreated={isUserCreated} isEditing={isEditing}/>}
       <Helmet>
         <title> User | Minimal UI </title>
       </Helmet>
@@ -322,6 +340,7 @@ export default function UserPermissions() {
                           role,
                           organization,
                           status,
+                          uid,
                         } = row;
                         const selectedUser = selected.indexOf(_id) !== -1;
                         return (
@@ -384,16 +403,21 @@ export default function UserPermissions() {
                               }}
                             >
                               <Stack direction="row" gap={2}>
-                                <img
+                                {/* <img
                                   src={require("../assets/icons/edit.png")}
                                   alt="edit user"
                                   style={{ cursor: "pointer" }}
-                                />
+                                  onClick={() => {
+                                    toggleModal()
+                                    handleEditUser(_id)
+                                    setIsEditing(true)
+                                  }}
+                                /> */}
                                 <img
                                   src={require("../assets/icons/delete.png")}
                                   alt="delete user"
                                   style={{ cursor: "pointer" }}
-                                  onClick={() => handleDeleteUser(_id)}
+                                  onClick={() => handleDeleteUser(_id, uid)}
                                 />
                               </Stack>
                               {/* <IconButton

@@ -10,15 +10,20 @@ import {
   OutlinedInput,
   InputAdornment,
 } from "@mui/material";
+import { useEffect, useState } from "react";
 // component
 import Iconify from "../../../components/iconify";
-
+import Select from "react-select";
+import ErrorMessage from "src/utils/errorMessage";
+import SelectStyling from "src/utils/selectStyling";
+import { ORGANIZATIONS, ROLES, STATUS, STATES, LGAs } from "src/constants";
 // ----------------------------------------------------------------------
 
 const StyledRoot = styled(Toolbar)(({ theme }) => ({
   height: 40,
   display: "flex",
   justifyContent: "space-between",
+  alignItems: 'center',
   padding: theme.spacing(0, 1, 0, 3),
   background: "#F9FAFB",
 }));
@@ -60,7 +65,12 @@ export default function UserListToolbar({
   numSelected,
   filterName,
   onFilterName,
+  handleFilterSurveys = () => {}
 }) {
+  const [org, setOrg] = useState(null);
+  useEffect(() => {
+    handleFilterSurveys(org)
+  }, [org])
   return (
     <StyledRoot
       sx={{
@@ -93,6 +103,32 @@ export default function UserListToolbar({
           </InputAdornment>
         }
       />
+      {window.location.pathname === '/submission' && <Box sx={{ width: "20%", height: '40px'}}>
+        <Select
+          name="organization"
+          placeholder="Filter By"
+          isClearable
+          options={ORGANIZATIONS?.map((item) => ({
+            label: item.label,
+            value: item.value,
+          }))}
+          styles={SelectStyling}
+          // components={{
+          //   IndicatorSeparator: () => null,
+          // }}
+          value={
+            org
+              ? ORGANIZATIONS?.find(
+                  (item) => item?.value === org
+                )
+              : null
+          }
+          // onBlur={handleBlur}
+          onChange={(e) => {
+            setOrg(e?.value);
+          }}
+        />
+      </Box>}
       {/* )} */}
       {/* {numSelected > 0 ? (
         <Tooltip title="Delete">
