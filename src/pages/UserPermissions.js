@@ -403,7 +403,7 @@ export default function UserPermissions() {
                               }}
                             >
                               <Stack direction="row" gap={2}>
-                                <img
+                                {/* <img
                                   src={require("../assets/icons/edit.png")}
                                   alt="edit user"
                                   style={{ cursor: "pointer" }}
@@ -412,7 +412,7 @@ export default function UserPermissions() {
                                     handleEditUser(_id)
                                     setIsEditing(true)
                                   }}
-                                />
+                                /> */}
                                 <img
                                   src={require("../assets/icons/delete.png")}
                                   alt="delete user"

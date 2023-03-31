@@ -184,7 +184,7 @@ export default function UserPage() {
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - surveys?.length) : 0;
 
   const filteredUsers = applySortFilter(
-    surveys,
+    surveys?.filter(survey => survey?.createdBy === userInfo?.email),
     getComparator(order, orderBy),
     filterName
   );
@@ -243,6 +243,7 @@ export default function UserPage() {
             <Button
               variant="outlined"
               disableElevation
+              disabled={true}
               sx={{
                 width: "300px",
                 height: "60px",
@@ -403,13 +404,13 @@ export default function UserPage() {
                                   alt="edit survey"
                                   style={{ cursor: "pointer" }}
                                 /> */}
-                                <Box onClick={() => toggleEditSurveyModal(id)}>
+                                {status === 'Preview' && <Box onClick={() => toggleEditSurveyModal(id)}>
                                   <img
                                     src={require("../assets/icons/edit.png")}
                                     alt="view survey"
                                     style={{ cursor: "pointer" }}
                                   />
-                                </Box>
+                                </Box>}
                                 <Box
                                   onClick={() => {
                                     handleDeleteSurvey(id).then(() =>

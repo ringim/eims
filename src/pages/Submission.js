@@ -36,13 +36,17 @@ import SelectSurvey from "src/components/modals/selectSurvey";
 import moment from "moment";
 import { useStore } from "src/store";
 import { shallow } from "zustand/shallow";
+import { collection, addDoc, updateDoc, doc } from "firebase/firestore";
+import { useUserAuth } from "src/context";
+import ViewSurveyModal from "src/components/modals/viewModal";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
   { id: "name", label: "Name", alignRight: false },
+  { id: "organization", label: "Organization", alignRight: false },
   { id: "started", label: "Started", alignRight: false },
   { id: "submitted", label: "Submission", alignRight: false },
-  { id: "status", label: "Status", alignRight: false },
+  // { id: "status", label: "Status", alignRight: false },
   { id: "option", label: "Option", alignRight: false },
   // { id: "" },
 ];
@@ -82,13 +86,18 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function Submission() {
-  const { surveys, loading } = useStore(
+  const { surveys, loading, setLoading, fetchSurveys, getSurveys } = useStore(
     (state) => ({
       surveys: state?.surveys,
       loading: state?.loading,
+      setLoading: state?.setLoading,
+      fetchSurveys: state?.fetchSurveys,
+      getSurveys: state?.getSurveys,
     }),
     shallow
   );
+
+  const { db } = useUserAuth();
 
   console.log("-----------Surveys: ", surveys);
   const [open, setOpen] = useState(null);
@@ -107,6 +116,16 @@ export default function Submission() {
 
   const [isModalOpen, setModalOpen] = useState(false);
 
+  const [filteredSurveys, setFilteredSurveys] = useState(
+    surveys?.filter((item) => item?.status === "Preview")
+  );
+  const [surveyId, setSurveyId] = useState(null)
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
+
+  useEffect(() => {
+    setFilteredSurveys(surveys?.filter((item) => item?.status === "Preview"))
+  }, [surveys])
+
   const toggleModal = () => setOpen(!open);
   const toggleSurveyModal = () => setModalOpen(!isModalOpen);
 
@@ -114,6 +133,52 @@ export default function Submission() {
     setOpen(event.currentTarget);
   };
 
+  const handleFilterSurveys = (filter) => {
+    // filter by organization
+    if (filter) {
+      setFilteredSurveys(
+        surveys
+          ?.filter((item) => item?.status === "Preview")
+          ?.filter((item) => item?.organization === filter)
+      );
+    } else {
+      setFilteredSurveys(surveys?.filter((item) => item?.status === "Preview"));
+    }
+  };
+  const acceptSurvey = async (id) => {
+    setLoading(true)
+    const docRef = doc(db, "surveys", id);
+    const data = {
+      ...surveys?.find((item) => item?.id === id),
+      status: "Approved",
+    }
+    console.log('-----------------data: ', data)
+    await updateDoc(docRef, data)
+
+  };
+
+  const handleAcceptSurvey = id => {
+    try {
+      acceptSurvey(id).then(() => {
+        setLoading(false)
+        getSurveys(surveys?.map(survey => {
+          if(survey?.id === id){
+            return {
+              ...survey,
+              status: 'Approved',
+            }
+          }
+          return survey
+        }))
+      }).catch(() => setLoading(false))
+    } catch (error) {
+      setLoading(false)
+    }
+  }
+  const handleViewSurvey = (id) => {
+    setSurveyId(id);
+    setEditModalOpen(!isEditModalOpen);
+  };
   const handleCloseMenu = () => {
     setOpen(null);
   };
@@ -126,7 +191,7 @@ export default function Submission() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = surveys?.map((n) => n.name);
+      const newSelecteds = filteredSurveys?.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -166,19 +231,29 @@ export default function Submission() {
   };
 
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - surveys?.length) : 0;
+    page > 0
+      ? Math.max(0, (1 + page) * rowsPerPage - filteredSurveys?.length)
+      : 0;
 
   const filteredUsers = applySortFilter(
-    surveys?.filter((survey) => survey?.status === "pending"),
+    filteredSurveys,
     getComparator(order, orderBy),
     filterName
   );
 
-  const isNotFound = !filteredUsers?.length && !!filterName;
+  const isNotFound =
+    (!filteredUsers?.length && !!filterName) || filteredSurveys?.length === 0;
 
   return (
     <>
-      <SelectSurvey isOpen={isModalOpen} handleClose={toggleSurveyModal} />
+      {isEditModalOpen && (
+        <ViewSurveyModal
+          isOpen={isEditModalOpen}
+          handleClose={handleViewSurvey}
+          surveyId={surveyId}
+          name="ATM Client Exist Interview Survey"
+        />
+      )}
       <Helmet>
         <title> User | Minimal UI </title>
       </Helmet>
@@ -191,7 +266,7 @@ export default function Submission() {
           mb={5}
         >
           <Typography variant="h4" gutterBottom>
-            Submissions Section
+            Submissions
           </Typography>
         </Stack>
 
@@ -200,6 +275,7 @@ export default function Submission() {
             numSelected={selected?.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
+            handleFilterSurveys={handleFilterSurveys}
           />
 
           <Scrollbar>
@@ -209,7 +285,7 @@ export default function Submission() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={surveys?.length}
+                  rowCount={filteredSurveys?.length}
                   numSelected={selected?.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
@@ -220,6 +296,13 @@ export default function Submission() {
                       {[...Array(3)].map((_, index) => {
                         return (
                           <TableRow key={index}>
+                            <TableCell>
+                              <Skeleton
+                                animation="wave"
+                                width="100%"
+                                height={40}
+                              />
+                            </TableCell>
                             <TableCell>
                               <Skeleton
                                 animation="wave"
@@ -269,9 +352,10 @@ export default function Submission() {
                         const {
                           id,
                           name,
-                          started,
+                          organization,
+                          startedAt,
                           status,
-                          submitted,
+                          submittedAt,
                           avatarUrl,
                         } = row;
                         const selectedUser = selected.indexOf(name) !== -1;
@@ -303,40 +387,52 @@ export default function Submission() {
                               </Stack>
                             </TableCell>
 
+                            <TableCell align="left">{organization}</TableCell>
                             <TableCell align="left">
-                              {started && moment(started).format("lll")}
+                              {startedAt && moment(startedAt).format("lll")}
                             </TableCell>
 
                             <TableCell align="left">
-                              {submitted && moment(submitted).format("lll")}
+                              {submittedAt && moment(submittedAt).format("lll")}
                             </TableCell>
 
                             {/* <TableCell align="left">
                             {isVerified ? "Yes" : "No"}
                           </TableCell> */}
 
-                            <TableCell align="left">
+                            {/* <TableCell align="left">
                               <Label
                                 color={
-                                  status === "approved"
+                                  status === "Approved"
                                     ? "success"
-                                    : status === "pending"
+                                    : status === "Preview"
                                     ? "info"
                                     : "error"
                                 }
                               >
                                 {status}
                               </Label>
-                            </TableCell>
+                            </TableCell> */}
 
                             <TableCell sx={{ padding: "5px 0px" }}>
                               <Stack gap={0.5}>
-                                <Button variant="contained" color="info">
+                                <Button
+                                  variant="contained"
+                                  color="info"
+                                  onClick={() => handleAcceptSurvey(id)}
+                                >
                                   Accept
                                 </Button>
-                                <Button variant="contained" color="error">
-                                  Reject
+                                <Button
+                                  variant="outlined"
+                                  color="info"
+                                  onClick={() => handleViewSurvey(id)}
+                                >
+                                  View
                                 </Button>
+                                {/* <Button variant="outlined" color="error">
+                                  Reject
+                                </Button> */}
                               </Stack>
                             </TableCell>
 
@@ -409,7 +505,7 @@ export default function Submission() {
           <TablePagination
             rowsPerPageOptions={[8, 15, 25]}
             component="div"
-            count={surveys?.length}
+            count={filteredSurveys?.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

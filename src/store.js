@@ -44,6 +44,11 @@ let useStore = (set, get) => ({
     return data;
     // set(() => {})
   },
+  fetchSurveys: async (db) => {
+    get().setLoading(true)
+    const data = await getDocs(collection(db, 'surveys'));
+    return data;
+  },
   deleteUser: async (db, document, uid) => {
     set(() => ({loading: true}))
     set(() => ({users: get()?.users?.filter(user => user?.uid !== uid)}))

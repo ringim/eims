@@ -73,10 +73,10 @@ export default function AdminDashboardPage() {
             <AppWidgetSummaryAdmin
               title="Nepwhan"
               total={
-                surveys?.filter((item) => item?.status === "pending")?.length ??
+                surveys?.filter((item) => item?.organization === "nepwhan")?.filter(item => item?.status === "Preview")?.length ??
                 0
               }
-              percent={5}
+              percent={((surveys?.filter(item => item?.organization === "nepwhan")?.filter(item => item?.status === "Preview")?.length/surveys?.length)*100)?.toFixed(2)}
               icon={require("../assets/images/logo.png")}
             />
           </Grid>
@@ -85,10 +85,10 @@ export default function AdminDashboardPage() {
             <AppWidgetSummaryAdmin
               title="Acomin"
               total={
-                surveys?.filter((item) => item?.status === "approved")
-                  ?.length ?? 0
+                surveys?.filter((item) => item?.organization === "acomin")?.filter(item => item?.status === "Preview")?.length ??
+                0
               }
-              percent={-10}
+              percent={((surveys?.filter(item => item?.organization === "acomin")?.filter(item => item?.status === "Preview")?.length/surveys?.length)*100)?.toFixed(2)}
               icon={require("../assets/images/acomin.png")}
             />
           </Grid>
@@ -97,17 +97,17 @@ export default function AdminDashboardPage() {
             <AppWidgetSummaryAdmin
               title="TB Network"
               total={
-                surveys?.filter((item) => item?.status === "rejected")
-                  ?.length ?? 0
+                surveys?.filter((item) => item?.organization === "tb")?.filter(item => item?.status === "Preview")?.length ??
+                0
               }
-              percent={-5}
+              percent={((surveys?.filter(item => item?.organization === "tb")?.filter(item => item?.status === "Preview")?.length/surveys?.length)*100)?.toFixed(2)}
               icon={require("../assets/images/tb.png")}
             />
           </Grid>
 
           <Grid item xs={12} md={8} lg={8}>
             <AppWebsiteVisits
-              title="Website Visits"
+              title="Surveys created"
               subheader="(+43%) than last year"
               chartLabels={[
                 "01/01/2003",
@@ -124,19 +124,19 @@ export default function AdminDashboardPage() {
               ]}
               chartData={[
                 {
-                  name: "Team A",
+                  name: "ATM Client Exist",
                   type: "column",
                   fill: "solid",
                   data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30],
                 },
                 {
-                  name: "Team B",
+                  name: "KII at LGA",
                   type: "area",
                   fill: "gradient",
                   data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43],
                 },
                 {
-                  name: "Team C",
+                  name: "KII at Health Facility",
                   type: "line",
                   fill: "solid",
                   data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39],
@@ -147,12 +147,11 @@ export default function AdminDashboardPage() {
 
           <Grid item xs={12} md={4} lg={4}>
             <AppCurrentVisits
-              title="Current Visits"
+              title="Templates"
               chartData={[
-                { label: "America", value: 4344 },
-                { label: "Asia", value: 5435 },
-                { label: "Europe", value: 1443 },
-                { label: "Africa", value: 4443 },
+                { label: "KII at LGA", value: 1344 },
+                { label: "KII at Health Facility", value: 5435 },
+                { label: "ATM Client Exist", value: 4344 },
               ]}
               chartColors={[
                 theme.palette.primary.main,
