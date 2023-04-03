@@ -49,7 +49,7 @@ export default function LoginForm() {
       } else {
         setUserInfo({ isAdmin: false, email, name: user?.firstName+" "+user?.lastName, organization: user?.organization });
       }
-      if(email !== 'abubakarringim@gmail.com' && user?.status !== 'active'){
+      if(user?.status !== 'active'){
         setError('Your account is suspended!')
         setLoading(false);
       }else{
