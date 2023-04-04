@@ -24,16 +24,18 @@ import { shallow } from "zustand/shallow";
 // ----------------------------------------------------------------------
 
 export default function AdminDashboardPage() {
-  const { surveys, isAdmin } = useStore(
+  const { surveys, isAdmin, userInfo } = useStore(
     (state) => ({
       surveys: state?.surveys,
       isAdmin: state?.userInfo?.isAdmin,
+      userInfo: state?.userInfo,
     }),
     shallow
   );
   const theme = useTheme();
   const [isModalOpen, setModalOpen] = useState(false);
   const toggleModal = () => setModalOpen(!isModalOpen);
+  console.log("--------------userInfo: ", userInfo);
   return (
     <>
       <SelectSurvey isOpen={isModalOpen} handleClose={toggleModal} />

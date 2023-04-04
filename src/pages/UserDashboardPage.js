@@ -32,7 +32,7 @@ export default function UserDashboardPage() {
     }),
     shallow
   );
-  console.log("--------------USER: ", userInfo);
+  console.log("--------------userInfo: ", userInfo);
   const theme = useTheme();
   const [isModalOpen, setModalOpen] = useState(false);
   const userSurveys = surveys?.filter(survey => survey?.createdBy === userInfo?.email)
