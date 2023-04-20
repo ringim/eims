@@ -94,11 +94,11 @@ export default function AppWidgetSummaryAdmin({
         <Typography variant="h4" sx={{ opacity: 0.82 }}>
           {total}
         </Typography>
-        <Typography variant="h6" sx={{ opacity: 0.52, fontWeight: 400 }}>
+        {extraInfo && (<Typography variant="h6" sx={{ opacity: 0.52, fontWeight: 400 }}>
           {"Responses Collected"}
-        </Typography>
+        </Typography>)}
       </Box>}
-      <Box sx={{ px: 4, display: "flex", justifyContent: "space-between" }}>
+      {extraInfo && (<Box sx={{ px: 4, display: "flex", justifyContent: "space-between" }}>
         <Typography
           sx={{
             background: percent < 0 ? "pink" : "skyblue",
@@ -110,7 +110,7 @@ export default function AppWidgetSummaryAdmin({
         >
           {percent}%
         </Typography>
-      </Box>
+      </Box>)}
       </>) : (<> 
       <Box
         sx={{

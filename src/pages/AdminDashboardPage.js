@@ -37,6 +37,8 @@ export default function AdminDashboardPage() {
   const [isModalOpen, setModalOpen] = useState(false);
   const toggleModal = () => setModalOpen(!isModalOpen);
   const totalUsers = users?.filter(user => user?.role === 'user')?.length
+  const totalSupervisors = users?.filter(user => user?.role === 'supervisor')?.length
+  const totalSuperAdmins = users?.filter(user => user?.role === 'super-admin')?.length
   console.log("--------------userInfo: ", userInfo);
   return (
     <>
@@ -114,40 +116,41 @@ export default function AdminDashboardPage() {
               total={
                 totalUsers ?? 0
               }
-              percent={((surveys?.filter(item => item?.organization === "tb")?.filter(item => item?.status === "Preview")?.length/surveys?.length)*100)?.toFixed(2)}
-              icon={require("../assets/images/tb.png")}
-              // responses={false}
+              // percent={((surveys?.filter(item => item?.organization === "tb")?.filter(item => item?.status === "Preview")?.length/surveys?.length)*100)?.toFixed(2)}
+              icon={require("../assets/icons/preview.png")}
+              responses={false}
+              extraInfo={false}
             />
           </Grid>
           <Grid item xs={12} sm={6} md={4}>
             <AppWidgetSummaryAdmin
               title="Total No SPO's"
               total={
-                surveys?.filter((item) => item?.organization === "tb")?.filter(item => item?.status === "Preview")?.length ??
-                0
+                totalSupervisors ?? 0
               }
-              percent={((surveys?.filter(item => item?.organization === "tb")?.filter(item => item?.status === "Preview")?.length/surveys?.length)*100)?.toFixed(2)}
-              icon={require("../assets/images/tb.png")}
+              // percent={((surveys?.filter(item => item?.organization === "tb")?.filter(item => item?.status === "Preview")?.length/surveys?.length)*100)?.toFixed(2)}
+              icon={require("../assets/icons/preview.png")}
               responses={false}
+              extraInfo={false}
             />
           </Grid>
           <Grid item xs={12} sm={6} md={4}>
             <AppWidgetSummaryAdmin
               title="Total Super Admin"
               total={
-                surveys?.filter((item) => item?.organization === "tb")?.filter(item => item?.status === "Preview")?.length ??
-                0
+                totalSuperAdmins ?? 0
               }
-              percent={((surveys?.filter(item => item?.organization === "tb")?.filter(item => item?.status === "Preview")?.length/surveys?.length)*100)?.toFixed(2)}
-              icon={require("../assets/images/tb.png")}
+              // percent={((surveys?.filter(item => item?.organization === "tb")?.filter(item => item?.status === "Preview")?.length/surveys?.length)*100)?.toFixed(2)}
+              icon={require("../assets/icons/preview.png")}
               responses={false}
+              extraInfo={false}
             />
           </Grid>
           <Grid item xs={12} sm={6} md={4}>
             <AppWidgetSummaryAdmin
               title="Total No States"
               total={
-                surveys?.filter((item) => item?.organization === "tb")?.filter(item => item?.status === "Preview")?.length ??
+                [...new Set(users?.map(user => user?.state))]?.length ??
                 0
               }
               extraInfo={false}
@@ -158,14 +161,14 @@ export default function AdminDashboardPage() {
             <AppWidgetSummaryAdmin
               title="Total No LGA's"
               total={
-                surveys?.filter((item) => item?.organization === "tb")?.filter(item => item?.status === "Preview")?.length ??
+                [...new Set(users?.map(user => user?.lga))]?.length ??
                 0
               }
               extraInfo={false}
               responses={false}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          {/* <Grid item xs={12} sm={6} md={4}>
             <AppWidgetSummaryAdmin
               title="Total No Districts"
               total={
@@ -175,7 +178,7 @@ export default function AdminDashboardPage() {
               extraInfo={false}
               responses={false}
             />
-          </Grid>
+          </Grid> */}
 
           {/* <Grid item xs={12} md={8} lg={8}>
             <AppWebsiteVisits
