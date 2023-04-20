@@ -17,14 +17,17 @@ import Select from "react-select";
 import ErrorMessage from "src/utils/errorMessage";
 import SelectStyling from "src/utils/selectStyling";
 import { ORGANIZATIONS, ROLES, STATUS, STATES, LGAs } from "src/constants";
+import { useStore } from "src/store";
 // ----------------------------------------------------------------------
 
 const StyledRoot = styled(Toolbar)(({ theme }) => ({
-  height: 40,
+  height: "auto",
   display: "flex",
+  // flexDirection: "column",
   justifyContent: "space-between",
-  alignItems: 'center',
-  padding: theme.spacing(0, 1, 0, 3),
+  alignItems: "flex-start",
+  gap: 2,
+  padding: theme.spacing(3, 3, 3, 3),
   background: "#F9FAFB",
 }));
 
@@ -37,14 +40,13 @@ const StyledFiltersbar = styled(Toolbar)(({ theme }) => ({
 }));
 
 const StyledSearch = styled(OutlinedInput)(({ theme }) => ({
-  width: 240,
+  width: "30%",
   height: 40,
   transition: theme.transitions.create(["box-shadow", "width"], {
     easing: theme.transitions.easing.easeInOut,
     duration: theme.transitions.duration.shorter,
   }),
   "&.Mui-focused": {
-    width: 320,
     boxShadow: theme.customShadows.z8,
   },
   "& fieldset": {
@@ -65,12 +67,31 @@ export default function UserListToolbar({
   numSelected,
   filterName,
   onFilterName,
-  handleFilterSurveys = () => {}
+  handleFilterSurveys = () => {},
+  handleFilterUsers = () => {},
 }) {
-  const [org, setOrg] = useState(null);
+  const users = useStore((state) => state?.users);
+  const surveys = useStore((state) => state?.surveys);
+  const userOptions = users?.map((item) => ({
+    label: item?.firstName + " " + item?.lastName,
+    value: item?.email,
+  }));
+
+  const [organizationFilter, setOrganizationFilter] = useState(null);
+  const [userFilter, setUserFilter] = useState(null);
+  const [stateFilter, setStateFilter] = useState(null);
+  const [lgaFilter, setLgaFilter] = useState(null);
+  const [dateFrom, setDateFrom] = useState(null)
+  const [dateTo, setDateTo] = useState(null)
+
   useEffect(() => {
-    handleFilterSurveys(org)
-  }, [org])
+    handleFilterSurveys({ organizationFilter, userFilter, dateFrom, dateTo });
+  }, [organizationFilter, userFilter, dateFrom, dateTo]);
+
+  useEffect(() => {
+    handleFilterUsers({ stateFilter, lgaFilter });
+  }, [stateFilter, lgaFilter]);
+
   return (
     <StyledRoot
       sx={{
@@ -90,6 +111,199 @@ export default function UserListToolbar({
         <Box>Reviewed</Box>
         <Box>Rejected</Box>
       </StyledFiltersbar> */}
+      {window.location.pathname === "/submission" && (
+        <div
+          style={{
+            width: "70%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: 'flex-start',
+            justifyContent: 'space-between',
+            gap: 2,
+            flexWrap: "wrap",
+          }}
+        >
+          <Box sx={{ width: "100%", display: 'flex', gap: 4 }}>
+            <Box sx={{ width: "20%", height: "40px" }}>
+              <Select
+                name="organization"
+                placeholder="Organization"
+                isClearable
+                options={ORGANIZATIONS?.map((item) => ({
+                  label: item.label,
+                  value: item.value,
+                }))}
+                styles={SelectStyling}
+                // components={{
+                //   IndicatorSeparator: () => null,
+                // }}
+                value={
+                  organizationFilter
+                    ? ORGANIZATIONS?.find(
+                        (item) => item?.value === organizationFilter
+                      )
+                    : null
+                }
+                // onBlur={handleBlur}
+                onChange={(e) => {
+                  setOrganizationFilter(e?.value);
+                }}
+              />
+            </Box>
+            <Box sx={{ width: "20%", height: "40px" }}>
+              <Select
+                name="user"
+                placeholder="User"
+                isClearable
+                options={userOptions}
+                styles={SelectStyling}
+                // components={{
+                //   IndicatorSeparator: () => null,
+                // }}
+                value={
+                  userFilter
+                    ? userOptions?.find((item) => item?.value === userFilter)
+                    : null
+                }
+                // onBlur={handleBlur}
+                onChange={(e) => {
+                  setUserFilter(e?.value);
+                }}
+              />
+            </Box>
+          </Box>
+
+          <Box sx={{ width: "100%", height: "40px", display: "flex", gap: 2 }}>
+            <Box>
+              <p style={{ margin: 0, fontSize: 12, color: "gray" }}>
+                Date From
+              </p>
+              <input
+                type="date"
+                style={{
+                  borderRadius: 5,
+                  border: "1px solid #cccccc",
+                  padding: "10px",
+                }}
+                onChange={e => setDateFrom(e.target.value)}
+              />
+            </Box>
+            <Box>
+              <p style={{ margin: 0, fontSize: 12, color: "gray" }}>Date To</p>
+              <input
+                type="date"
+                style={{
+                  borderRadius: 5,
+                  border: "1px solid #cccccc",
+                  padding: "10px",
+                }}
+                min={dateFrom}
+                onChange={e => setDateTo(e.target.value)}
+              />
+            </Box>
+          </Box>
+
+          <Box sx={{width: '100%', marginTop: 3, display: 'flex', gap: 4}}>
+            <Box sx={{width: '200px', borderRadius: '5px', border: '1px solid #CCCCCC', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between'}}>
+              <p>Total CEI</p>
+              <p style={{fontWeight: 700, fontSize: 22}}>{surveys?.filter(item => item?.status === 'Preview')?.filter(item => item?.name === 'ATM Client Exist Interview Survey')?.length ?? 0}</p>
+            </Box>
+            <Box sx={{width: '200px', borderRadius: '5px', border: '1px solid #CCCCCC', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between'}}>
+              <p>Total KII - Health Facility</p>
+              <p style={{fontWeight: 700, fontSize: 22}}>{0}</p>
+            </Box>
+            <Box sx={{width: '200px', borderRadius: '5px', border: '1px solid #CCCCCC', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between'}}>
+              <p>Total KII - LGA</p>
+              <p style={{fontWeight: 700, fontSize: 22}}>{0}</p>
+            </Box>
+          </Box>
+
+          {/* <Box sx={{ width: "20%", height: '40px'}}>
+        <Select
+          name="user"
+          placeholder="User"
+          isClearable
+          options={ORGANIZATIONS?.map((item) => ({
+            label: item.label,
+            value: item.value,
+          }))}
+          styles={SelectStyling}
+          // components={{
+          //   IndicatorSeparator: () => null,
+          // }}
+          value={
+            organizationFilter
+              ? ORGANIZATIONS?.find(
+                  (item) => item?.value === organizationFilter
+                )
+              : null
+          }
+          // onBlur={handleBlur}
+          onChange={(e) => {
+            setOrganizationFilter(e?.value);
+          }}
+        />
+      </Box> */}
+        </div>
+      )}
+      {window.location.pathname === "/user-permissions" && (
+        <div
+          style={{ width: "100%", display: "flex", gap: 8, flexWrap: "wrap" }}
+        >
+          <Box sx={{ width: "20%", height: "40px" }}>
+            <Select
+              name="state"
+              placeholder="State"
+              isClearable
+              options={STATES?.map((item) => ({
+                label: item.label,
+                value: item.value,
+              }))}
+              styles={SelectStyling}
+              // components={{
+              //   IndicatorSeparator: () => null,
+              // }}
+              value={
+                stateFilter
+                  ? STATES?.find((item) => item?.value === stateFilter)
+                  : null
+              }
+              // onBlur={handleBlur}
+              onChange={(e) => {
+                if(e){
+                  setStateFilter(e?.value);
+                }else{
+                  setStateFilter(null)
+                  setLgaFilter(null)
+                }
+              }}
+            />
+          </Box>
+          <Box sx={{ width: "20%", height: "40px" }}>
+            <Select
+              name="lga"
+              placeholder="LGA"
+              isClearable
+              options={LGAs[`${stateFilter}`]}
+              styles={SelectStyling}
+              // components={{
+              //   IndicatorSeparator: () => null,
+              // }}
+              value={
+                lgaFilter
+                  ? LGAs[`${stateFilter}`]?.find(
+                      (item) => item?.value === lgaFilter
+                    )
+                  : null
+              }
+              // onBlur={handleBlur}
+              onChange={(e) => {
+                setLgaFilter(e?.value);
+              }}
+            />
+          </Box>
+        </div>
+      )}
       <StyledSearch
         value={filterName}
         onChange={onFilterName}
@@ -103,32 +317,6 @@ export default function UserListToolbar({
           </InputAdornment>
         }
       />
-      {window.location.pathname === '/submission' && <Box sx={{ width: "20%", height: '40px'}}>
-        <Select
-          name="organization"
-          placeholder="Filter By"
-          isClearable
-          options={ORGANIZATIONS?.map((item) => ({
-            label: item.label,
-            value: item.value,
-          }))}
-          styles={SelectStyling}
-          // components={{
-          //   IndicatorSeparator: () => null,
-          // }}
-          value={
-            org
-              ? ORGANIZATIONS?.find(
-                  (item) => item?.value === org
-                )
-              : null
-          }
-          // onBlur={handleBlur}
-          onChange={(e) => {
-            setOrg(e?.value);
-          }}
-        />
-      </Box>}
       {/* )} */}
       {/* {numSelected > 0 ? (
         <Tooltip title="Delete">

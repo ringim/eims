@@ -133,16 +133,29 @@ export default function Submission() {
     setOpen(event.currentTarget);
   };
 
-  const handleFilterSurveys = (filter) => {
+  const handleFilterSurveys = (filters) => {
+    console.log('--------------handling filter: ', filters)
+    const {organizationFilter, userFilter, dateFrom, dateTo} = filters
     // filter by organization
-    if (filter) {
-      setFilteredSurveys(
-        surveys
-          ?.filter((item) => item?.status === "Preview")
-          ?.filter((item) => item?.organization === filter)
-      );
-    } else {
-      setFilteredSurveys(surveys?.filter((item) => item?.status === "Preview"));
+    let previewSurveys = surveys?.filter(item => item?.status === 'Preview')
+    if(organizationFilter || userFilter, dateFrom, dateTo){
+      if(organizationFilter){
+        previewSurveys = previewSurveys?.filter(item => item?.organization === organizationFilter)
+      }
+      if(userFilter){
+        previewSurveys = previewSurveys?.filter(item => item?.createdBy === userFilter)
+      }
+      if(dateFrom && dateTo){
+        previewSurveys = previewSurveys?.filter(item => ((new Date(item?.submittedAt).getTime() >= new Date(dateFrom).getTime()) && (new Date(item?.submittedAt).getTime() <= new Date(dateTo).getTime())))
+      }else if(dateFrom){
+        previewSurveys = previewSurveys?.filter(item => (new Date(item?.submittedAt).getTime() >= new Date(dateFrom).getTime()))
+      }else if(dateTo){
+        previewSurveys = previewSurveys?.filter(item => ((new Date(item?.submittedAt).getTime() <= new Date(dateTo).getTime())))
+      }
+      setFilteredSurveys(previewSurveys)
+    }else{
+      previewSurveys = surveys?.filter(item => item?.status === 'Preview')
+      setFilteredSurveys(previewSurveys)
     }
   };
   const acceptSurvey = async (id) => {

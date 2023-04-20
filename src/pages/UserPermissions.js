@@ -122,6 +122,8 @@ export default function UserPermissions() {
 
   const [isEditing, setIsEditing] = useState(false)
 
+  const [filterUsers, setFilterUsers] = useState(users)
+
   // const [surveys, setSurveyList] = useState([]);
   // const [loading, setLoading] = useState(false);
   const fetchUsers = async () => {
@@ -199,8 +201,26 @@ export default function UserPermissions() {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - surveys?.length) : 0;
 
+  const handleFilterUsers = filters => {
+    const {stateFilter, lgaFilter} = filters
+    if(stateFilter || lgaFilter){
+      let data = users
+      if(stateFilter){
+        data = data?.filter(item => item?.state === stateFilter)
+      }
+      if(lgaFilter){
+        data = data?.filter(item => item?.lga === lgaFilter)
+      }
+      setFilterUsers(data)
+    }else{
+      setFilterUsers(users)
+    }
+  }
+  useEffect(() => {
+
+  }, [filterUsers])
   const filteredUsers = applySortFilter(
-    users,
+    filterUsers,
     getComparator(order, orderBy),
     filterName
   );
@@ -267,6 +287,7 @@ export default function UserPermissions() {
             numSelected={selected?.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
+            handleFilterUsers={handleFilterUsers}
           />
 
           <Scrollbar>
@@ -376,7 +397,7 @@ export default function UserPermissions() {
                             </TableCell>
 
                             <TableCell align="left">
-                              {organization}
+                              {!organization ? '-' : organization}
                             </TableCell>
 
                             {/* <TableCell align="left">

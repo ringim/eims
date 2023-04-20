@@ -37,6 +37,8 @@ export default function AppWidgetSummaryAdmin({
   icon,
   color = "primary",
   sx,
+  responses=true,
+  extraInfo=true,
   ...other
 }) {
   return (
@@ -54,7 +56,9 @@ export default function AppWidgetSummaryAdmin({
       }}
       {...other}
     >
-      {/* <StyledIcon
+     {
+      extraInfo ? (<>
+       {/* <StyledIcon
         sx={{
           color: (theme) => theme.palette[color].dark,
           backgroundImage: (theme) =>
@@ -78,7 +82,7 @@ export default function AppWidgetSummaryAdmin({
         <img src={icon} alt="icon" width={50} height={50} />
       </Box>
       {/* </StyledIcon> */}
-      <Box
+      {responses && <Box
         sx={{
           display: "flex",
           alignItems: "baseline",
@@ -93,7 +97,7 @@ export default function AppWidgetSummaryAdmin({
         <Typography variant="h6" sx={{ opacity: 0.52, fontWeight: 400 }}>
           {"Responses Collected"}
         </Typography>
-      </Box>
+      </Box>}
       <Box sx={{ px: 4, display: "flex", justifyContent: "space-between" }}>
         <Typography
           sx={{
@@ -107,6 +111,26 @@ export default function AppWidgetSummaryAdmin({
           {percent}%
         </Typography>
       </Box>
+      </>) : (<> 
+      <Box
+        sx={{
+          px: 4,
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "column",
+          gap: 4,
+          justifyContent: "center",
+        }}
+      >
+        <Typography variant="h4" sx={{ opacity: 0.52 }}>
+          {title}
+        </Typography>
+        <Typography variant="h4" sx={{ opacity: 0.82 }}>
+          {total}
+        </Typography>
+      </Box>
+      </>)
+     }
     </Card>
   );
 }

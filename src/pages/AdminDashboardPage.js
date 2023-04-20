@@ -24,23 +24,25 @@ import { shallow } from "zustand/shallow";
 // ----------------------------------------------------------------------
 
 export default function AdminDashboardPage() {
-  const { surveys, isAdmin, userInfo } = useStore(
+  const { surveys, isAdmin, userInfo, users } = useStore(
     (state) => ({
       surveys: state?.surveys,
       isAdmin: state?.userInfo?.isAdmin,
       userInfo: state?.userInfo,
+      users: state?.users,
     }),
     shallow
   );
   const theme = useTheme();
   const [isModalOpen, setModalOpen] = useState(false);
   const toggleModal = () => setModalOpen(!isModalOpen);
+  const totalUsers = users?.filter(user => user?.role === 'user')?.length
   console.log("--------------userInfo: ", userInfo);
   return (
     <>
       <SelectSurvey isOpen={isModalOpen} handleClose={toggleModal} />
       <Helmet>
-        <title> Dashboard | ATM Networks </title>
+        <title> Dashboard | Super Admin </title>
       </Helmet>
       <Container maxWidth="xl">
         <Box
@@ -106,8 +108,76 @@ export default function AdminDashboardPage() {
               icon={require("../assets/images/tb.png")}
             />
           </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <AppWidgetSummaryAdmin
+              title="Total No CBO's"
+              total={
+                totalUsers ?? 0
+              }
+              percent={((surveys?.filter(item => item?.organization === "tb")?.filter(item => item?.status === "Preview")?.length/surveys?.length)*100)?.toFixed(2)}
+              icon={require("../assets/images/tb.png")}
+              // responses={false}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <AppWidgetSummaryAdmin
+              title="Total No SPO's"
+              total={
+                surveys?.filter((item) => item?.organization === "tb")?.filter(item => item?.status === "Preview")?.length ??
+                0
+              }
+              percent={((surveys?.filter(item => item?.organization === "tb")?.filter(item => item?.status === "Preview")?.length/surveys?.length)*100)?.toFixed(2)}
+              icon={require("../assets/images/tb.png")}
+              responses={false}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <AppWidgetSummaryAdmin
+              title="Total Super Admin"
+              total={
+                surveys?.filter((item) => item?.organization === "tb")?.filter(item => item?.status === "Preview")?.length ??
+                0
+              }
+              percent={((surveys?.filter(item => item?.organization === "tb")?.filter(item => item?.status === "Preview")?.length/surveys?.length)*100)?.toFixed(2)}
+              icon={require("../assets/images/tb.png")}
+              responses={false}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <AppWidgetSummaryAdmin
+              title="Total No States"
+              total={
+                surveys?.filter((item) => item?.organization === "tb")?.filter(item => item?.status === "Preview")?.length ??
+                0
+              }
+              extraInfo={false}
+              responses={false}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <AppWidgetSummaryAdmin
+              title="Total No LGA's"
+              total={
+                surveys?.filter((item) => item?.organization === "tb")?.filter(item => item?.status === "Preview")?.length ??
+                0
+              }
+              extraInfo={false}
+              responses={false}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <AppWidgetSummaryAdmin
+              title="Total No Districts"
+              total={
+                surveys?.filter((item) => item?.organization === "tb")?.filter(item => item?.status === "Preview")?.length ??
+                0
+              }
+              extraInfo={false}
+              responses={false}
+            />
+          </Grid>
 
-          <Grid item xs={12} md={8} lg={8}>
+          {/* <Grid item xs={12} md={8} lg={8}>
             <AppWebsiteVisits
               title="Surveys created"
               subheader="(+43%) than last year"
@@ -145,9 +215,9 @@ export default function AdminDashboardPage() {
                 },
               ]}
             />
-          </Grid>
+          </Grid> */}
 
-          <Grid item xs={12} md={4} lg={4}>
+          {/* <Grid item xs={12} md={4} lg={4}>
             <AppCurrentVisits
               title="Templates"
               chartData={[
@@ -162,7 +232,7 @@ export default function AdminDashboardPage() {
                 theme.palette.error.main,
               ]}
             />
-          </Grid>
+          </Grid> */}
 
           {/*<Grid item xs={12} md={6} lg={8}>
             <AppConversionRates
