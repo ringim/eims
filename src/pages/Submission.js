@@ -138,7 +138,7 @@ export default function Submission() {
     const {organizationFilter, userFilter, dateFrom, dateTo} = filters
     // filter by organization
     let previewSurveys = surveys?.filter(item => item?.status === 'Preview')
-    if(organizationFilter || userFilter, dateFrom, dateTo){
+    if(organizationFilter || userFilter || dateFrom || dateTo){
       if(organizationFilter){
         previewSurveys = previewSurveys?.filter(item => item?.organization === organizationFilter)
       }
