@@ -23,3 +23,20 @@ exports.deleteUser = functions.https.onCall(async (data, context) => {
     return {success: false, error: error.message};
   }
 });
+
+exports.updateUser = functions.https.onCall(async (data, context) => {
+  const {uid, userData} = data;
+  console.log("--------payload to update user: ", data);
+  try {
+    await admin.auth().updateUser(uid, {
+      email: userData?.email,
+      password: userData?.password,
+    });
+  } catch (error) {
+    console.log("updating user failed: ", error);
+    throw new functions.https.HttpsError(
+        "internal",
+        "An error occured while updating the user data.",
+    );
+  }
+});

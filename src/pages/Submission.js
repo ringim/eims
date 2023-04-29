@@ -86,13 +86,14 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function Submission() {
-  const { surveys, loading, setLoading, fetchSurveys, getSurveys } = useStore(
+  const { surveys, loading, setLoading, fetchSurveys, getSurveys, setNotify } = useStore(
     (state) => ({
       surveys: state?.surveys,
       loading: state?.loading,
       setLoading: state?.setLoading,
       fetchSurveys: state?.fetchSurveys,
       getSurveys: state?.getSurveys,
+      setNotify: state?.setNotify,
     }),
     shallow
   );
@@ -169,6 +170,7 @@ export default function Submission() {
     try {
       acceptSurvey(id).then(() => {
         setLoading(false)
+        setNotify({ open: true, message: 'Survey accepted successfully!', type: 'success' })
         getSurveys(surveys?.map(survey => {
           if(survey?.id === id){
             return {

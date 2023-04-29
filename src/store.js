@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
+import { collection, getDocs, doc, deleteDoc, updateDoc } from "firebase/firestore";
 let useStore = (set, get) => ({
   surveys: [],
   loading: false,
@@ -12,6 +12,8 @@ let useStore = (set, get) => ({
   users: [],
   loadSurveys: false,
   pendingSurveys: [],
+  notify: { open: false, message: '', type: '' },
+  setNotify: (props) => set(() => ({notify: props})),
   setPendingSurvey: (data) => set(() => [...get()?.pendingSurveys, data]),
   setLoadSurveys: () => set(() => ({ loadSurveys: !get()?.loadSurveys })),
   setLoading: (props) => set(() => ({ loading: props })),
@@ -55,10 +57,11 @@ let useStore = (set, get) => ({
     await deleteDoc(doc(db, 'users', document));
     return;
   },
-  deleteUserByUid: async (uid) => {
+  updateUser: async (db, document, data) => {
     set(() => ({loading: true}))
-    await fetch('https://us-central1-eims-3d73a.cloudfunctions.net/deleteUser', {method: 'DELETE', body: JSON.stringify({uid: uid})})
-  }
+    await updateDoc(doc(db, 'users', document), data);
+    return;
+  },
 });
 
 useStore = persist(useStore, {

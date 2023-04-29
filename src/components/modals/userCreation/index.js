@@ -19,7 +19,7 @@ import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import {useUserAuth} from 'src/context'
 import { useStore } from "src/store";
 import { shallow } from "zustand/shallow";
-
+import { getFunctions, httpsCallable } from "firebase/functions";
 const style = {
   position: "absolute",
   top: "50%",
@@ -34,20 +34,23 @@ const style = {
   //   pb: 3,
 };
 const CreateUser = (props) => {
-  const { open, handleClose, isEditing=false, isUserCreated } = props;
+  const { open, handleClose, isEditing={}, isUserCreated } = props;
   const {user, signUp, db, createUser} = useUserAuth();
-  const { setLoading, loading, users } = useStore(
+  const { setLoading, loading, users, updateUser, setNotify } = useStore(
     (state) => ({
       setLoading: state?.setLoading,
       loading: state?.loading,
       users: state?.users,
+      updateUser: state?.updateUser,
+      setNotify: state?.setNotify,
     }),
     shallow
   );
-  const data = users?.find(item => item?._id === isEditing)
-  console.log('--------------user to edit: ', data)
+  const functions = getFunctions()
+  const updateUserByUid = httpsCallable(functions, 'updateUser')
+  const data = users?.find(item => item?._id === isEditing?._id)
   useEffect(() => {
-    if(isEditing){
+    if(isEditing?._id){
       setValues({
         firstName: data?.firstName,
         lastName: data?.lastName,
@@ -61,7 +64,7 @@ const CreateUser = (props) => {
         address: data?.address,
       })
     }
-  }, [isEditing])
+  }, [])
   const formik = useFormik({
     initialValues: {
       firstName: "",
@@ -91,16 +94,19 @@ const CreateUser = (props) => {
     }),
     onSubmit: (values) => {
       const {firstName, lastName, email, password, organization, role, status, state, lga, postalCode, address} = values
-      if(isEditing){
-        // do nothing
-      }else{
-        if(email){
+      if(email){
+        if(isEditing?._id){
+          // update user
+          const userData = {email, password}
           try {
-            signUp(email, password).then(data => {
-              // setLoading(false)
-              console.log('-----------user created: ', data)  
+            const payload = {
+              uid: isEditing?.uid,
+              userData,
+            }
+            setLoading(true)
+            updateUserByUid(payload).then(data => {
               const payload = {
-                uid: data?.user?.uid,
+                uid: isEditing?.uid,
                 firstName,
                 lastName,
                 email,
@@ -112,16 +118,49 @@ const CreateUser = (props) => {
                 postalCode,
                 address
               }
-              createUser(payload).then(response => {
-                setLoading(false)
+              updateUser(db, isEditing?._id, payload).then(data => {
                 isUserCreated()
+                setNotify({ open: true, message: 'User updated successfully!', type: 'success' })
                 handleClose()
-                // console.log('------------------user response: ', response)
-              })
+                setLoading(false)
+              }).catch(() => setLoading(false))
             })
           } catch (error) {
+            console.log('-------udpating user error-----: ', error)
+            setNotify({ open: true, message: error?.message, type: 'error' })
             setLoading(false)
           }
+        }else{
+          // create new user
+            try {
+              signUp(email, password).then(data => {
+                // setLoading(false)
+                console.log('-----------user created: ', data)  
+                const payload = {
+                  uid: data?.user?.uid,
+                  firstName,
+                  lastName,
+                  email,
+                  organization,
+                  role,
+                  status,
+                  state,
+                  lga,
+                  postalCode,
+                  address
+                }
+                createUser(payload).then(() => {
+                  setLoading(false)
+                  setNotify({ open: true, message: 'User created successfully!', type: 'success' })
+                  isUserCreated()
+                  handleClose()
+                  // console.log('------------------user response: ', response)
+                })
+              })
+            } catch (error) {
+              setLoading(false)
+              setNotify({ open: true, message: error?.message, type: 'error' })
+            }
         }
       }
     },
@@ -409,7 +448,7 @@ const CreateUser = (props) => {
           </Box>
           <Box sx={{margin: '40px 0px', display: 'flex', gap: 2, justifyContent:'flex-end'}}>
             <LoadingButton onClick={handleClose} variant='outlined' color='error' sx={{width: 150}}>Discard</LoadingButton>
-            <LoadingButton type="submit" variant='outlined' sx={{width: 200}} loading={loading}>{isEditing ? 'Update' : 'Create'}</LoadingButton>
+            <LoadingButton type="submit" variant='outlined' sx={{width: 200}} loading={loading}>{isEditing?._id ? 'Update' : 'Create'}</LoadingButton>
           </Box>
         </form>
       </Box>

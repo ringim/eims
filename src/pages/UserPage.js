@@ -413,14 +413,16 @@ export default function UserPage() {
                                 </Box>}
                                 <Box
                                   onClick={() => {
-                                    handleDeleteSurvey(id).then(() =>
+                                    if(window.confirm('Are you sure, you want to delete survey?')){
+                                      handleDeleteSurvey(id).then(() =>
                                       setLoadSurveys()
                                     );
+                                    }
                                   }}
                                 >
                                   <img
                                     src={require("../assets/icons/delete.png")}
-                                    alt="view survey"
+                                    alt="delete survey"
                                     style={{ cursor: "pointer" }}
                                   />
                                 </Box>

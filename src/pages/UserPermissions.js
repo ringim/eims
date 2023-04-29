@@ -89,7 +89,7 @@ function applySortFilter(array, comparator, query) {
 export default function UserPermissions() {
   const functions = getFunctions()
   const deleteUserByUid = httpsCallable(functions, 'deleteUser')
-  const { surveys, loading, getUsers, setLoading, users, deleteUser } = useStore(
+  const { surveys, loading, getUsers, setLoading, users, deleteUser, setNotify } = useStore(
     (state) => ({
       surveys: state?.surveys,
       loading: state?.loading,
@@ -97,7 +97,7 @@ export default function UserPermissions() {
       setLoading: state?.setLoading,
       users: state?.users,
       deleteUser: state?.deleteUser,
-      // deleteUserByUid: state?.deleteUserByUid,
+      setNotify: state?.setNotify,
     }),
     shallow
   );
@@ -122,7 +122,7 @@ export default function UserPermissions() {
 
   const [isEditModalOpen, setEditModalOpen] = useState(false);
 
-  const [isEditing, setIsEditing] = useState(false)
+  const [isEditing, setIsEditing] = useState({})
 
   const [filterUsers, setFilterUsers] = useState(users)
 
@@ -234,27 +234,23 @@ export default function UserPermissions() {
     console.log('-----------------UID: ', uid)
     deleteUser(db, documentId, uid).then(() => {
       deleteUserByUid({uid}).then(data => {
+        setNotify({ open: true, message: 'User deleted successfully!', type: 'success' })
         console.log('-----------------------------deleted the user throught functions: ', data)
+        handleGetUsers()
         setLoading(false)
       }).catch(error => {
         console.log('-------------------erorr in function: ', error)
+        setNotify({ open: true, message: error?.message, type: 'error' })
         setLoading(false)
       })
     })
   }
 
-  const handleEditUser = documentId => {
-
-  }
-
-  const isUserCreated = () => {
-    handleGetUsers()
-  }
 
   return (
     <>
-      {isModalOpen && <CreateUser open={isModalOpen} handleClose={toggleModal} isUserCreated={isUserCreated}/>}
-      {isEditModalOpen && isEditing && <CreateUser open={isEditModalOpen} handleClose={toggleEditModal} isUserCreated={isUserCreated} isEditing={isEditing}/>}
+      {isModalOpen && <CreateUser open={isModalOpen} handleClose={toggleModal} isUserCreated={handleGetUsers}/>}
+      {isEditModalOpen && isEditing && <CreateUser open={isEditModalOpen} handleClose={toggleEditModal} isUserCreated={handleGetUsers} isEditing={isEditing}/>}
       <Helmet>
         <title> User | Minimal UI </title>
       </Helmet>
@@ -434,15 +430,18 @@ export default function UserPermissions() {
                                   style={{ cursor: "pointer" }}
                                   onClick={() => {
                                     toggleEditModal()
-                                    handleEditUser(_id)
-                                    setIsEditing(_id)
+                                    setIsEditing({_id, uid})
                                   }}
                                 />
                                 <img
                                   src={require("../assets/icons/delete.png")}
                                   alt="delete user"
                                   style={{ cursor: "pointer" }}
-                                  onClick={() => handleDeleteUser(_id, uid)}
+                                  onClick={() => {
+                                    if(window.confirm('Are you sure, you want to delete user?')){
+                                      handleDeleteUser(_id, uid)
+                                    }
+                                  }}
                                 />
                               </Stack>
                               {/* <IconButton
