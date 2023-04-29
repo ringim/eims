@@ -120,6 +120,8 @@ export default function UserPermissions() {
 
   const [isModalOpen, setModalOpen] = useState(false);
 
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
+
   const [isEditing, setIsEditing] = useState(false)
 
   const [filterUsers, setFilterUsers] = useState(users)
@@ -142,6 +144,7 @@ export default function UserPermissions() {
 
   console.log('---------users: ', users)
   const toggleModal = () => setModalOpen(!isModalOpen)
+  const toggleEditModal = () => setEditModalOpen(!isEditModalOpen)
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -250,7 +253,8 @@ export default function UserPermissions() {
 
   return (
     <>
-      {isModalOpen && <CreateUser open={isModalOpen} handleClose={toggleModal} isUserCreated={isUserCreated} isEditing={isEditing}/>}
+      {isModalOpen && <CreateUser open={isModalOpen} handleClose={toggleModal} isUserCreated={isUserCreated}/>}
+      {isEditModalOpen && isEditing && <CreateUser open={isEditModalOpen} handleClose={toggleEditModal} isUserCreated={isUserCreated} isEditing={isEditing}/>}
       <Helmet>
         <title> User | Minimal UI </title>
       </Helmet>
@@ -424,16 +428,16 @@ export default function UserPermissions() {
                               }}
                             >
                               <Stack direction="row" gap={2}>
-                                {/* <img
+                                <img
                                   src={require("../assets/icons/edit.png")}
                                   alt="edit user"
                                   style={{ cursor: "pointer" }}
                                   onClick={() => {
-                                    toggleModal()
+                                    toggleEditModal()
                                     handleEditUser(_id)
-                                    setIsEditing(true)
+                                    setIsEditing(_id)
                                   }}
-                                /> */}
+                                />
                                 <img
                                   src={require("../assets/icons/delete.png")}
                                   alt="delete user"

@@ -72,11 +72,8 @@ export default function UserListToolbar({
 }) {
   const users = useStore((state) => state?.users);
   const surveys = useStore((state) => state?.surveys);
-  const userOptions = users?.map((item) => ({
-    label: item?.firstName + " " + item?.lastName,
-    value: item?.email,
-  }));
 
+  const [userOptions, setUserOptions] = useState([])
   const [organizationFilter, setOrganizationFilter] = useState(null);
   const [userFilter, setUserFilter] = useState(null);
   const [stateFilter, setStateFilter] = useState(null);
@@ -147,6 +144,10 @@ export default function UserListToolbar({
                 // onBlur={handleBlur}
                 onChange={(e) => {
                   setOrganizationFilter(e?.value);
+                  setUserOptions(users?.filter(user => user?.organization === e?.value)?.map(item => ({
+                    label: item?.firstName + " " + item?.lastName,
+                    value: item?.email,
+                  })))
                 }}
               />
             </Box>
@@ -206,7 +207,7 @@ export default function UserListToolbar({
           <Box sx={{width: '100%', marginTop: 3, display: 'flex', gap: 4}}>
             <Box sx={{width: '200px', borderRadius: '5px', border: '1px solid #CCCCCC', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between'}}>
               <p>Total CEI</p>
-              <p style={{fontWeight: 700, fontSize: 22}}>{surveys?.filter(item => item?.status === 'Preview')?.filter(item => item?.name === 'ATM Client Exist Interview Survey')?.length ?? 0}</p>
+              <p style={{fontWeight: 700, fontSize: 22}}>{surveys?.filter(item => item?.name === 'ATM Client Exist Interview Survey')?.length ?? 0}</p>
             </Box>
             <Box sx={{width: '200px', borderRadius: '5px', border: '1px solid #CCCCCC', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between'}}>
               <p>Total KII - Health Facility</p>

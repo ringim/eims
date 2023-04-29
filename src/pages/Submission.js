@@ -117,14 +117,10 @@ export default function Submission() {
   const [isModalOpen, setModalOpen] = useState(false);
 
   const [filteredSurveys, setFilteredSurveys] = useState(
-    surveys?.filter((item) => item?.status === "Preview")
+    surveys
   );
   const [surveyId, setSurveyId] = useState(null)
   const [isEditModalOpen, setEditModalOpen] = useState(false);
-
-  useEffect(() => {
-    setFilteredSurveys(surveys?.filter((item) => item?.status === "Preview"))
-  }, [surveys])
 
   const toggleModal = () => setOpen(!open);
   const toggleSurveyModal = () => setModalOpen(!isModalOpen);
@@ -137,7 +133,7 @@ export default function Submission() {
     console.log('--------------handling filter: ', filters)
     const {organizationFilter, userFilter, dateFrom, dateTo} = filters
     // filter by organization
-    let previewSurveys = surveys?.filter(item => item?.status === 'Preview')
+    let previewSurveys = surveys
     if(organizationFilter || userFilter || dateFrom || dateTo){
       if(organizationFilter){
         previewSurveys = previewSurveys?.filter(item => item?.organization === organizationFilter)
@@ -154,8 +150,7 @@ export default function Submission() {
       }
       setFilteredSurveys(previewSurveys)
     }else{
-      previewSurveys = surveys?.filter(item => item?.status === 'Preview')
-      setFilteredSurveys(previewSurveys)
+      setFilteredSurveys(surveys)
     }
   };
   const acceptSurvey = async (id) => {
@@ -429,13 +424,22 @@ export default function Submission() {
 
                             <TableCell sx={{ padding: "5px 0px" }}>
                               <Stack gap={0.5}>
-                                <Button
+                                {
+                                  status === 'Approved' ? (<Button
+                                    variant="contained"
+                                    color="info"
+                                    disabled={true}
+                                    onClick={() => handleAcceptSurvey(id)}
+                                  >
+                                    Accepted
+                                  </Button>) : (<Button
                                   variant="contained"
                                   color="info"
                                   onClick={() => handleAcceptSurvey(id)}
                                 >
                                   Accept
-                                </Button>
+                                </Button>)
+                                }
                                 <Button
                                   variant="outlined"
                                   color="info"

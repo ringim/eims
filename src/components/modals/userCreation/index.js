@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Modal,
   Box,
@@ -36,14 +36,32 @@ const style = {
 const CreateUser = (props) => {
   const { open, handleClose, isEditing=false, isUserCreated } = props;
   const {user, signUp, db, createUser} = useUserAuth();
-  const { setLoading, loading } = useStore(
+  const { setLoading, loading, users } = useStore(
     (state) => ({
       setLoading: state?.setLoading,
       loading: state?.loading,
+      users: state?.users,
     }),
     shallow
   );
-  console.log('--------------isEditiong: ', isEditing)
+  const data = users?.find(item => item?._id === isEditing)
+  console.log('--------------user to edit: ', data)
+  useEffect(() => {
+    if(isEditing){
+      setValues({
+        firstName: data?.firstName,
+        lastName: data?.lastName,
+        email: data?.email,
+        organization: data?.organization,
+        postalCode: data?.postalCode,
+        role: data?.role,
+        status: data?.status,
+        state: data?.state,
+        lga: data?.lga,
+        address: data?.address,
+      })
+    }
+  }, [isEditing])
   const formik = useFormik({
     initialValues: {
       firstName: "",
@@ -109,7 +127,7 @@ const CreateUser = (props) => {
     },
   });
 
-  const { values, errors, touched, setFieldValue, handleSubmit, handleBlur } =
+  const { values, errors, touched, setFieldValue, handleSubmit, handleBlur, setValues } =
     formik;
   return (
     <Modal
@@ -139,11 +157,11 @@ const CreateUser = (props) => {
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <Box sx={{ width: "100%" }}>
-                  <p htmlFor="my-input" className="label">
+                  <p htmlFor="firstName" className="label">
                     First Name
                   </p>
                   <input
-                    id="my-input"
+                    id="firstName"
                     placeholder="First Name"
                     className="styled-input"
                     value={values?.firstName}
@@ -153,11 +171,11 @@ const CreateUser = (props) => {
               </Grid>
               <Grid item xs={6}>
                 <Box sx={{ width: "100%" }}>
-                  <p htmlFor="my-input" className="label">
+                  <p htmlFor="lastName" className="label">
                     Last Name
                   </p>
                   <input
-                    id="my-input"
+                    id="lastName"
                     placeholder="Last Name"
                     className="styled-input"
                     value={values?.lastName}
@@ -167,11 +185,11 @@ const CreateUser = (props) => {
               </Grid>
               <Grid item xs={6}>
                 <Box sx={{ width: "100%" }}>
-                  <p htmlFor="my-input" className="label">
+                  <p htmlFor="email" className="label">
                     Email address
                   </p>
                   <input
-                    id="my-input"
+                    id="email"
                     placeholder="Email Address"
                     className="styled-input"
                     type='email'
@@ -183,11 +201,11 @@ const CreateUser = (props) => {
               </Grid>
               <Grid item xs={6}>
                 <Box sx={{ width: "100%" }}>
-                  <p htmlFor="my-input" className="label">
+                  <p htmlFor="password" className="label">
                     Password
                   </p>
                   <input
-                    id="my-input"
+                    id="password"
                     placeholder="Password"
                     className="styled-input"
                     type='password'
@@ -199,7 +217,7 @@ const CreateUser = (props) => {
               </Grid>
               <Grid item xs={6}>
                 <Box sx={{ width: "100%" }}>
-                  <p htmlFor="my-input" className="label">
+                  <p className="label">
                     Organization
                   </p>
                   <Select
@@ -240,7 +258,7 @@ const CreateUser = (props) => {
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <Box sx={{ width: "100%" }}>
-                  <p htmlFor="my-input" className="label">
+                  <p className="label">
                     Role
                   </p>
                   <Select
@@ -269,7 +287,7 @@ const CreateUser = (props) => {
               </Grid>
               <Grid item xs={6}>
                 <Box sx={{ width: "100%" }}>
-                  <p htmlFor="my-input" className="label">
+                  <p className="label">
                     Status
                   </p>
                   <Select
@@ -303,11 +321,11 @@ const CreateUser = (props) => {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <Box sx={{ width: "100%" }}>
-                  <p htmlFor="my-input" className="label">
+                  <p htmlFor="address" className="label">
                     Address
                   </p>
                   <input
-                    id="my-input"
+                    id="address"
                     placeholder="Address"
                     className="styled-input"
                     value={values?.address}
@@ -317,7 +335,7 @@ const CreateUser = (props) => {
               </Grid>
               <Grid item xs={4}>
                 <Box sx={{ width: "100%" }}>
-                  <p htmlFor="my-input" className="label">
+                  <p className="label">
                     State
                   </p>
                   <Select
@@ -347,7 +365,7 @@ const CreateUser = (props) => {
               </Grid>
               <Grid item xs={4}>
                 <Box sx={{ width: "100%" }}>
-                  <p htmlFor="my-input" className="label">
+                  <p className="label">
                     LGA
                   </p>
                   <Select
@@ -373,11 +391,11 @@ const CreateUser = (props) => {
               </Grid>
               <Grid item xs={4}>
                 <Box sx={{ width: "100%" }}>
-                  <p htmlFor="my-input" className="label">
+                  <p htmlFor="postalCode" className="label">
                     Postal Code
                   </p>
                   <input
-                    id="my-input"
+                    id="postalCode"
                     placeholder="Postal Code"
                     className="styled-input"
                     value = {values?.postalCode}
@@ -391,7 +409,7 @@ const CreateUser = (props) => {
           </Box>
           <Box sx={{margin: '40px 0px', display: 'flex', gap: 2, justifyContent:'flex-end'}}>
             <LoadingButton onClick={handleClose} variant='outlined' color='error' sx={{width: 150}}>Discard</LoadingButton>
-            <LoadingButton type="submit" variant='outlined' sx={{width: 200}} loading={loading}>Create</LoadingButton>
+            <LoadingButton type="submit" variant='outlined' sx={{width: 200}} loading={loading}>{isEditing ? 'Update' : 'Create'}</LoadingButton>
           </Box>
         </form>
       </Box>
