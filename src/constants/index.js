@@ -12,6 +12,35 @@ export const ORGANIZATIONS = [
     value: "tb",
   },
 ];
+export const RESERVED_STATES = {
+  acomin: [
+    { label: "Edo", value: "edo" },
+    { label: "Rivers", value: "rivers" },
+    { label: "Delta", value: "delta" },
+    { label: "Cross River", value: "cross river" },
+    { label: "Anambra", value: "anambra" },
+    { label: "Ogun", value: "ogun" },
+    { label: "Ekiti", value: "ekiti" },
+    {
+      label: "FCT Abuja",
+      value: "fct abuja",
+    },
+  ],
+  nepwhan: [
+    { label: "Kano", value: "kano" },
+    { label: "Gombe", value: "gombe" },
+    { label: "Nasarawa", value: "nasarawa" },
+    { label: "Plateau", value: "plateau" },
+    { label: "Kwara", value: "kwara" },
+    { label: "Oyo", value: "oyo" },
+    { label: "Ondo", value: "ondo" },
+    { label: "Kaduna", value: "kanduna" },
+  ],
+  tb: [
+    { label: "Jigawa", value: "jigawa" },
+    { label: "Lagos", value: "lagos" },
+  ],
+};
 
 export const ROLES = [
   {
@@ -843,7 +872,7 @@ export const LGAs = {
   ],
 
   kano: [
-   { label: "Albasu", value: "Albasu" },
+    { label: "Albasu", value: "Albasu" },
     { label: "Ajingi", value: "Ajingi" },
     { label: "Bagwai", value: "Bagwai" },
     { label: "Bebeji", value: "Bebeji" },
@@ -882,11 +911,11 @@ export const LGAs = {
     { label: "Takai", value: "Takai" },
     { label: "Tarauni", value: "Tarauni" },
     { label: "Tofa", value: "Tofa" },
-    { label:"Tsanyawa", value: "Tsanyawa" },
-    { label:"Tudun Wada", value: "Tudun Wada" },
+    { label: "Tsanyawa", value: "Tsanyawa" },
+    { label: "Tudun Wada", value: "Tudun Wada" },
     { label: "Ungogo", value: "Ungogo" },
     { label: "Warawa", value: "Warawa" },
-    { label: "Wudil", value: "Wudil" }
+    { label: "Wudil", value: "Wudil" },
   ],
 
   katsina: [
@@ -1999,7 +2028,7 @@ export const LGAs = {
     },
   ],
 
-  ['fct abuja']: [
+  ["fct abuja"]: [
     {
       label: "Abaji",
       value: "abaji",

@@ -16,7 +16,7 @@ import Iconify from "../../../components/iconify";
 import Select from "react-select";
 import ErrorMessage from "src/utils/errorMessage";
 import SelectStyling from "src/utils/selectStyling";
-import { ORGANIZATIONS, ROLES, STATUS, STATES, LGAs } from "src/constants";
+import { ORGANIZATIONS, ROLES, STATUS, STATES, LGAs, RESERVED_STATES } from "src/constants";
 import { useStore } from "src/store";
 // ----------------------------------------------------------------------
 
@@ -69,10 +69,13 @@ export default function UserListToolbar({
   onFilterName,
   handleFilterSurveys = () => {},
   handleFilterUsers = () => {},
+  filteredSurveys,
 }) {
   const users = useStore((state) => state?.users);
   const surveys = useStore((state) => state?.surveys);
+  const userInfo = useStore(state => state?.userInfo)
 
+  const [orgOptions, setOrgOptions] = useState(ORGANIZATIONS)
   const [userOptions, setUserOptions] = useState([])
   const [organizationFilter, setOrganizationFilter] = useState(null);
   const [userFilter, setUserFilter] = useState(null);
@@ -82,12 +85,20 @@ export default function UserListToolbar({
   const [dateTo, setDateTo] = useState(null)
 
   useEffect(() => {
+    if(userInfo?.role === 'supervisor'){
+      setOrganizationFilter(userInfo?.organization)
+      setStateFilter(userInfo?.state)
+    }
+  }, [])
+
+  useEffect(() => {
     handleFilterSurveys({ organizationFilter, userFilter, dateFrom, dateTo });
   }, [organizationFilter, userFilter, dateFrom, dateTo]);
 
   useEffect(() => {
     handleFilterUsers({ stateFilter, lgaFilter });
   }, [stateFilter, lgaFilter]);
+
 
   return (
     <StyledRoot
@@ -134,6 +145,7 @@ export default function UserListToolbar({
                 // components={{
                 //   IndicatorSeparator: () => null,
                 // }}
+                isDisabled={userInfo?.role === 'supervisor'}
                 value={
                   organizationFilter
                     ? ORGANIZATIONS?.find(
@@ -144,19 +156,74 @@ export default function UserListToolbar({
                 // onBlur={handleBlur}
                 onChange={(e) => {
                   setOrganizationFilter(e?.value);
-                  setUserOptions(users?.filter(user => user?.organization === e?.value)?.map(item => ({
-                    label: item?.firstName + " " + item?.lastName,
-                    value: item?.email,
-                  })))
+                  // setUserOptions(users?.filter(user => user?.organization === e?.value))
+                  if(!e){
+                    setStateFilter(null)
+                  }
                 }}
               />
             </Box>
+            <Box sx={{ width: "20%", height: "40px" }}>
+            <Select
+              name="state"
+              placeholder="State"
+              isClearable
+              options={organizationFilter ? RESERVED_STATES[organizationFilter]: []}
+              styles={SelectStyling}
+              // components={{
+              //   IndicatorSeparator: () => null,
+              // }}
+              isDisabled={userInfo?.role === 'supervisor'}
+              value={
+                stateFilter
+                  ? RESERVED_STATES[organizationFilter]?.find((item) => item?.value === stateFilter)
+                  : null
+              }
+              // onBlur={handleBlur}
+              onChange={(e) => {
+                if(e){
+                  setStateFilter(e?.value);
+                  // setUserOptions(userOptions?.filter(user => user?.state === e?.value))
+                }else{
+                  setStateFilter(null)
+                  setLgaFilter(null)
+                }
+              }}
+            />
+          </Box>
+          <Box sx={{ width: "20%", height: "40px" }}>
+            <Select
+              name="lga"
+              placeholder="LGA"
+              isClearable
+              options={LGAs[`${stateFilter}`]}
+              styles={SelectStyling}
+              // components={{
+              //   IndicatorSeparator: () => null,
+              // }}
+              value={
+                lgaFilter
+                  ? LGAs[`${stateFilter}`]?.find(
+                      (item) => item?.value === lgaFilter
+                    )
+                  : null
+              }
+              // onBlur={handleBlur}
+              onChange={(e) => {
+                setLgaFilter(e?.value);
+                setUserOptions(users?.filter(user => user?.lga === e?.value))
+              }}
+            />
+          </Box>
             <Box sx={{ width: "20%", height: "40px" }}>
               <Select
                 name="user"
                 placeholder="User"
                 isClearable
-                options={userOptions}
+                options={userOptions?.map(item => ({
+                  label: item?.firstName + " " + item?.lastName,
+                  value: item?.email,
+                }))}
                 styles={SelectStyling}
                 // components={{
                 //   IndicatorSeparator: () => null,
@@ -207,7 +274,7 @@ export default function UserListToolbar({
           <Box sx={{width: '100%', marginTop: 3, display: 'flex', gap: 4}}>
             <Box sx={{width: '200px', borderRadius: '5px', border: '1px solid #CCCCCC', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between'}}>
               <p>Total CEI</p>
-              <p style={{fontWeight: 700, fontSize: 22}}>{surveys?.filter(item => item?.name === 'ATM Client Exist Interview Survey')?.length ?? 0}</p>
+              <p style={{fontWeight: 700, fontSize: 22}}>{filteredSurveys?.length ?? 0}</p>
             </Box>
             <Box sx={{width: '200px', borderRadius: '5px', border: '1px solid #CCCCCC', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between'}}>
               <p>Total KII - Health Facility</p>
@@ -264,6 +331,7 @@ export default function UserListToolbar({
               // components={{
               //   IndicatorSeparator: () => null,
               // }}
+              isDisabled={userInfo?.role === 'supervisor'}
               value={
                 stateFilter
                   ? STATES?.find((item) => item?.value === stateFilter)

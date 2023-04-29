@@ -50,7 +50,7 @@ export default function Nav({ openNav, onCloseNav }) {
   const { logOut } = useUserAuth();
 
   const userInfo = useStore((state) => state?.userInfo);
-  const isAdmin = userInfo?.isAdmin;
+  const userRole = userInfo?.role === 'super-admin' || userInfo?.role === 'supervisor';
   useEffect(() => {
     if (openNav) {
       onCloseNav();
@@ -126,7 +126,7 @@ export default function Nav({ openNav, onCloseNav }) {
 
         <NavSection
           data={
-            isAdmin
+            userRole
               ? navConfig?.filter((item) => item?.path !== "/survey")
               : navConfig?.filter(
                   (item) =>

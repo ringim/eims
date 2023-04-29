@@ -17,7 +17,7 @@ import UserPermissions from "./pages/UserPermissions";
 // ----------------------------------------------------------------------
 
 export default function Router() {
-  const isAdmin = useStore((state) => state?.userInfo?.isAdmin);
+  const userRole = useStore((state) => state?.userInfo?.role);
   const routes = useRoutes([
     {
       path: "/",
@@ -32,7 +32,7 @@ export default function Router() {
           path: "dashboard",
           element:
             // <ProtectedRoute>
-            isAdmin ? <AdminDashboardPage /> : <UserDashboardPage />,
+            (userRole === 'super-admin' || userRole === 'supervisor') ? <AdminDashboardPage /> : <UserDashboardPage />,
           // </ProtectedRoute>
         },
         {

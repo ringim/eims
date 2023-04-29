@@ -24,10 +24,9 @@ import { shallow } from "zustand/shallow";
 // ----------------------------------------------------------------------
 
 export default function UserDashboardPage() {
-  const { surveys, isAdmin, userInfo } = useStore(
+  const { surveys, userInfo } = useStore(
     (state) => ({
       surveys: state?.surveys,
-      isAdmin: state?.userInfo?.isAdmin,
       userInfo: state?.userInfo,
     }),
     shallow

@@ -286,6 +286,7 @@ export default function Submission() {
             filterName={filterName}
             onFilterName={handleFilterByName}
             handleFilterSurveys={handleFilterSurveys}
+            filteredSurveys={filteredSurveys}
           />
 
           <Scrollbar>

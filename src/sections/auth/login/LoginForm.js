@@ -45,9 +45,9 @@ export default function LoginForm() {
       const user = users?.find(item => item?.email === email)
       if (user?.role === 'super-admin') {
         // is user admin
-        setUserInfo({ isAdmin: true, email, name: user?.firstName+" "+user?.lastName, organization: user?.organization });
+        setUserInfo({ isAdmin: true, email, role: user?.role, state: user?.state, name: user?.firstName+" "+user?.lastName, organization: user?.organization });
       } else {
-        setUserInfo({ isAdmin: false, email, name: user?.firstName+" "+user?.lastName, organization: user?.organization });
+        setUserInfo({ isAdmin: false, email, role: user?.role, state: user?.state, name: user?.firstName+" "+user?.lastName, organization: user?.organization });
       }
       if(user?.status !== 'active'){
         setError('Your account is suspended!')
