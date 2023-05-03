@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import ATMClientSurvey from "src/surveys/atmClientSurvey";
+import ATMClientSurvey from "src/surveys/clientExitInterview";
 const style = {
   position: "absolute",
   top: "50%",
