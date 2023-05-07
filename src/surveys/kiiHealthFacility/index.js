@@ -9,7 +9,7 @@ import { useStore } from "src/store";
 import { shallow } from "zustand/shallow";
 StylesManager.applyTheme("modern");
 
-function ATMClientSurvey(props) {
+function KiiHealthFacility(props) {
   const { name, startedAt, surveyId, isEditing = false } = props;
   // check if there's internet
   const isOnline = navigator.onLine;
@@ -96,4 +96,4 @@ function ATMClientSurvey(props) {
   return <Survey model={survey} />;
 }
 
-export default ATMClientSurvey;
+export default KiiHealthFacility;

@@ -120,7 +120,7 @@ export default function Submission() {
   const [filteredSurveys, setFilteredSurveys] = useState(
     surveys
   );
-  const [surveyId, setSurveyId] = useState(null)
+  const [modalData, setModalData] = useState(null)
   const [isEditModalOpen, setEditModalOpen] = useState(false);
 
   const toggleModal = () => setOpen(!open);
@@ -185,8 +185,8 @@ export default function Submission() {
       setLoading(false)
     }
   }
-  const handleViewSurvey = (id) => {
-    setSurveyId(id);
+  const handleViewSurvey = (id, name) => {
+    setModalData({surveyId: id, name: name});
     setEditModalOpen(!isEditModalOpen);
   };
   const handleCloseMenu = () => {
@@ -260,8 +260,7 @@ export default function Submission() {
         <ViewSurveyModal
           isOpen={isEditModalOpen}
           handleClose={handleViewSurvey}
-          surveyId={surveyId}
-          name="ATM Client Exist Interview Survey"
+          modalData={modalData}
         />
       )}
       <Helmet>
@@ -446,7 +445,7 @@ export default function Submission() {
                                 <Button
                                   variant="outlined"
                                   color="info"
-                                  onClick={() => handleViewSurvey(id)}
+                                  onClick={() => handleViewSurvey(id, name)}
                                 >
                                   View
                                 </Button>

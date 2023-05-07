@@ -35,24 +35,26 @@ export default function LoginForm() {
     }),
     shallow
   );
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     try {
       setLoading(true);
       await logIn(email, password);
-      const user = users?.find(item => item?.email === email)
-      if (user?.role === 'super-admin') {
-        // is user admin
-        setUserInfo({ isAdmin: true, email, role: user?.role, state: user?.state, name: user?.firstName+" "+user?.lastName, organization: user?.organization });
-      } else {
-        setUserInfo({ isAdmin: false, email, role: user?.role, state: user?.state, name: user?.firstName+" "+user?.lastName, organization: user?.organization });
-      }
-      if(user?.status !== 'active'){
-        setError('Your account is suspended!')
+      const user = users?.find((item) => item?.email === email);
+      setUserInfo({
+        isAdmin: user?.role === "super-admin" ? true : false,
+        email,
+        role: user?.role,
+        state: user?.state,
+        name: user?.firstName + " " + user?.lastName,
+        organization: user?.organization,
+      });
+      if (user?.status !== "active") {
+        setError("Your account is suspended!");
         setLoading(false);
-      }else{
+      } else {
         navigate("/", { replace: true });
       }
     } catch (err) {

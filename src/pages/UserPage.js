@@ -39,6 +39,7 @@ import { shallow } from "zustand/shallow";
 import { doc, deleteDoc } from "firebase/firestore";
 import { useUserAuth } from "src/context";
 import ATMClientSurveyModal from "src/components/modals/atmClientSurvey";
+import SelectSurvey from "src/components/modals/selectSurvey";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -112,7 +113,7 @@ export default function UserPage() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
 
-  const [surveyId, setSurveyId] = useState(null);
+  const [modalData, setModalData] = useState({surveyId: null, name: null});
 
   // const [surveys, setSurveyList] = useState([]);
   // const [loading, setLoading] = useState(false);
@@ -120,8 +121,8 @@ export default function UserPage() {
   console.log("+++++++++++++++++++Surveys from store: ", surveys);
   const toggleModal = () => setOpen(!open);
   const toggleSurveyModal = () => setModalOpen(!isModalOpen);
-  const toggleEditSurveyModal = (id) => {
-    setSurveyId(id);
+  const toggleEditSurveyModal = (id, name) => {
+    setModalData({surveyId: id, name: name})
     setEditModalOpen(!isEditModalOpen);
   };
 
@@ -198,18 +199,13 @@ export default function UserPage() {
   return (
     <>
       {isModalOpen && (
-        <ATMClientSurveyModal
-          isOpen={isModalOpen}
-          handleClose={toggleSurveyModal}
-          name="ATM Client Exist Interview Survey"
-        />
+        <SelectSurvey isOpen={isModalOpen} handleClose={toggleSurveyModal} />
       )}
       {isEditModalOpen && (
         <ViewSurveyModal
           isOpen={isEditModalOpen}
           handleClose={toggleEditSurveyModal}
-          surveyId={surveyId}
-          name="ATM Client Exist Interview Survey"
+          modalData={modalData}
         />
       )}
       <Helmet>
@@ -404,7 +400,7 @@ export default function UserPage() {
                                   alt="edit survey"
                                   style={{ cursor: "pointer" }}
                                 /> */}
-                                {status === 'Preview' && <Box onClick={() => toggleEditSurveyModal(id)}>
+                                {status === 'Preview' && <Box onClick={() => toggleEditSurveyModal(id, name)}>
                                   <img
                                     src={require("../assets/icons/edit.png")}
                                     alt="view survey"

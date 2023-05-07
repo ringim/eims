@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import ATMClientSurvey from "src/surveys/clientExitInterview";
 import KiiHealthFacility from "src/surveys/kiiHealthFacility";
 const style = {
   position: "absolute",
@@ -18,10 +17,8 @@ const style = {
   boxShadow: 24,
 };
 
-function ViewSurveyModal(props) {
-  const { isOpen, handleClose, modalData } = props;
-  const {name, surveyId} = modalData
-  console.log('name: ', name)
+function KiiHealthFacilitySurveyModal(props) {
+  const { isOpen, handleClose, name } = props;
   return (
     <div>
       <Modal
@@ -73,17 +70,7 @@ function ViewSurveyModal(props) {
               p: 2,
             }}
           >
-            {name === "ATM Client Exist Interview Survey" ? <ATMClientSurvey
-              name={name}
-              startedAt={new Date().toISOString()}
-              surveyId={surveyId}
-              isEditing={true}
-            /> : <KiiHealthFacility
-            name={name}
-            startedAt={new Date().toISOString()}
-            surveyId={surveyId}
-            isEditing={true}
-          />}
+            <KiiHealthFacility name={name} startedAt={new Date().toISOString()} />
           </Box>
         </Box>
       </Modal>
@@ -91,4 +78,4 @@ function ViewSurveyModal(props) {
   );
 }
 
-export default ViewSurveyModal;
+export default KiiHealthFacilitySurveyModal;

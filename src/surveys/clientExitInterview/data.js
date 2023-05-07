@@ -610,52 +610,9 @@ export const surveyData = {
           storeDataAsText: false,
           allowMultiple: true,
           maxSize: 1024000,
-          // maxSize: 1024000,
-          // html: `
-          // <label><b>Please capture up to 5 pictures using your device camera:</b></label>
-          // <div id="captureInputs">
-          //   <div>
-          //     <input type="file" class="captureImages" name="captureImages1" accept="image/*" capture="environment" style="display:block;" onchange="handleImageCapture(event)">
-          //     <div class="imagePreview"></div>
-          //   </div>
-          //   <div>
-          //     <input type="file" class="captureImages" name="captureImages2" accept="image/*" capture="environment" style="display:block;" onchange="handleImageCapture(event)">
-          //     <div class="imagePreview"></div>
-          //   </div>
-          //   <div>
-          //     <input type="file" class="captureImages" name="captureImages3" accept="image/*" capture="environment" style="display:block;" onchange="handleImageCapture(event)">
-          //     <div class="imagePreview"></div>
-          //   </div>
-          //   <div>
-          //     <input type="file" class="captureImages" name="captureImages4" accept="image/*" capture="environment" style="display:block;" onchange="handleImageCapture(event)">
-          //     <div class="imagePreview"></div>
-          //   </div>
-          //   <div>
-          //     <input type="file" class="captureImages" name="captureImages5" accept="image/*" capture="environment" style="display:block;" onchange="handleImageCapture(event)">
-          //     <div class="imagePreview"></div>
-          //   </div>
-          // </div>
-          // <script defer>
-          //   function handleImageCapture(event) {
-          //     const input = event.target;
-          //     const imagePreview = input.parentElement.querySelector(".imagePreview");
-          
-          //     if (input.files.length > 0) {
-          //       const file = input.files[0];
-          //       const img = document.createElement("img");
-          //       img.src = URL.createObjectURL(file);
-          //       img.height = 100;
-          //       img.style.marginRight = "10px";
-          //       img.onload = () => URL.revokeObjectURL(img.src); // Release memory
-          //       imagePreview.innerHTML = "";
-          //       imagePreview.appendChild(img);
-          //     } else {
-          //       imagePreview.innerHTML = "";
-          //     }
-          //   }
-          // </script>
-          
-          // `,
+          fileTypes: 'image/*',
+          imageWidth: 200,
+          imageHeight: 200,
         }
       ]
     },
