@@ -274,11 +274,11 @@ export default function UserListToolbar({
           <Box sx={{width: '100%', marginTop: 3, display: 'flex', gap: 4}}>
             <Box sx={{width: '200px', borderRadius: '5px', border: '1px solid #CCCCCC', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between'}}>
               <p>Total CEI</p>
-              <p style={{fontWeight: 700, fontSize: 22}}>{filteredSurveys?.length ?? 0}</p>
+              <p style={{fontWeight: 700, fontSize: 22}}>{filteredSurveys?.filter(item => item?.name === "ATM Client Exist Interview Survey")?.length ?? 0}</p>
             </Box>
             <Box sx={{width: '200px', borderRadius: '5px', border: '1px solid #CCCCCC', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between'}}>
               <p>Total KII - Health Facility</p>
-              <p style={{fontWeight: 700, fontSize: 22}}>{0}</p>
+              <p style={{fontWeight: 700, fontSize: 22}}>{filteredSurveys?.filter(item => item?.name === "Kii Health Facility")?.length ?? 0}</p>
             </Box>
             <Box sx={{width: '200px', borderRadius: '5px', border: '1px solid #CCCCCC', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between'}}>
               <p>Total KII - LGA</p>

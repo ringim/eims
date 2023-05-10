@@ -80,16 +80,28 @@ function applySortFilter(array, comparator, query) {
   if (query) {
     return filter(
       array,
-      (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      (_user) =>
+        (_user?.firstName)?.toLowerCase().indexOf(query?.toLowerCase()) !== -1 ||
+        _user?.lastName?.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
+        _user?.role?.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
+        _user?.organization?.toLowerCase().indexOf(query.toLowerCase()) !== -1
     );
   }
   return stabilizedThis?.map((el) => el[0]);
 }
 
 export default function UserPermissions() {
-  const functions = getFunctions()
-  const deleteUserByUid = httpsCallable(functions, 'deleteUser')
-  const { surveys, loading, getUsers, setLoading, users, deleteUser, setNotify } = useStore(
+  const functions = getFunctions();
+  const deleteUserByUid = httpsCallable(functions, "deleteUser");
+  const {
+    surveys,
+    loading,
+    getUsers,
+    setLoading,
+    users,
+    deleteUser,
+    setNotify,
+  } = useStore(
     (state) => ({
       surveys: state?.surveys,
       loading: state?.loading,
@@ -122,29 +134,30 @@ export default function UserPermissions() {
 
   const [isEditModalOpen, setEditModalOpen] = useState(false);
 
-  const [isEditing, setIsEditing] = useState({})
+  const [isEditing, setIsEditing] = useState({});
 
-  const [filterUsers, setFilterUsers] = useState(users)
+  const [filterUsers, setFilterUsers] = useState(users);
 
   // const [surveys, setSurveyList] = useState([]);
   // const [loading, setLoading] = useState(false);
   const fetchUsers = async () => {
-    const data = await getDocs(collection(db, 'users'));
-    return data
-  }
+    const data = await getDocs(collection(db, "users"));
+    return data;
+  };
 
   const handleGetUsers = () => {
-    getUsers(db).then(data => {
-      setLoading(false)
-      console.log('------------we get users: ', data?.docs)})
-  }
+    getUsers(db).then((data) => {
+      setLoading(false);
+      console.log("------------we get users: ", data?.docs);
+    });
+  };
   useEffect(() => {
-    handleGetUsers()
-  }, [])
+    handleGetUsers();
+  }, []);
 
-  console.log('---------users: ', users)
-  const toggleModal = () => setModalOpen(!isModalOpen)
-  const toggleEditModal = () => setEditModalOpen(!isEditModalOpen)
+  console.log("---------users: ", users);
+  const toggleModal = () => setModalOpen(!isModalOpen);
+  const toggleEditModal = () => setEditModalOpen(!isEditModalOpen);
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -162,7 +175,7 @@ export default function UserPermissions() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = surveys?.map((n) => n.name);
+      const newSelecteds = filterUsers?.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -201,56 +214,76 @@ export default function UserPermissions() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - surveys?.length) : 0;
-
-  const handleFilterUsers = filters => {
-    const {stateFilter, lgaFilter} = filters
-    if(stateFilter || lgaFilter){
-      let data = users
-      if(stateFilter){
-        data = data?.filter(item => item?.state === stateFilter)
+  const handleFilterUsers = (filters) => {
+    const { stateFilter, lgaFilter } = filters;
+    if (stateFilter || lgaFilter) {
+      let data = users;
+      if (stateFilter) {
+        data = data?.filter((item) => item?.state === stateFilter);
       }
-      if(lgaFilter){
-        data = data?.filter(item => item?.lga === lgaFilter)
+      if (lgaFilter) {
+        data = data?.filter((item) => item?.lga === lgaFilter);
       }
-      setFilterUsers(data)
-    }else{
-      setFilterUsers(users)
+      setFilterUsers(data);
+    } else {
+      setFilterUsers(users);
     }
-  }
-  useEffect(() => {
+  };
 
-  }, [filterUsers])
+  const emptyRows =
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filterUsers?.length) : 0;
+
   const filteredUsers = applySortFilter(
     filterUsers,
     getComparator(order, orderBy),
     filterName
   );
 
-  const isNotFound = !filteredUsers?.length && !!filterName;
+  const isNotFound =
+    (!filteredUsers?.length && !!filterName) || filterUsers?.length === 0;
 
   const handleDeleteUser = (documentId, uid) => {
-    console.log('-----------------UID: ', uid)
+    console.log("-----------------UID: ", uid);
     deleteUser(db, documentId, uid).then(() => {
-      deleteUserByUid({uid}).then(data => {
-        setNotify({ open: true, message: 'User deleted successfully!', type: 'success' })
-        console.log('-----------------------------deleted the user throught functions: ', data)
-        handleGetUsers()
-        setLoading(false)
-      }).catch(error => {
-        console.log('-------------------erorr in function: ', error)
-        setNotify({ open: true, message: error?.message, type: 'error' })
-        setLoading(false)
-      })
-    })
-  }
-
+      deleteUserByUid({ uid })
+        .then((data) => {
+          setNotify({
+            open: true,
+            message: "User deleted successfully!",
+            type: "success",
+          });
+          console.log(
+            "-----------------------------deleted the user throught functions: ",
+            data
+          );
+          handleGetUsers();
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.log("-------------------erorr in function: ", error);
+          setNotify({ open: true, message: error?.message, type: "error" });
+          setLoading(false);
+        });
+    });
+  };
 
   return (
     <>
-      {isModalOpen && <CreateUser open={isModalOpen} handleClose={toggleModal} isUserCreated={handleGetUsers}/>}
-      {isEditModalOpen && isEditing && <CreateUser open={isEditModalOpen} handleClose={toggleEditModal} isUserCreated={handleGetUsers} isEditing={isEditing}/>}
+      {isModalOpen && (
+        <CreateUser
+          open={isModalOpen}
+          handleClose={toggleModal}
+          isUserCreated={handleGetUsers}
+        />
+      )}
+      {isEditModalOpen && isEditing && (
+        <CreateUser
+          open={isEditModalOpen}
+          handleClose={toggleEditModal}
+          isUserCreated={handleGetUsers}
+          isEditing={isEditing}
+        />
+      )}
       <Helmet>
         <title> User | Minimal UI </title>
       </Helmet>
@@ -275,7 +308,7 @@ export default function UserPermissions() {
                 fontSize: "18px",
                 fontWeight: "700",
               }}
-                onClick={toggleModal}
+              onClick={toggleModal}
             >
               + New User
             </Button>
@@ -297,7 +330,7 @@ export default function UserPermissions() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={surveys?.length}
+                  rowCount={filterUsers?.length}
                   numSelected={selected?.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
@@ -392,12 +425,10 @@ export default function UserPermissions() {
                               </Stack>
                             </TableCell>
 
-                            <TableCell align="left">
-                              {role}
-                            </TableCell>
+                            <TableCell align="left">{role}</TableCell>
 
                             <TableCell align="left">
-                              {!organization ? '-' : organization}
+                              {!organization ? "-" : organization}
                             </TableCell>
 
                             {/* <TableCell align="left">
@@ -407,9 +438,7 @@ export default function UserPermissions() {
                             <TableCell align="left">
                               <Label
                                 color={
-                                  status === "active"
-                                    ? "success"
-                                    : "error"
+                                  status === "active" ? "success" : "error"
                                 }
                               >
                                 {status}
@@ -429,8 +458,8 @@ export default function UserPermissions() {
                                   alt="edit user"
                                   style={{ cursor: "pointer" }}
                                   onClick={() => {
-                                    toggleEditModal()
-                                    setIsEditing({_id, uid})
+                                    toggleEditModal();
+                                    setIsEditing({ _id, uid });
                                   }}
                                 />
                                 <img
@@ -438,8 +467,12 @@ export default function UserPermissions() {
                                   alt="delete user"
                                   style={{ cursor: "pointer" }}
                                   onClick={() => {
-                                    if(window.confirm('Are you sure, you want to delete user?')){
-                                      handleDeleteUser(_id, uid)
+                                    if (
+                                      window.confirm(
+                                        "Are you sure, you want to delete user?"
+                                      )
+                                    ) {
+                                      handleDeleteUser(_id, uid);
                                     }
                                   }}
                                 />
@@ -489,7 +522,7 @@ export default function UserPermissions() {
           <TablePagination
             rowsPerPageOptions={[8, 15, 25]}
             component="div"
-            count={surveys?.length}
+            count={filterUsers?.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import ATMClientSurveyModal from "../atmClientSurvey";
+import KiiHealthFacilitySurveyModal from "../kiiHealthSurvey";
 const style = {
   position: "absolute",
   top: "50%",
@@ -19,16 +20,27 @@ const style = {
 
 function SelectSurvey(props) {
   const { isOpen, handleClose } = props;
-  const [open, setOpen] = useState(false);
+  const [openATMClient, setOpenATMClient] = useState(false);
+  const [openKiiHealth, setKiiHealth] = useState(false)
 
-  const toggleModal = () => setOpen(!open);
+  const toggleATMClientModal = () => setOpenATMClient(!openATMClient);
+  const toggleKiiHealthModal = () => {
+    console.log('kii helath modal toggled.')
+    setKiiHealth(!openKiiHealth)
+  }
+
   return (
     <div>
-      <ATMClientSurveyModal
-        isOpen={open}
-        handleClose={toggleModal}
+      {openATMClient && <ATMClientSurveyModal
+        isOpen={openATMClient}
+        handleClose={toggleATMClientModal}
         name="ATM Client Exist Interview Survey"
-      />
+      />}
+      {openKiiHealth && <KiiHealthFacilitySurveyModal
+        isOpen={openKiiHealth}
+        handleClose={toggleKiiHealthModal}
+        name="Kii Health Facility"
+      />}
       <Modal
         open={isOpen}
         onClose={handleClose}
@@ -82,8 +94,8 @@ function SelectSurvey(props) {
                 cursor: "pointer",
               }}
               onClick={() => {
-                toggleModal();
-                handleClose();
+                toggleATMClientModal();
+                // handleClose();
               }}
             >
               <img
@@ -97,12 +109,40 @@ function SelectSurvey(props) {
               </Typography>
             </Box>
           </Box>
+          <Box sx={{ marginTop: 2 }}>
+            <Box
+              sx={{
+                background: "#F2F5FF",
+                display: "flex",
+                gap: "18px",
+                alignItems: "center",
+                padding: "18px",
+                borderRadius: "8px",
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                toggleKiiHealthModal();
+                // handleClose();
+              }}
+            >
+              <img
+                src={require("../../../assets/icons/template.png")}
+                alt="template"
+                width="31px"
+                height="36px"
+              />
+              <Typography component="h4" fontSize="18px" fontWeight="700">
+                KII Health
+              </Typography>
+            </Box>
+          </Box>
           <Button
+            color="error"
             variant="outlined"
             sx={{ width: "100%", marginTop: 2 }}
             onClick={handleClose}
           >
-            Cancel
+            Close
           </Button>
         </Box>
       </Modal>

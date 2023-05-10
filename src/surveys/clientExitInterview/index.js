@@ -27,6 +27,8 @@ function ATMClientSurvey(props) {
     shallow
   );
 
+  if(userInfo?.role !== 'user') survey.mode = 'display'
+
   let surveyDetails = {};
   if (isEditing) {
     surveyDetails = surveys?.find((item) => item?.id === surveyId);
@@ -36,6 +38,7 @@ function ATMClientSurvey(props) {
   const createSurvey = async (data) => {
     const { survey } = data;
     const user = users?.find(user => user?.email === userInfo?.email)
+    console.log('--------survey creating: ', survey)
     try {
       if (isOnline) {
         if (isEditing) {
@@ -75,6 +78,20 @@ function ATMClientSurvey(props) {
   }, []);
 
   survey.onComplete.add(alertResults);
+  
+  survey.onUploadFiles.add((survey, options) => {
+    var formData = new FormData();
+    options.files.forEach(file => { formData.append(file.name, file); });
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "https://api.surveyjs.io/private/Surveys/uploadTempFiles");
+    xhr.onload = function () {
+        var data = JSON.parse(xhr.responseText);
+        options.callback("success", options.files.map(function (file) {
+            return { file: file, content: "https://api.surveyjs.io/private/Surveys/getTempFile?name=" + data[file.name] };
+        }));
+    };
+    xhr.send(formData);
+});
 
   return <Survey model={survey} />;
 }

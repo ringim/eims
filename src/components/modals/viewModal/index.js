@@ -3,7 +3,8 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import ATMClientSurvey from "src/surveys/atmClientSurvey";
+import ATMClientSurvey from "src/surveys/clientExitInterview";
+import KiiHealthFacility from "src/surveys/kiiHealthFacility";
 const style = {
   position: "absolute",
   top: "50%",
@@ -18,7 +19,9 @@ const style = {
 };
 
 function ViewSurveyModal(props) {
-  const { isOpen, handleClose, name, surveyId } = props;
+  const { isOpen, handleClose, modalData } = props;
+  const {name, surveyId} = modalData
+  console.log('name: ', name)
   return (
     <div>
       <Modal
@@ -70,12 +73,17 @@ function ViewSurveyModal(props) {
               p: 2,
             }}
           >
-            <ATMClientSurvey
+            {name === "ATM Client Exist Interview Survey" ? <ATMClientSurvey
               name={name}
               startedAt={new Date().toISOString()}
               surveyId={surveyId}
               isEditing={true}
-            />
+            /> : <KiiHealthFacility
+            name={name}
+            startedAt={new Date().toISOString()}
+            surveyId={surveyId}
+            isEditing={true}
+          />}
           </Box>
         </Box>
       </Modal>

@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import ATMClientSurvey from "src/surveys/clientExitInterview";
+import KiiHealthFacility from "src/surveys/kiiHealthFacility";
 const style = {
   position: "absolute",
   top: "50%",
@@ -17,7 +17,7 @@ const style = {
   boxShadow: 24,
 };
 
-function ATMClientSurveyModal(props) {
+function KiiHealthFacilitySurveyModal(props) {
   const { isOpen, handleClose, name } = props;
   return (
     <div>
@@ -70,7 +70,7 @@ function ATMClientSurveyModal(props) {
               p: 2,
             }}
           >
-            <ATMClientSurvey name={name} startedAt={new Date().toISOString()} />
+            <KiiHealthFacility name={name} startedAt={new Date().toISOString()} />
           </Box>
         </Box>
       </Modal>
@@ -78,4 +78,4 @@ function ATMClientSurveyModal(props) {
   );
 }
 
-export default ATMClientSurveyModal;
+export default KiiHealthFacilitySurveyModal;
