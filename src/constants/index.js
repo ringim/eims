@@ -64,18 +64,18 @@ export const RESERVED_STATES = {
 
 export const RESERVED_ORGANIZATIONS = {
   acomin: [
-    { label: "POSITIVE CARE SUPPORT GROUP", ATMNETWORKS:"Acomin"},
-    { label: "Living Well support Group ", ATMNETWORKS:"Acomin"},
+    { label: "POSITIVE CARE SUPPORT GROUP", value:"positive care"},
+    { label: "Living Well support Group ", value:"ligiving care"},
   ],
 
   nepwhan: [
-    { label: "Worldsmith Life Builders Foundation", ATMNETWORKS:"Nepwhan"},
-    { label: "IRETIAYO SUPPORT GROUP ", ATMNETWORKS:"Nepwhan"},
+    { label: "Worldsmith Life Builders Foundation", value:"worldsmith"},
+    { label: "IRETIAYO SUPPORT GROUP ", value:"irjigja"},
   ],
 
   tb: [
-    { label: "HeaIthy Living and Social Development Foundation ", ATMNETWORKS:"TB Network"},
-    { label: "Kids &Teens Resource Centre (K&TRC)", ATMNETWORKS:"TB Network"},
+    { label: "HeaIthy Living and Social Development Foundation ", value:"TB"},
+    { label: "Kids &Teens Resource Centre (K&TRC)", value:"TB Network"},
   ]
 
 };

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Modal,
   Box,
@@ -46,6 +46,7 @@ const CreateUser = (props) => {
     }),
     shallow
   );
+  const [reservedOrgOptions, setReservedOrgOptions] = useState([])
   const functions = getFunctions()
   const updateUserByUid = httpsCallable(functions, 'updateUser')
   const data = users?.find(item => item?._id === isEditing?._id)
@@ -55,35 +56,33 @@ const CreateUser = (props) => {
         firstName: data?.firstName,
         lastName: data?.lastName,
         email: data?.email,
-        atmnetwork: data?.atmnetwork,
-        organization: data?.organization,
-        postalCode: data?.postalCode,
+        organization: ATMNETWORKS?.find(item => item?.value === data?.organization)?.value,
         role: data?.role,
         status: data?.status,
         state: data?.state,
         lga: data?.lga,
-        ward: data?.ward,
+        ward: data?.ward ?? data?.postalCode,
         address: data?.address,
+        reservedOrg: data?.reservedOrg,
       })
+      setReservedOrgOptions(RESERVED_ORGANIZATIONS?.[data?.organization])
     }
   }, [])
 
-
 //Abubakar
 // Step 3: Filter organizations based on selected ATM Network
-const filteredOrganizations = RESERVED_ORGANIZATIONS.filter((org) => {
-  // Assuming each organization has a property called "network" that stores the ATM Network it belongs to
-  return org.network === ATMNETWORKS;
-});
+// const filteredOrganizations = RESERVED_ORGANIZATIONS.filter((org) => {
+//   // Assuming each organization has a property called "network" that stores the ATM Network it belongs to
+//   return org.network === ATMNETWORKS;
+// });
 
-// Step 4: Update Organization Dropdown Options based on the filtered organizations
-const organizationOptions = filteredOrganizations.map((org) => ({
-label: org.label,
-value: org.value,
-}));
+// // Step 4: Update Organization Dropdown Options based on the filtered organizations
+// const organizationOptions = filteredOrganizations.map((org) => ({
+// label: org.label,
+// value: org.value,
+// }));
 
 // Set the organizationOptions state variable
-setOrganizationOptions(organizationOptions);
 // 
 
   const formik = useFormik({
@@ -92,8 +91,8 @@ setOrganizationOptions(organizationOptions);
       lastName: "",
       email: "",
       password: null,
-      atmnetwork: "",
       organization: "",
+      reservedOrg: "",
       role: "",
       status: "",
       state: "",
@@ -106,8 +105,8 @@ setOrganizationOptions(organizationOptions);
       lastName: yup.string(),
       email: yup.string(),
       password: yup.string(),
-      atmnetwork: yup.string(),
       organization: yup.string(),
+      reservedOrg: yup.string(),
       role: yup.string(),
       status: yup.string(),
       state: yup.string(),
@@ -116,7 +115,7 @@ setOrganizationOptions(organizationOptions);
       ward: yup.string(),
     }),
     onSubmit: (values) => {
-      const {firstName, lastName, email, password, atmnetwork, organization, role, status, state, lga, ward, address} = values
+      const {firstName, lastName, email, password, organization, role, status, state, lga, ward, address, reservedOrg} = values
       if(email){
         if(isEditing?._id){
           // update user
@@ -133,14 +132,14 @@ setOrganizationOptions(organizationOptions);
                 firstName,
                 lastName,
                 email,
-                atmnetwork,
                 organization,
                 role,
                 status,
                 state,
                 lga,
                 ward,
-                address
+                address,
+                reservedOrg,
               }
               updateUser(db, isEditing?._id, payload).then(data => {
                 isUserCreated()
@@ -165,14 +164,14 @@ setOrganizationOptions(organizationOptions);
                   firstName,
                   lastName,
                   email,
-                  atmnetwork,
                   organization,
                   role,
                   status,
                   state,
                   lga,
                   ward,
-                  address
+                  address,
+                  reservedOrg,
                 }
                 createUser(payload).then(() => {
                   setLoading(false)
@@ -280,68 +279,62 @@ setOrganizationOptions(organizationOptions);
                   />
                 </Box>
               </Grid>             
-              
+
               <Grid item xs={6}>
                 <Box sx={{ width: "100%" }}>
                   <p className="label">
                     ATM Network
                   </p>
                   <Select
-                    name="atmnetwork"
+                    name="organization"
                     placeholder="Select"
                     isClearable
-                    options={ATMNETWORKS?.map((item) => ({
-                      label: item.label,
-                      value: item.value,
-                    }))}
-                    styles={SelectStyling}
                     
-                    value={
-                      values?.atmnetwork
-                        ? ATMNETWORKS?.find(
-                            (item) => item?.value === values?.atmnetwork
-                          )
-                        : null
-                    }
-                   
+                    options={ATMNETWORKS}
+
+                    styles={SelectStyling}
+                    // components={{
+                    //   IndicatorSeparator: () => null,
+                    // }}
+                    value={values.organization ? ATMNETWORKS?.find(item => item?.value === values?.organization) : null}
+                    // onBlur={handleBlur}
                     onChange={(e) => {
-                      setFieldValue("atmnetwork", e?.value);
+                      setFieldValue("organization", e?.value);
+                      setReservedOrgOptions(RESERVED_ORGANIZATIONS?.[e?.value])
                     }}
                   />
                   <ErrorMessage
                     touched={touched}
                     errors={errors}
-                    name="atmnetwork"
+                    name="organization"
                   />
                 </Box>
               </Grid>
-
               <Grid item xs={6}>
                 <Box sx={{ width: "100%" }}>
                   <p className="label">
                     Organization
                   </p>
                   <Select
-                    name="organization"
+                    name="reservedOrg"
                     placeholder="Select"
                     isClearable
-                    
-                    options={organizationOptions}
+                    options={reservedOrgOptions}
 
                     styles={SelectStyling}
                     // components={{
                     //   IndicatorSeparator: () => null,
                     // }}
-                    value={values.organization}
+                    value={values.reservedOrg ? reservedOrgOptions?.find(item => item?.value === values?.reservedOrg) : null}
                     // onBlur={handleBlur}
                     onChange={(e) => {
-                      setFieldValue("organization", e?.value);
+                      setFieldValue("reservedOrg", e?.value);
                     }}
                   />
                   <ErrorMessage
                     touched={touched}
                     errors={errors}
-                    name="organization"
+                    name="reservedOrg"
                   />
                 </Box>
               </Grid>
@@ -494,7 +487,7 @@ setOrganizationOptions(organizationOptions);
                     id="ward"
                     placeholder="Ward"
                     className="styled-input"
-                    value = {values?.postalCode}
+                    value = {values?.ward}
                     onChange={(e) => {
                       setFieldValue('ward', e?.target?.value)
                     }}
