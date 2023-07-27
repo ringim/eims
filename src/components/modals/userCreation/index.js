@@ -14,7 +14,7 @@ import * as yup from "yup";
 import Select from "react-select";
 import ErrorMessage from "src/utils/errorMessage";
 import SelectStyling from "src/utils/selectStyling";
-import { ORGANIZATIONS, ROLES, STATUS, STATES, LGAs } from "src/constants";
+import { ATMNETWORKS, ORGANIZATIONS, RESERVED_ORGANIZATIONS, ROLES, STATUS, STATES, LGAs } from "src/constants";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import {useUserAuth} from 'src/context'
 import { useStore } from "src/store";
@@ -55,28 +55,50 @@ const CreateUser = (props) => {
         firstName: data?.firstName,
         lastName: data?.lastName,
         email: data?.email,
+        atmnetwork: data?.atmnetwork,
         organization: data?.organization,
         postalCode: data?.postalCode,
         role: data?.role,
         status: data?.status,
         state: data?.state,
         lga: data?.lga,
+        ward: data?.ward,
         address: data?.address,
       })
     }
   }, [])
+
+
+//Abubakar
+// Step 3: Filter organizations based on selected ATM Network
+const filteredOrganizations = RESERVED_ORGANIZATIONS.filter((org) => {
+  // Assuming each organization has a property called "network" that stores the ATM Network it belongs to
+  return org.network === ATMNETWORKS;
+});
+
+// Step 4: Update Organization Dropdown Options based on the filtered organizations
+const organizationOptions = filteredOrganizations.map((org) => ({
+label: org.label,
+value: org.value,
+}));
+
+// Set the organizationOptions state variable
+setOrganizationOptions(organizationOptions);
+// 
+
   const formik = useFormik({
     initialValues: {
       firstName: "",
       lastName: "",
       email: "",
       password: null,
+      atmnetwork: "",
       organization: "",
       role: "",
       status: "",
       state: "",
       lga: "",
-      postalCode: "",
+      ward: "",
       address: "",
     },
     validationSchema: yup.object().shape({
@@ -84,16 +106,17 @@ const CreateUser = (props) => {
       lastName: yup.string(),
       email: yup.string(),
       password: yup.string(),
+      atmnetwork: yup.string(),
       organization: yup.string(),
       role: yup.string(),
       status: yup.string(),
       state: yup.string(),
       lga: yup.string(),
       address: yup.string(),
-      postalCode: yup.string(),
+      ward: yup.string(),
     }),
     onSubmit: (values) => {
-      const {firstName, lastName, email, password, organization, role, status, state, lga, postalCode, address} = values
+      const {firstName, lastName, email, password, atmnetwork, organization, role, status, state, lga, ward, address} = values
       if(email){
         if(isEditing?._id){
           // update user
@@ -110,12 +133,13 @@ const CreateUser = (props) => {
                 firstName,
                 lastName,
                 email,
+                atmnetwork,
                 organization,
                 role,
                 status,
                 state,
                 lga,
-                postalCode,
+                ward,
                 address
               }
               updateUser(db, isEditing?._id, payload).then(data => {
@@ -141,12 +165,13 @@ const CreateUser = (props) => {
                   firstName,
                   lastName,
                   email,
+                  atmnetwork,
                   organization,
                   role,
                   status,
                   state,
                   lga,
-                  postalCode,
+                  ward,
                   address
                 }
                 createUser(payload).then(() => {
@@ -168,6 +193,7 @@ const CreateUser = (props) => {
 
   const { values, errors, touched, setFieldValue, handleSubmit, handleBlur, setValues } =
     formik;
+
   return (
     <Modal
       open={open}
@@ -253,7 +279,43 @@ const CreateUser = (props) => {
                     onChange={e => setFieldValue('password', e.target.value)}
                   />
                 </Box>
+              </Grid>             
+              
+              <Grid item xs={6}>
+                <Box sx={{ width: "100%" }}>
+                  <p className="label">
+                    ATM Network
+                  </p>
+                  <Select
+                    name="atmnetwork"
+                    placeholder="Select"
+                    isClearable
+                    options={ATMNETWORKS?.map((item) => ({
+                      label: item.label,
+                      value: item.value,
+                    }))}
+                    styles={SelectStyling}
+                    
+                    value={
+                      values?.atmnetwork
+                        ? ATMNETWORKS?.find(
+                            (item) => item?.value === values?.atmnetwork
+                          )
+                        : null
+                    }
+                   
+                    onChange={(e) => {
+                      setFieldValue("atmnetwork", e?.value);
+                    }}
+                  />
+                  <ErrorMessage
+                    touched={touched}
+                    errors={errors}
+                    name="atmnetwork"
+                  />
+                </Box>
               </Grid>
+
               <Grid item xs={6}>
                 <Box sx={{ width: "100%" }}>
                   <p className="label">
@@ -263,21 +325,14 @@ const CreateUser = (props) => {
                     name="organization"
                     placeholder="Select"
                     isClearable
-                    options={ORGANIZATIONS?.map((item) => ({
-                      label: item.label,
-                      value: item.value,
-                    }))}
+                    
+                    options={organizationOptions}
+
                     styles={SelectStyling}
                     // components={{
                     //   IndicatorSeparator: () => null,
                     // }}
-                    value={
-                      values?.organization
-                        ? ORGANIZATIONS?.find(
-                            (item) => item?.value === values?.organization
-                          )
-                        : null
-                    }
+                    value={values.organization}
                     // onBlur={handleBlur}
                     onChange={(e) => {
                       setFieldValue("organization", e?.value);
@@ -290,6 +345,8 @@ const CreateUser = (props) => {
                   />
                 </Box>
               </Grid>
+
+
             </Grid>
           </Box>
           <Box>
@@ -430,16 +487,16 @@ const CreateUser = (props) => {
               </Grid>
               <Grid item xs={4}>
                 <Box sx={{ width: "100%" }}>
-                  <p htmlFor="postalCode" className="label">
-                    Postal Code
+                  <p htmlFor="ward" className="label">
+                    Ward
                   </p>
                   <input
-                    id="postalCode"
-                    placeholder="Postal Code"
+                    id="ward"
+                    placeholder="Ward"
                     className="styled-input"
                     value = {values?.postalCode}
                     onChange={(e) => {
-                      setFieldValue('postalCode', e?.target?.value)
+                      setFieldValue('ward', e?.target?.value)
                     }}
                   />
                 </Box>

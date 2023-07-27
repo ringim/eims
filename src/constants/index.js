@@ -1,5 +1,22 @@
 export const ORGANIZATIONS = [
   {
+    label: "CBO Name 1",
+    value: "CBO1",
+  },
+  {
+    label: "CBO Name 2",
+    value: "CBO2",
+  },
+  {
+    label: "CBO Name 3",
+    value: "CBO3",
+  },
+
+];
+
+export const ATMNETWORKS = [ 
+
+  {
     label: "Acomin",
     value: "acomin",
   },
@@ -11,7 +28,10 @@ export const ORGANIZATIONS = [
     label: "TB Network",
     value: "tb",
   },
+
 ];
+
+
 export const RESERVED_STATES = {
   acomin: [
     { label: "Edo", value: "edo" },
@@ -40,6 +60,24 @@ export const RESERVED_STATES = {
     { label: "Jigawa", value: "jigawa" },
     { label: "Lagos", value: "lagos" },
   ],
+};
+
+export const RESERVED_ORGANIZATIONS = {
+  acomin: [
+    { label: "POSITIVE CARE SUPPORT GROUP", ATMNETWORKS:"Acomin"},
+    { label: "Living Well support Group ", ATMNETWORKS:"Acomin"},
+  ],
+
+  nepwhan: [
+    { label: "Worldsmith Life Builders Foundation", ATMNETWORKS:"Nepwhan"},
+    { label: "IRETIAYO SUPPORT GROUP ", ATMNETWORKS:"Nepwhan"},
+  ],
+
+  tb: [
+    { label: "HeaIthy Living and Social Development Foundation ", ATMNETWORKS:"TB Network"},
+    { label: "Kids &Teens Resource Centre (K&TRC)", ATMNETWORKS:"TB Network"},
+  ]
+
 };
 
 export const ROLES = [
@@ -264,7 +302,8 @@ export const LGAs = {
     { label: "Yola South", value: "Yola South" },
   ],
 
-  ["akwa ibom"]: [
+  //["akwa ibom"]
+  "akwa ibom" : [
     { label: "Abak", value: "abak" },
     { label: "Eastern Obolo", value: "eastern_obolo" },
     { label: "Eket", value: "eket" },
@@ -400,7 +439,8 @@ export const LGAs = {
     { label: "Shani", value: "Shani" },
   ],
 
-  ["cross river"]: [
+  //["cross river"]
+  "cross river": [
     { label: "Abi", value: "abi" },
     { label: "Akamkpa", value: "akamkpa" },
     { label: "Akpabuyo", value: "akpabuyo" },
@@ -2028,7 +2068,8 @@ export const LGAs = {
     },
   ],
 
-  ["fct abuja"]: [
+  //["fct abuja"]
+  "fct abuja": [
     {
       label: "Abaji",
       value: "abaji",
