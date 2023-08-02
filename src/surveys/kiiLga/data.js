@@ -52,7 +52,7 @@ export const surveyData = {
           name: "q1",
           type: "text",
           title: "Does the LGA have annual budgetary allocation",
-          placeholder: "Enter name of Interviewee",
+          placeholder: "Enter here",
         },
         {
           name: "q2",
@@ -66,87 +66,87 @@ export const surveyData = {
           title:
             "What proportion of the LGA’s budgetary allocation is apportioned for Health in the past 3 years?",
         },
-        // {
-        //   name: "q4",
-        //   type: "text",
-        //   title:
-        //     "What share of the health allocation is apportioned to ATM interventions in the last 3 years?",
-        //   elements: [
-        //     {
-        //       name: "q1i",
-        //       type: "text",
-        //       title:
-        //         "What share of resources is allocated to ATM case management?",
-        //     },
-        //     {
-        //       name: "q1ii",
-        //       type: "text",
-        //       title:
-        //         "What share of resources is allocated to IPT, LLIN, Condom, TPT",
-        //     },
-        //     {
-        //       name: "q1iii",
-        //       type: "text",
-        //       title: "COVID-19 Vaccine promotion?",
-        //     },
-        //     {
-        //       name: "q1iv",
-        //       type: "text",
-        //       title:
-        //         "What share of resources is allotted to ATM in pregnancy?",
-        //     },
-        //   ],
-        // },
-        // {
-        //   name: "q5",
-        //   type: "text",
-        //   title:
-        //     "What proportion of the health allocation is released for COVID-19, HIV/AIDS, TB and Malaria interventions in the last 3 years?",
-        //   elements: [
-        //     {
-        //       name: "q5i",
-        //       type: "text",
-        //       title:
-        //         "What proportion of resources is released for ATM case management?",
-        //     },
-        //     {
-        //       name: "q5ii",
-        //       type: "text",
-        //       title:
-        //         "What proportion of resources is released for IPT, LLIN, Condom, TPT promotion?",
-        //     },
-        //     {
-        //       name: "q5iii",
-        //       type: "text",
-        //       title:
-        //         "What proportion of resources is released for HIV/AIDS, TB and Malaria in pregnancy ?",
-        //     },
-        //     {
-        //       name: "q5iv",
-        //       type: "text",
-        //       title:
-        //         "What proportion of resources is released for COVID-19 Vaccine?",
-        //     },
-        //     {
-        //       name: "q5v",
-        //       type: "text",
-        //       title:
-        //         "What is the level of community structure involvement during budget development?",
-        //     },
-        //     {
-        //       name: "q5vi",
-        //       type: "text",
-        //       title:
-        //         "What are the alternative sources of funding for health?",
-        //     },
-        //     {
-        //       name: "q5vi",
-        //       type: "text",
-        //       title:
-        //         "What are the alternative sources of funding for health?",
-        //     },
-        //   ],
-        // },
+        {
+          name: "q4",
+          type: "text",
+          title:
+            "What share of the health allocation is apportioned to ATM interventions in the last 3 years?",
+          elements: [
+            {
+              name: "q1i",
+              type: "text",
+              title:
+                "What share of resources is allocated to ATM case management?",
+            },
+            {
+              name: "q1ii",
+              type: "text",
+              title:
+                "What share of resources is allocated to IPT, LLIN, Condom, TPT",
+            },
+            {
+              name: "q1iii",
+              type: "text",
+              title: "COVID-19 Vaccine promotion?",
+            },
+            {
+              name: "q1iv",
+              type: "text",
+              title:
+                "What share of resources is allotted to ATM in pregnancy?",
+            },
+          ],
+        },
+        {
+          name: "q5",
+          type: "text",
+          title:
+            "What proportion of the health allocation is released for COVID-19, HIV/AIDS, TB and Malaria interventions in the last 3 years?",
+          elements: [
+            {
+              name: "q5i",
+              type: "text",
+              title:
+                "What proportion of resources is released for ATM case management?",
+            },
+            {
+              name: "q5ii",
+              type: "text",
+              title:
+                "What proportion of resources is released for IPT, LLIN, Condom, TPT promotion?",
+            },
+            {
+              name: "q5iii",
+              type: "text",
+              title:
+                "What proportion of resources is released for HIV/AIDS, TB and Malaria in pregnancy ?",
+            },
+            {
+              name: "q5iv",
+              type: "text",
+              title:
+                "What proportion of resources is released for COVID-19 Vaccine?",
+            },
+            {
+              name: "q5v",
+              type: "text",
+              title:
+                "What is the level of community structure involvement during budget development?",
+            },
+            {
+              name: "q5vi",
+              type: "text",
+              title:
+                "What are the alternative sources of funding for health?",
+            },
+            {
+              name: "q5vi",
+              type: "text",
+              title:
+                "What are the alternative sources of funding for health?",
+            },
+          ],
+        },
       ],
     },
     {

@@ -10,8 +10,8 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   maxWidth: 1200,
-  width: "100%",
-  height: "950px",
+  width: "95%",
+  height: "95%",
   overflow: "auto",
   bgcolor: "#E9E9E9",
   boxShadow: 24,
@@ -43,7 +43,7 @@ function KiiLgaSurveyModal(props) {
                 sx={{ width: "60px", height: "60px", background: "black" }}
               ></Box>
               <Box sx={{ display: "flex", flexDirection: "column" }}>
-                <Typography fontSize="16px" color="#4F4F4F">
+                <Typography  color="#4F4F4F">
                   Preview Survey:
                 </Typography>
                 <Typography fontSize="18px" fontWeight="700" color="#4F4F4F">
@@ -63,11 +63,12 @@ function KiiLgaSurveyModal(props) {
           <Box
             sx={{
               marginTop: 4,
-              width: "1000px",
+              width: "100%",
               background: "white",
               borderRadius: "5px",
               margin: "20px auto",
               p: 2,
+              font: "1em",
             }}
           >
             <KiiLga name={name} startedAt={new Date().toISOString()} />

@@ -1,15 +1,15 @@
 export const ORGANIZATIONS = [
   {
-    label: "CBO Name 1",
-    value: "CBO1",
+    label: "Acomin",
+    value: "acomin",
   },
   {
-    label: "CBO Name 2",
-    value: "CBO2",
+    label: "Nepwhan",
+    value: "nepwhan",
   },
   {
-    label: "CBO Name 3",
-    value: "CBO3",
+    label: "TB Network",
+    value: "tb",
   },
 
 ];

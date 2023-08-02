@@ -43,7 +43,8 @@ import ViewSurveyModal from "src/components/modals/viewModal";
 
 const TABLE_HEAD = [
   { id: "name", label: "Name", alignRight: false },
-  { id: "organization", label: "Organization", alignRight: false },
+  { id: "organization", label: "ATM Network", alignRight: false },
+  { id: "reserved_organizations", label: "Organizations", alignRight: false },
   { id: "started", label: "Started", alignRight: false },
   { id: "submitted", label: "Submission", alignRight: false },
   // { id: "status", label: "Status", alignRight: false },

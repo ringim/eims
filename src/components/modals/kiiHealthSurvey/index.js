@@ -11,7 +11,7 @@ const style = {
   transform: "translate(-50%, -50%)",
   maxWidth: 1200,
   width: "100%",
-  height: "950px",
+  height: "100%",
   overflow: "auto",
   bgcolor: "#E9E9E9",
   boxShadow: 24,
@@ -63,7 +63,7 @@ function KiiHealthFacilitySurveyModal(props) {
           <Box
             sx={{
               marginTop: 4,
-              width: "1000px",
+              width: "100%",
               background: "white",
               borderRadius: "5px",
               margin: "20px auto",

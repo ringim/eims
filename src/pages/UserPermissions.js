@@ -46,7 +46,8 @@ import { getFunctions, httpsCallable } from "firebase/functions";
 const TABLE_HEAD = [
   { id: "name", label: "Name", alignRight: false },
   { id: "role", label: "Role", alignRight: false },
-  { id: "organizaion", label: "Organization", alignRight: false },
+  { id: "organizaion", label: "Network", alignRight: false },
+  //{ id: "reserved_organization", label: "Organization", alignRight: false },
   { id: "status", label: "Status", alignRight: false },
   { id: "option", label: "Option", alignRight: false },
   // { id: "" },
@@ -85,6 +86,7 @@ function applySortFilter(array, comparator, query) {
         _user?.lastName?.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
         _user?.role?.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
         _user?.organization?.toLowerCase().indexOf(query.toLowerCase()) !== -1
+       // _user?.reservedOrganization?.toLowerCase().indexOf(query.toLowerCase()) !== -1
     );
   }
   return stabilizedThis?.map((el) => el[0]);
@@ -393,6 +395,7 @@ export default function UserPermissions() {
                           lastName,
                           role,
                           organization,
+                          //reservedOrganization,
                           status,
                           uid,
                         } = row;
@@ -430,6 +433,10 @@ export default function UserPermissions() {
                             <TableCell align="left">
                               {!organization ? "-" : organization}
                             </TableCell>
+
+                            {/* <TableCell align="left">
+                              {!organization ? "-" : network}
+                            </TableCell> */}
 
                             {/* <TableCell align="left">
                             {isVerified ? "Yes" : "No"}

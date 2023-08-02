@@ -14,7 +14,7 @@ const style = {
   maxWidth: 672,
   bgcolor: "background.paper",
   borderRadius: 2,
-  //   border: "2px solid #000",
+  width: "80%", // Set the width to 80% of the parent container's width
   boxShadow: 24,
   p: 2,
 };
@@ -77,7 +77,7 @@ function SelectSurvey(props) {
               <Typography component="h3" fontSize="26px" fontWeight={700}>
                 Start a Survey
               </Typography>
-              <Typography fontSize="16px">
+              <Typography fontSize="1em">
                 Choose one of the survey template options below, So you can
                 continue to fill out the survey.
               </Typography>
