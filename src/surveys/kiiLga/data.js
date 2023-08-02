@@ -7,6 +7,14 @@ export const surveyData = {
       title: "KII LGA",
       description: "Survey for KII LGA",
       elements: [
+
+        {
+            name: "facilityname",
+            type: "text",
+            title: "Name of Facility (in Capital Letters)",
+            placeholder: "Enter Name of Facility",
+        },
+
         {
           name: "intro1",
           type: "text",
@@ -149,6 +157,7 @@ export const surveyData = {
         },
       ],
     },
+
     {
       name: "intro7",
       title: "Resilient Health System Strengthening (RHSS)",
@@ -232,4 +241,6 @@ export const surveyData = {
       ],
     },
   ],
+  showProgressBar: "top",
+  showQuestionNumbers: "on",
 };
