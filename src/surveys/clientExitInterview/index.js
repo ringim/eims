@@ -49,6 +49,7 @@ function ATMClientSurvey(props) {
             submittedAt: new Date().toISOString(),
             status: "Preview",
             organization: user?.organization,
+            reservedOrg: user?.reservedOrg,
             createdBy: user?.email,
             data: survey,
           });
@@ -59,6 +60,7 @@ function ATMClientSurvey(props) {
             submittedAt: new Date().toISOString(),
             status: "Preview",
             organization: user?.organization,
+            reservedOrg: user?.reservedOrg,
             createdBy: user?.email,
             data: survey,
           });

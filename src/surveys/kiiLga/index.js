@@ -7,6 +7,8 @@ import { useUserAuth } from "src/context";
 import { collection, addDoc, updateDoc, doc } from "firebase/firestore";
 import { useStore } from "src/store";
 import { shallow } from "zustand/shallow";
+import { useEffect, useState } from "react";
+
 StylesManager.applyTheme("modern");
 
 function KiiLga(props) {
@@ -16,6 +18,31 @@ function KiiLga(props) {
   const { db } = useUserAuth();
   const survey = new Model(surveyData);
   survey.focusFirstQuestionAutomatic = false;
+
+  //offline feature
+  //Define a state variable to keep track of the survey data locally:
+  const [localSurveyData, setLocalSurveyData] = useState(null);
+
+  
+  //Create a function to save the survey data locally when there's no internet connection:
+  const saveLocally = (data) => {
+    localStorage.setItem("offlineSurveyData", JSON.stringify(data));
+  };
+
+  //create a function to check if there's locally stored survey data:
+  const checkLocalStorage = () => {
+    const offlineData = localStorage.getItem("offlineSurveyData");
+    if (offlineData) {
+      setLocalSurveyData(JSON.parse(offlineData));
+    }
+  };
+  
+  //Call checkLocalStorage inside the component's useEffect to check for locally stored data when the component mounts:
+  useEffect(() => {
+    checkLocalStorage();
+  }, []);
+
+  
 
   const { userInfo, setLoadSurveys, surveys, users } = useStore(
     (state) => ({
@@ -33,6 +60,9 @@ function KiiLga(props) {
   if (isEditing) {
     surveyDetails = surveys?.find((item) => item?.id === surveyId);
     survey.data = JSON.parse(surveyDetails?.data);
+  } 
+  else if (localSurveyData) {
+    survey.data = localSurveyData.data;
   }
 
   const createSurvey = async (data) => {
@@ -49,6 +79,7 @@ function KiiLga(props) {
             submittedAt: new Date().toISOString(),
             status: "Preview",
             organization: user?.organization,
+            reservedOrg: user?.reservedOrg,
             createdBy: user?.email,
             data: survey,
           });
@@ -59,24 +90,56 @@ function KiiLga(props) {
             submittedAt: new Date().toISOString(),
             status: "Preview",
             organization: user?.organization,
+            reservedOrg: user?.reservedOrg,
             createdBy: user?.email,
             data: survey,
           });
         }
       } else {
         // save into localDB
+        saveLocally({
+          name,
+          startedAt,
+          submittedAt: new Date().toISOString(),
+          status: "Preview",
+          organization: user?.organization,
+          reservedOrg: user?.reservedOrg,
+          createdBy: user?.email,
+          data: survey,
+        });
+        
       }
     } catch (e) {
       console.error("Error adding document: ", e);
     }
   };
-  const alertResults = useCallback((sender) => {
-    const survey = JSON.stringify(sender.data);
-    createSurvey({ survey }).then(() => {
-      setLoadSurveys();
-    });
-  }, []);
 
+
+  // const alertResults = useCallback((sender) => {
+  //   const survey = JSON.stringify(sender.data);
+  //   createSurvey({ survey }).then(() => {
+  //     setLoadSurveys();
+  //   });
+  // }, []);
+
+
+  //Modify the alertResults function to handle synchronization when the device comes back online:
+  const alertResults = useCallback(
+    (sender) => {
+      const survey = JSON.stringify(sender.data);
+      createSurvey({ survey }).then(() => {
+        setLoadSurveys();
+        // Clear locally stored data when the survey is successfully synchronized with the server
+        localStorage.removeItem("offlineSurveyData");
+        setLocalSurveyData(null);
+      });
+    },
+    [createSurvey, setLoadSurveys]
+  );
+  
+  
+  
+  
   survey.onComplete.add(alertResults);
   
   survey.onUploadFiles.add((survey, options) => {
@@ -92,6 +155,8 @@ function KiiLga(props) {
     };
     xhr.send(formData);
 });
+
+  
 
   return <Survey model={survey} />;
 }
