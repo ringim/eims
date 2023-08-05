@@ -23,6 +23,7 @@ let useStore = (set, get) => ({
   getUsers: async (db) => {
     set(() => ({loading: true}))
     const data = await getDocs(collection(db, 'users'));
+    
     const usersFetched = []
     for(let i = 0; i < data?.docs?.length; i++){
       const document = data?.docs?.[i]?._document?.data?.value?.mapValue?.fields
@@ -48,11 +49,39 @@ let useStore = (set, get) => ({
     return data;
     // set(() => {})
   },
+  
+  fetchUsers: async (db) => {
+    const data = await getDocs(collection(db, "users"));
+    return data;
+  },
+
   fetchSurveys: async (db) => {
     get().setLoading(true)
     const data = await getDocs(collection(db, 'surveys'));
     return data;
   },
+  // fetchSurveys: async (db) => {
+  //   set(() => ({ loading: true }));
+  //   const data = await getDocs(collection(db, 'surveys'));
+  //   const surveysFetched = data.docs.map((surveyDoc) => {
+  //     const surveyData = surveyDoc.data();
+  //     return {
+  //       id: surveyDoc.id,
+  //       name: surveyData.name,
+  //       organization: surveyData.organization,
+  //       reservedOrg: surveyData.reservedOrg, // Ensure that reservedOrg is directly assigned
+  //       startedAt: surveyData.startedAt,
+  //       status: surveyData.status,
+  //       //submittedAt: surveyData.submittedAt,
+  //       //avatarUrl: surveyData.avatarUrl,
+  //       data: surveyData.data,
+  //     };
+  //   });
+  //   set(() => ({ surveys: surveysFetched, loading: false }));
+  //   return data;
+  // },
+  
+
   deleteUser: async (db, document, uid) => {
     set(() => ({loading: true}))
     set(() => ({users: get()?.users?.filter(user => user?.uid !== uid)}))

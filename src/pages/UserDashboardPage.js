@@ -40,7 +40,7 @@ export default function UserDashboardPage() {
     <>
       <SelectSurvey isOpen={isModalOpen} handleClose={toggleModal} />
       <Helmet>
-        <title> Dashboard | Minimal UI </title>
+        <title> Dashboard | ATM Networks </title>
       </Helmet>
       <Container maxWidth="xl">
         <Box

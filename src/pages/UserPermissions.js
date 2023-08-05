@@ -47,7 +47,7 @@ const TABLE_HEAD = [
   { id: "name", label: "Name", alignRight: false },
   { id: "role", label: "Role", alignRight: false },
   { id: "organizaion", label: "Network", alignRight: false },
-  //{ id: "reserved_organization", label: "Organization", alignRight: false },
+  { id: "reservedOrg", label: "Organization", alignRight: false },
   { id: "status", label: "Status", alignRight: false },
   { id: "option", label: "Option", alignRight: false },
   // { id: "" },
@@ -85,8 +85,8 @@ function applySortFilter(array, comparator, query) {
         (_user?.firstName)?.toLowerCase().indexOf(query?.toLowerCase()) !== -1 ||
         _user?.lastName?.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
         _user?.role?.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
-        _user?.organization?.toLowerCase().indexOf(query.toLowerCase()) !== -1
-       // _user?.reservedOrganization?.toLowerCase().indexOf(query.toLowerCase()) !== -1
+        _user?.organization?.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
+        _user?.reservedOrg?.toLowerCase().indexOf(query.toLowerCase()) !== -1
     );
   }
   return stabilizedThis?.map((el) => el[0]);
@@ -142,10 +142,13 @@ export default function UserPermissions() {
 
   // const [surveys, setSurveyList] = useState([]);
   // const [loading, setLoading] = useState(false);
-  const fetchUsers = async () => {
-    const data = await getDocs(collection(db, "users"));
-    return data;
-  };
+  
+  
+  //Commented and replaced the function in the firestore
+  // const fetchUsers = async () => {
+  //   const data = await getDocs(collection(db, "users"));
+  //   return data;
+  // };
 
   const handleGetUsers = () => {
     getUsers(db).then((data) => {
@@ -395,7 +398,7 @@ export default function UserPermissions() {
                           lastName,
                           role,
                           organization,
-                          //reservedOrganization,
+                          reservedOrg,
                           status,
                           uid,
                         } = row;
@@ -434,9 +437,9 @@ export default function UserPermissions() {
                               {!organization ? "-" : organization}
                             </TableCell>
 
-                            {/* <TableCell align="left">
-                              {!organization ? "-" : network}
-                            </TableCell> */}
+                            <TableCell align="left">
+                              {reservedOrg}
+                            </TableCell>
 
                             {/* <TableCell align="left">
                             {isVerified ? "Yes" : "No"}
