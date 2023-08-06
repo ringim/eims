@@ -147,7 +147,14 @@ export default function Submission() {
         previewSurveys = previewSurveys?.filter(item => item?.organization === organizationFilter)
       }
       if(reservedOrgFilter){
-        previewSurveys = previewSurveys?.filter(item => item?.reservedOrg === reservedOrgFilter)
+        const usersWithReservedOrg = users?.filter(item => item?.reservedOrg === reservedOrgFilter)?.map(item => item?.email)
+        const reservedOrgSurveys = []
+        previewSurveys?.map(item => {
+          if(usersWithReservedOrg?.includes(item?.createdBy)){
+            reservedOrgSurveys.push(item)
+          }
+        })
+        previewSurveys = reservedOrgSurveys
       }
       if(userFilter){
         previewSurveys = previewSurveys?.filter(item => item?.createdBy === userFilter)
