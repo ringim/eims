@@ -346,9 +346,7 @@ export default function UserListToolbar({
             <Box sx={{width: '200px', borderRadius: '5px', border: '1px solid #CCCCCC', display: 'flex', flexDirection: 'column', flexWrap:"wrap", alignItems: 'center', justifyContent: 'space-between'}}>
               <p>Total KII - LGA</p>
               <p style={{fontWeight: 700, fontSize: 22}}>{filteredSurveys?.filter(item => item?.name === "Kii Lga")?.length ?? 0}</p>
-            </Box>
-
-            
+            </Box>            
           </Box>
           </FlexContainer>
                 
