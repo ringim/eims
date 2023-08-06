@@ -16,7 +16,7 @@ import Iconify from "../../../components/iconify";
 import Select from "react-select";
 import ErrorMessage from "src/utils/errorMessage";
 import SelectStyling from "src/utils/selectStyling";
-import { ORGANIZATIONS, ROLES, STATUS, STATES, LGAs, RESERVED_STATES } from "src/constants";
+import { ORGANIZATIONS, ROLES, STATUS, STATES, LGAs, RESERVED_STATES, RESERVED_ORGANIZATIONS } from "src/constants";
 import { useStore } from "src/store";
 // ----------------------------------------------------------------------
 
@@ -78,8 +78,10 @@ export default function UserListToolbar({
 }) {
   const users = useStore((state) => state?.users);
   const surveys = useStore((state) => state?.surveys);
-  const userInfo = useStore(state => state?.userInfo)
+  const userInfo = useStore(state => state?.userInfo);
 
+
+  const [reservedOrgOptions, setReservedOrgOptions] = useState([])
   const [orgOptions, setOrgOptions] = useState(ORGANIZATIONS)
   const [userOptions, setUserOptions] = useState([])
   const [organizationFilter, setOrganizationFilter] = useState(null);
