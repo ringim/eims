@@ -359,7 +359,7 @@ export default function UserListToolbar({
           </FlexContainer>
           
           
-          <FlexContainer>
+          <FlexContainer style={{ overflowY: "auto" }}>
           <Box sx={{width: '100%', marginTop: 3, display: 'flex', gap: 4, flexDirection:"row", flexWrap:""}}>
             <Box sx={{width: '200px', borderRadius: '5px', border: '1px solid #CCCCCC', display: 'flex', flexDirection: 'column', flexWrap:"wrap", alignItems: 'center', justifyContent: 'space-between'}}>
               <p>Total CEI</p>
