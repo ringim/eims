@@ -81,9 +81,9 @@ export default function UserListToolbar({
   const userInfo = useStore(state => state?.userInfo);
 
 
-  const [reservedOrgOptions, setReservedOrgOptions] = useState([])
-  const [orgOptions, setOrgOptions] = useState(ORGANIZATIONS)
   const [userOptions, setUserOptions] = useState([])
+  const [reservedOrgOptions, setReservedOrgOptions] = useState([])
+  const [reservedOrgFilter, setReservedOrgFilter] = useState(null)
   const [organizationFilter, setOrganizationFilter] = useState(null);
   const [userFilter, setUserFilter] = useState(null);
   const [stateFilter, setStateFilter] = useState(null);
@@ -99,12 +99,16 @@ export default function UserListToolbar({
   }, [])
 
   useEffect(() => {
-    handleFilterSurveys({ organizationFilter, userFilter, dateFrom, dateTo });
-  }, [organizationFilter, userFilter, dateFrom, dateTo]);
+    handleFilterSurveys({ organizationFilter, reservedOrgFilter, userFilter, dateFrom, dateTo });
+  }, [organizationFilter, reservedOrgFilter, userFilter, dateFrom, dateTo]);
 
   useEffect(() => {
     handleFilterUsers({ stateFilter, lgaFilter });
   }, [stateFilter, lgaFilter]);
+
+  useEffect(() => {
+    setReservedOrgOptions(RESERVED_ORGANIZATIONS[organizationFilter])
+  }, [organizationFilter])
 
 
   const FlexContainer = styled(Box)({
@@ -167,7 +171,7 @@ export default function UserListToolbar({
 
             <Box sx={{ width: "100%", height: "40px"}}>
               <Select
-                name="organization"
+                name="atmNetwork"
                 placeholder="ATM Network"
                 isClearable
                 options={ORGANIZATIONS?.map((item) => ({
@@ -194,6 +198,28 @@ export default function UserListToolbar({
                     setStateFilter(null)
                   }
                 }}
+              />
+            </Box>
+            <Box sx={{ width: "100%", height: "40px"}}>
+              <Select
+                name="organization"
+                placeholder="Organization"
+                isClearable
+                options={reservedOrgOptions ?? []}
+                styles={SelectStyling}
+                // components={{
+                //   IndicatorSeparator: () => null,
+                // }}
+                // isDisabled={userInfo?.role === 'supervisor'}
+                value={reservedOrgOptions?.find(item => item?.value === reservedOrgFilter) ?? null}
+                // onBlur={handleBlur}
+                onChange={e => {
+                  setReservedOrgFilter(e?.value)
+                  if(!e){
+                    setReservedOrgFilter(null)
+                  }
+                }}
+                
               />
             </Box>
             
