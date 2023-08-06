@@ -66,7 +66,7 @@ function ViewSurveyModal(props) {
           <Box
             sx={{
               marginTop: 4,
-              width: "1000px",
+              width: "100%",
               background: "white",
               borderRadius: "5px",
               margin: "20px auto",

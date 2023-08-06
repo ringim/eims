@@ -142,9 +142,27 @@ export default function UserListToolbar({
             flexWrap: "wrap",
           }}
         >
+          
           <FlexContainer >
 
           <Box sx={{ width: "100%", display: 'flex',  gap: 2, flexDirection:"row", flexWrap:"wrap"}}>
+            
+            {/* <Box sx={{ width: "100%", height: "40px"}}>
+            <StyledSearch
+            value={filterName}
+            onChange={onFilterName}
+            placeholder="Search..."
+            startAdornment={
+              <InputAdornment position="start">
+                <Iconify
+                icon="eva:search-fill"
+                sx={{ color: "text.disabled", width: 20, height: 20 }}
+                />
+              </InputAdornment>
+              }
+            />     
+            </Box> */}
+
             <Box sx={{ width: "100%", height: "40px"}}>
               <Select
                 name="organization"
@@ -293,12 +311,26 @@ export default function UserListToolbar({
               />
 
           </Box>
+          
+          <Box>
+            <StyledSearch
+            value={filterName}
+            onChange={onFilterName}
+            placeholder="Search..."
+            startAdornment={
+              <InputAdornment position="start">
+                <Iconify
+                icon="eva:search-fill"
+                sx={{ color: "text.disabled", width: 20, height: 20 }}
+                />
+              </InputAdornment>
+              }
+            />     
+            </Box>
 
           </FlexContainer>
           
           
-
-
           <FlexContainer>
           <Box sx={{width: '100%', marginTop: 3, display: 'flex', gap: 4, flexDirection:"row", flexWrap:""}}>
             <Box sx={{width: '200px', borderRadius: '5px', border: '1px solid #CCCCCC', display: 'flex', flexDirection: 'column', flexWrap:"wrap", alignItems: 'center', justifyContent: 'space-between'}}>
@@ -315,7 +347,7 @@ export default function UserListToolbar({
             </Box>
           </Box>
           </FlexContainer>
-          
+                
    
     </div>
 )}
@@ -384,19 +416,7 @@ export default function UserListToolbar({
         </div>
       )}
       
-      <StyledSearch
-        value={filterName}
-        onChange={onFilterName}
-        placeholder="Search..."
-        startAdornment={
-          <InputAdornment position="start">
-            <Iconify
-              icon="eva:search-fill"
-              sx={{ color: "text.disabled", width: 20, height: 20 }}
-            />
-          </InputAdornment>
-        }
-      />     
+     
     </StyledRoot>
   );
 }
