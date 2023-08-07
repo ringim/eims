@@ -388,7 +388,7 @@ export default function UserListToolbar({
         <div
           style={{ width: "100%", display: "flex", gap: 8, flexWrap: "wrap" }}
         >
-          <Box sx={{ width: "20%", height: "40px" }}>
+          <Box sx={{ width: "100%", height: "40px" }} sm={{width:"300px"}}>
             <Select
               name="state"
               placeholder="State"
@@ -418,7 +418,7 @@ export default function UserListToolbar({
               }}
             />
           </Box>
-          <Box sx={{ width: "20%", height: "40px" }}>
+          <Box sx={{ width: "100%", height: "40px" }} sm={{width:"300px"}}>
             <Select
               name="lga"
               placeholder="LGA"

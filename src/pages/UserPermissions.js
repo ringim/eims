@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 // @mui
 import {
   Card,
+  Grid,
   Table,
   Stack,
   Paper,
@@ -290,35 +291,41 @@ export default function UserPermissions() {
         />
       )}
       <Helmet>
-        <title> User | Minimal UI </title>
+        <title> User | ATM  </title>
       </Helmet>
 
       <Container maxWidth="xl">
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          mb={5}
+      <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            mb: 5,
+          }}
         >
           <Typography variant="h4" gutterBottom>
             User Permissions
           </Typography>
-          <Stack direction="row" alignItems="center" gap={2}>
+
+          <Grid item xs={12} sm={6} md={4}>
+          <Stack sx={{ display: "flex", justifyContent: "flex-end" }}>
             <Button
-              variant="contained"
-              disableElevation
-              sx={{
-                width: "300px",
-                height: "60px",
-                fontSize: "18px",
-                fontWeight: "700",
-              }}
+             variant="contained"
+             disableElevation
+             sx={{
+             width: { xs: "100%", sm: "300px" },
+             height: "60px",
+             fontSize: "18px",
+             fontWeight: "700",
+             }}
               onClick={toggleModal}
             >
               + New User
             </Button>
           </Stack>
-        </Stack>
+          </Grid>
+          
+        </Box>
 
         <Card>
           <UserListToolbar

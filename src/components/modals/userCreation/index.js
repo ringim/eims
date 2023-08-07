@@ -7,6 +7,7 @@ import {
   InputLabel,
   Input,
   Divider,
+  useTheme,
 } from "@mui/material";
 import {LoadingButton} from '@mui/lab'
 import { useFormik } from "formik";
@@ -21,17 +22,18 @@ import { useStore } from "src/store";
 import { shallow } from "zustand/shallow";
 import { getFunctions, httpsCallable } from "firebase/functions";
 const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 1000,
+  maxWidth: "xl",
+  width: "100%",
+  maxHeight: "90vh",
+  overflowY: "auto",
   bgcolor: "background.paper",
   borderRadius: "10px",
   boxShadow: 24,
   p: "10px 40px",
-  //   px: 4,
-  //   pb: 3,
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
 };
 const CreateUser = (props) => {
   const { open, handleClose, isEditing={}, isUserCreated } = props;
@@ -193,6 +195,13 @@ const CreateUser = (props) => {
   const { values, errors, touched, setFieldValue, handleSubmit, handleBlur, setValues } =
     formik;
 
+   // Access the theme
+   const theme = useTheme();
+
+   // Set the maximum width of the modal at a specific breakpoint (sm in this case)
+   const modalMaxWidth = theme.breakpoints.up("sm") ? "70%" : "100%";
+ 
+
   return (
     <Modal
       open={open}
@@ -206,6 +215,7 @@ const CreateUser = (props) => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            maxWidth: "modalMaxWidth",
           }}
         >
           <h2>Add User</h2>
@@ -219,7 +229,7 @@ const CreateUser = (props) => {
           <Box>
             <h3>User Information</h3>
             <Grid container spacing={2}>
-              <Grid item xs={6}>
+              <Grid item xs={12} sm={6}>
                 <Box sx={{ width: "100%" }}>
                   <p htmlFor="firstName" className="label">
                     First Name
@@ -233,7 +243,7 @@ const CreateUser = (props) => {
                   />
                 </Box>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} sm={6}>
                 <Box sx={{ width: "100%" }}>
                   <p htmlFor="lastName" className="label">
                     Last Name
@@ -247,7 +257,7 @@ const CreateUser = (props) => {
                   />
                 </Box>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} sm={6}>
                 <Box sx={{ width: "100%" }}>
                   <p htmlFor="email" className="label">
                     Email address
@@ -263,7 +273,7 @@ const CreateUser = (props) => {
                   />
                 </Box>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} sm={6}>
                 <Box sx={{ width: "100%" }}>
                   <p htmlFor="password" className="label">
                     Password
@@ -280,7 +290,7 @@ const CreateUser = (props) => {
                 </Box>
               </Grid>             
 
-              <Grid item xs={6}>
+              <Grid item xs={12} sm={6}>
                 <Box sx={{ width: "100%" }}>
                   <p className="label">
                     ATM Network
@@ -310,7 +320,7 @@ const CreateUser = (props) => {
                   />
                 </Box>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} sm={6}>
                 <Box sx={{ width: "100%" }}>
                   <p className="label">
                     Organization
@@ -345,7 +355,7 @@ const CreateUser = (props) => {
           <Box>
             <h3>Permission</h3>
             <Grid container spacing={2}>
-              <Grid item xs={6}>
+              <Grid item xs={12} sm={6}>
                 <Box sx={{ width: "100%" }}>
                   <p className="label">
                     Role
@@ -374,7 +384,7 @@ const CreateUser = (props) => {
                   />
                 </Box>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} sm={6}>
                 <Box sx={{ width: "100%" }}>
                   <p className="label">
                     Status
@@ -408,7 +418,7 @@ const CreateUser = (props) => {
           <Box>
             <h3>Contact Information</h3>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={6}>
                 <Box sx={{ width: "100%" }}>
                   <p htmlFor="address" className="label">
                     Address
@@ -422,7 +432,7 @@ const CreateUser = (props) => {
                   />
                 </Box>
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={12} sm={6}>
                 <Box sx={{ width: "100%" }}>
                   <p className="label">
                     State
@@ -452,7 +462,7 @@ const CreateUser = (props) => {
                   />
                 </Box>
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={12} sm={6}>
                 <Box sx={{ width: "100%" }}>
                   <p className="label">
                     LGA
@@ -478,7 +488,7 @@ const CreateUser = (props) => {
                   />
                 </Box>
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={12} sm={6}>
                 <Box sx={{ width: "100%" }}>
                   <p htmlFor="ward" className="label">
                     Ward
