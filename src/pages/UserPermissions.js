@@ -291,7 +291,7 @@ export default function UserPermissions() {
         />
       )}
       <Helmet>
-        <title> User | ATM  </title>
+        <title> User | ATM Networks </title>
       </Helmet>
 
       <Container maxWidth="xl">
