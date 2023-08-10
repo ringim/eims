@@ -6,31 +6,20 @@ const { db, admin } = require('../config/admin')
 // @access  Private ( temporary public for the mean time)
 
 const createProject = asyncHandler(async (req, res) => {
-    if (req.body.body.trim() == '') {
-      res.status(400)
-      throw new Error('you havent created any form add questions to continue')
-    }
-  
-    if (req.body.title.trim() == '') {
-      res.status(400)
-      throw new Error('the form lacks a title input a title to continue')
-    }
-    const code = cryptoRandomString({ length: 5 })
-  
+   // perform validation to ensure the data is complete and conforms to expected format
+   // apply some business logics
+   // error handling e.g in case of malformed data
+   // authentication and security to ensure only authorized kobo collect toolkit apps can submit data
+   // scallability and oerformance
+
     const project = {
-      body: req.body.title,
-      title: req.body.body,
+      body: req.body,
+      title: 'test',
       createdAt: new Date().toISOString(),
-      date: new Date().toLocaleDateString(),
-      time:  new Date().toLocaleTimeString(),
-      code: code,
-      ProjectImages: [],
       username: req.user.username,
-      numberOfInterviewers: 0,
-      submissions: 0,
     }
     db.collection('projects')
-      .add(project)
+      .add(proj)
       .then((doc) => {
         const responseProject = project
         responseProject.id = doc.id
@@ -39,5 +28,9 @@ const createProject = asyncHandler(async (req, res) => {
       .catch((err) => {
         res.status(500)
         throw new Error('Something went wrong ')
+        // set up remote error handling middle ware for logging purposes
+
       })
   })
+
+  module.exports = { createProject}
